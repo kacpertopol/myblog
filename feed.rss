@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+<channel>
+<title>my blog</title>
+<link>https://kacpertopol.github.io/blog/index.html</link>
+<description>Kacper Topolnicki's blog</description>
+<item>
+<title>title 1</title>
+<link>https://kacpertopol.github.io/blog/2020-01-01_gen_light.html</link>
+<description>this is the post abstract 1
+ this is the post abstract 1
+ this is the post abstract 1</description>
+<guid>https://kacpertopol.github.io/blog/2020-01-01_gen_light.html</guid>
+</item>
+<item>
+<title>title 2</title>
+<link>https://kacpertopol.github.io/blog/2020-01-02_gen_light.html</link>
+<description>this is the post abstract 2</description>
+<guid>https://kacpertopol.github.io/blog/2020-01-02_gen_light.html</guid>
+</item>
+</channel>
+</rss>
+    

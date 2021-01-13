@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rm *gen* index.html blogdark.html
