@@ -115,13 +115,13 @@ def makeMD():
         result += "\n# [" + postTitle + "](./" + str(postDate) + "_gen_light.html)\n"
         
         result += "<center>\n"
-        result += "*" + postDate + "*\n"
+        result += "[*" + postDate + "*](" + str(postDate) + "_gen_light.html" + ")\n"
         result += "</center>\n"
        
         if(n == 1):
             result += "\n" + postContent + "\n\n\n"
         else:
-            result += "\n" + postAbstract + "\n\n\n"
+            result += "\n[" + postAbstract + " ...](" + str(postDate) + "_gen_light.html" + ")\n\n\n"
         n += 1
      
     lightMeta = "---\n" + meta + "inv : \" blogdark.html\"\nhme : \"index.html\"\n---\n" 
@@ -143,13 +143,13 @@ def makeMD():
         result += "\n# [" + postTitle + "](./" + str(postDate) + "_gen_dark.html)\n"
         
         result += "<center>\n"
-        result += "*" + postDate + "*\n"
+        result += "[*" + postDate + "*](" + str(postDate) + "_gen_light.html" + ")\n"
         result += "</center>\n"
        
         if(n == 1):
             result += "\n" + postContent + "\n\n\n"
         else:
-            result += "\n" + postAbstract + "\n\n\n"
+            result += "\n[" + postAbstract + " ...](" + str(postDate) + "_gen_dark.html" + ")\n\n\n"
         n += 1
 
     darkMeta = "---\n" + meta + "inv : \" index.html\"\nhme : \"blogdark.html\"\n---\n" 

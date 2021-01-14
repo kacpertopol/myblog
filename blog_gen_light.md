@@ -8,7 +8,7 @@ hme : "index.html"
 
 # [title 1](./2020-01-01_gen_light.html)
 <center>
-*2020-01-01*
+[*2020-01-01*](2020-01-01_gen_light.html)
 </center>
 
 alskdma alskdma
@@ -71,9 +71,9 @@ END_HTML-->
 
 # [title 2](./2020-01-02_gen_light.html)
 <center>
-*2020-01-02*
+[*2020-01-02*](2020-01-02_gen_light.html)
 </center>
 
-this is the post abstract 2
+[this is the post abstract 2 ...](2020-01-02_gen_light.html)
 
 
