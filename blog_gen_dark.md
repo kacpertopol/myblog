@@ -1,8 +1,7 @@
 ---
 title : my blog
-author : Kacper Topolnicki
-inv : " index.html"
-hme : "blogdark.html"
+author : Kacper Topolnicki, <kacpertopol@gmail.com>
+inv : " bloglight.html"
 ---
 
 

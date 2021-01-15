@@ -90,16 +90,14 @@ def makeMD():
 
         postName = str(postDate) + "_gen"
 
-        lightMeta = "---\n" + meta + "inv : \"" + postName + "_dark.html\"\nhme : \"index.html\"" + "\n---\n" 
+        lightMeta = "---\n" + meta + "inv : \"" + postName + "_dark.html\"\nhme : \"bloglight.html\"" + "\n---\n" 
         with open(postName + "_light.md" , "w") as f:
             f.write(lightMeta + "\n" + r)
-        #subprocess.run(["pandoc" , "--mathjax" , "--template" , "./light.html" , postName + "_light.md" , "-o" , postName + "_light.html"])
         subprocess.run("pandoc --mathjax --template ./light.html " + postName + "_light.md | sed '/BEGIN_HTML/d' | sed '/END_HTML/d' > " + postName + "_light.html" , shell = True)
         
         darkMeta = "---\n" + meta + "inv : \"" + postName + "_light.html\"\nhme : \"blogdark.html\"" + "\n---\n" 
         with open(postName + "_dark.md" , "w") as f:
             f.write(darkMeta + "\n" + r)
-        #subprocess.run(["pandoc" , "--mathjax" , "--template" , "./dark.html" , postName + "_dark.md" , "-o" , postName + "_dark.html"])
         subprocess.run("pandoc --mathjax --template ./dark.html " + postName + "_dark.md | sed '/BEGIN_HTML/d' | sed '/END_HTML/d' > " + postName + "_dark.html" , shell = True)
 
     result = ""
@@ -108,10 +106,6 @@ def makeMD():
     for post in posts:
         (postDate , postTitle , postAbstract , postLink , postContent) = post
         
-        #if(n == 1):
-        #    result += "\n# " + postTitle + "\n"
-        #else:
-        #    result += "\n# [" + postTitle + "](./" + str(postDate) + "_gen_light.html)\n"
         result += "\n# [" + postTitle + "](./" + str(postDate) + "_gen_light.html)\n"
         
         result += "<center>\n"
@@ -124,11 +118,10 @@ def makeMD():
             result += "\n[" + postAbstract + " ...](" + str(postDate) + "_gen_light.html" + ")\n\n\n"
         n += 1
      
-    lightMeta = "---\n" + meta + "inv : \" blogdark.html\"\nhme : \"index.html\"\n---\n" 
+    lightMeta = "---\n" + meta + "inv : \" blogdark.html\"\n---\n" 
     with open("blog_gen_light.md" , "w") as f:
         f.write(lightMeta + "\n" + result)
-    #subprocess.run(["pandoc" , "--mathjax" , "--template" , "light.html" , "blog_gen_light.md" , "-o" , "index.html"])
-    subprocess.run("pandoc --mathjax --template light.html blog_gen_light.md | sed '/BEGIN_HTML/d' | sed '/END_HTML/d' > index.html" , shell = True)
+    subprocess.run("pandoc --mathjax --template light.html blog_gen_light.md | sed '/BEGIN_HTML/d' | sed '/END_HTML/d' > bloglight.html" , shell = True)
 
     result = ""
     
@@ -136,10 +129,6 @@ def makeMD():
     for post in posts:
         (postDate , postTitle , postAbstract , postLink , postContent) = post
         
-        #if(n == 1):
-        #    result += "\n# " + postTitle + "\n"
-        #else:
-        #    result += "\n# [" + postTitle + "](./" + str(postDate) + "_gen_dark.html)\n"
         result += "\n# [" + postTitle + "](./" + str(postDate) + "_gen_dark.html)\n"
         
         result += "<center>\n"
@@ -152,10 +141,9 @@ def makeMD():
             result += "\n[" + postAbstract + " ...](" + str(postDate) + "_gen_dark.html" + ")\n\n\n"
         n += 1
 
-    darkMeta = "---\n" + meta + "inv : \" index.html\"\nhme : \"blogdark.html\"\n---\n" 
+    darkMeta = "---\n" + meta + "inv : \" bloglight.html\"\n---\n" 
     with open("blog_gen_dark.md" , "w") as f:
         f.write(darkMeta + "\n" + result)
-    #subprocess.run(["pandoc" , "--mathjax" , "--template" , "dark.html" , "blog_gen_dark.md" , "-o" , "blogdark.html"])
     subprocess.run("pandoc --mathjax --template dark.html blog_gen_dark.md | sed '/BEGIN_HTML/d' | sed '/END_HTML/d' > blogdark.html" , shell = True)
 
 
@@ -184,4 +172,5 @@ if(__name__ == "__main__"):
         exit(1)
     
     makeMD()
+    subprocess.run(["cp" , "bloglight.html" , "index.html"])
 
