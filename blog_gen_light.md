@@ -1,78 +1,16 @@
 ---
 title : my blog
-author : Kacper Topolnicki, <kacpertopol@gmail.com>
+author : <a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a>
 inv : " blogdark.html"
 ---
 
 
-# [title 1](./2020-01-01_gen_light.html)
+# [hi](./2021-01-15_gen_light.html)
 <center>
-[*2020-01-01*](2020-01-01_gen_light.html)
+[*2021-01-15*](2021-01-15_gen_light.html)
 </center>
 
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-
-
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-alskdma alskdma
-$$\frac{1}{2}$$
-
-<!--BEGIN_HTML
-<div>
-  <div style="position:relative;padding-top:28.13%;">
-	<iframe 
-	   style="position:absolute;top:0;left:25%;width:50%;height:100%;" 
-	   src="https://www.youtube.com/embed/2BIx2x-Q2fE" 
-	   frameborder="0" 
-	   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-	   allowfullscreen>
-	</iframe>
-  </div>
-</div>
-END_HTML-->
-
-
-
-# [title 2](./2020-01-02_gen_light.html)
-<center>
-[*2020-01-02*](2020-01-02_gen_light.html)
-</center>
-
-[this is the post abstract 2 ...](2020-01-02_gen_light.html)
+Hello. My name is [Kacper Topolnicki](https://kacpertopol.github.io/). I'm a physicist and my posts will be
+focused around ... physics ... but also programming, mathematics and other (hopefully) interesting things.
 
 
