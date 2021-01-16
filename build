@@ -23,6 +23,7 @@ def makeMD():
 
     files = list(map(makeDate , files))
     files.sort(key = lambda x : x[0])
+    files.reverse()
     for f in files:
         (date , filename) = f
         postTitle = ""
@@ -113,6 +114,7 @@ def makeMD():
         result += "</center>\n"
        
         if(n == 1):
+            result += "\n" + postAbstract + " ...\n"
             result += "\n" + postContent + "\n\n\n"
         else:
             result += "\n[" + postAbstract + " ...](" + str(postDate) + "_gen_light.html" + ")\n\n\n"
@@ -136,6 +138,7 @@ def makeMD():
         result += "</center>\n"
        
         if(n == 1):
+            result += "\n" + postAbstract + " ...\n"
             result += "\n" + postContent + "\n\n\n"
         else:
             result += "\n[" + postAbstract + " ...](" + str(postDate) + "_gen_dark.html" + ")\n\n\n"

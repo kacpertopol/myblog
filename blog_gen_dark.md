@@ -5,12 +5,112 @@ inv : " bloglight.html"
 ---
 
 
+# [infinite matrices in *Mathematica*, part 1](./2021-01-16_gen_dark.html)
+<center>
+[*2021-01-16*](2021-01-16_gen_light.html)
+</center>
+
+introduction, motivation ...
+
+It turns out that it is relatively simple to implement infinite matrices
+in the *Wofram Language*. The implementation we will develop here and in further 
+posts will include:
+
+- mapping functions over the matrix
+- matrix transposition
+- matrix - matrix addition
+- matrix - matrix multiplication
+
+Since row and columns vectors can be treated as matrices with one row and or one column,
+these 4 operations will also take vector arguments.
+
+Why do this? The original motivation was to demonstrate the probability transition matrix for the Poisson
+process. It loks something like this:
+
+$$
+P = \left(
+\begin{array}{cccccc}
+ 1-p & p & 0 & \cdot  & \cdot  & \cdot  \\
+ 0 & 1-p & p & \cdot  & \cdot  & \cdot  \\
+ 0 & 0 & 1-p & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+\end{array}
+\right)
+$$
+
+where $p$ is the probability of going from state $i$ to state $i + 1$ and $1 - p$ is the probability
+of going from state $i$ to state $i$. The three rows and three columns of dots, as is tradition, symbolize the 
+remaining, infinite part of the matrix. 
+
+What about $P^{2}$? This matrix corresponds to transition probabilities after
+two steps of the Poisson process. With a little head scratching you can come up with the following picture:
+
+$$
+P^{2} = \left(
+\begin{array}{cccccc}
+ (1-p)^2 & 2 (1-p) p & p^2 & \cdot  & \cdot  & \cdot  \\
+ 0 & (1-p)^2 & 2 (1-p) p & \cdot  & \cdot  & \cdot  \\
+ 0 & 0 & (1-p)^2 & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+\end{array}
+\right) 
+$$
+
+Simple enough. What about $P^{15}$? With some clever usage of functional programming
+we will persuade *Mathematica* to produce the answer (actually, it is possible to work out the analytical form of any element in
+$P^{n}$ and verify that this result is correct):
+
+$$
+P^{15} = \left(
+\begin{array}{cccccc}
+ (1-p)^{16} & 16 (1-p)^{15} p & 120 (1-p)^{14} p^2 & \cdot  & \cdot  & \cdot  \\
+ 0 & (1-p)^{16} & 16 (1-p)^{15} p & \cdot  & \cdot  & \cdot  \\
+ 0 & 0 & (1-p)^{16} & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+\end{array}
+\right)
+$$ 
+
+Our *Wolfram Language* implementation
+will also allow us to calculate any segment of the infinite matrix. Here are rows $32 ... 34$ 
+and columns $35 ... 37$ of $P^{15}$:
+
+$$
+\left(
+\begin{array}{ccccccccc}
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & 560 (1-\text{pp})^{13} \text{pp}^3 & 1820 (1-\text{pp})^{12} \text{pp}^4 & 4368 (1-\text{pp})^{11} \text{pp}^5 & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & 120 (1-\text{pp})^{14} \text{pp}^2 & 560 (1-\text{pp})^{13} \text{pp}^3 & 1820 (1-\text{pp})^{12} \text{pp}^4 & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & 16 (1-\text{pp})^{15} \text{pp} & 120 (1-\text{pp})^{14} \text{pp}^2 & 560 (1-\text{pp})^{13} \text{pp}^3 & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+\end{array}
+\right)
+$$
+
+Obviously this is not magic and will not work for all infinite matrices. One assumption that we will make is
+that any row of a matrix and any column of a matrix has to have a finite number of elements. 
+Even with this caveat our code might be a good tool to get more insight into many physical processes,
+whose description revolves around infinite matrices.
+
+In the next post we will tackle infinite matrix representation and transposition.
+
+
+
 # [hi](./2021-01-15_gen_dark.html)
 <center>
 [*2021-01-15*](2021-01-15_gen_light.html)
 </center>
 
-Hello. My name is [Kacper Topolnicki](https://kacpertopol.github.io/). I'm a physicist and my posts will be
-focused around physics, programming, mathematics and other topics.
+[first post, what this blog is about ...](2021-01-15_gen_dark.html)
 
 
