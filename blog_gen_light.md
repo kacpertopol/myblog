@@ -1,6 +1,6 @@
 ---
 title : my blog
-author : <a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a>
+author : <center><a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a><center>
 inv : " blogdark.html"
 ---
 
