@@ -10,7 +10,9 @@ inv : " blogdark.html"
 [*2021-01-16*](2021-01-16_gen_light.html)
 </center>
 
-introduction, motivation ...
+[introduction, motivation ...](2021-01-16_gen_light.html)
+
+
 
 It turns out that it is relatively simple to implement infinite matrices
 in the *Wofram Language*. The implementation we will develop here and in further 
