@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>my blog</title>
   <link rel="alternate" type="application/rss+xml"
    href="feed.rss" title="RSS feed for My Page">
-  <title>my blog</title>
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -81,8 +81,8 @@
 	}
 	p {
 		text-align : justify;
-		min-width:200px;max-width:900px;margin:0 auto;padding:15px;
-	}
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
+	}	
 	li {
 		text-align : left;
 		min-width:200px;max-width:900px;margin:0 auto;
@@ -95,10 +95,6 @@
 		text-align : left;
 		min-width:200px;max-width:900px;margin:0 auto;
 	}
-	body {
-		background-color : black;
-		color : white;
-	}
 	#HME {
 		text-decoration : none;
 		float : left;
@@ -106,10 +102,6 @@
 	#LNK {
 		text-decoration : none;
 		float : right;
-	}
-	img {
-	-webkit-filter: invert(1);
-	filter: invert(1);	
 	}
 	a {
 		text-decoration : none;
@@ -123,19 +115,21 @@
 </head>
 <body>
 <a id = "LNK" 
-	href = bloglight.html>☀️ </a>
-</br>
+	href = bloglight.html>🏠</a>
+<a id = "LNK" 
+	href = 2021-01-17_gen_dark.html>🌘</a>
+<br/>
 <header id="title-block-header">
 <h1 class="title">my blog</h1>
 <p class="author"><center>
 <a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a>
 <center></p>
 </header>
-<h1 id="infinite-matrices-in-mathematica-part-2"><a href="./2021-01-17_gen_dark.html">infinite matrices in <em>Mathematica</em>, part 2</a></h1>
+<h1 id="infinite-matrices-in-mathematica-part-2">infinite matrices in <em>Mathematica</em>, part 2</h1>
 <center>
-<a href="2021-01-17_gen_light.html"><em>2021-01-17</em></a>
+<em>2021-01-17</em>
 </center>
-<p><a href="2021-01-17_gen_dark.html">representation, transposition …</a></p>
+<p>representation, transposition …</p>
 <p>The previous post from this series hided that a powerful implementation of infinite matrices can easily be obtained in the <em>Wolfram Language</em>. Here we will begin building this code starting the definition of the infinite matrix type:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">iM</span> = {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>        (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">1</span>*) , </span>
@@ -270,16 +264,6 @@
 \right)
 \]</span></p>
 <p>Next time we will tacke matrix addition, multiplication and mapping functions over a matrix. Additionally the code will be made available.</p>
-<h1 id="infinite-matrices-in-mathematica-part-1"><a href="./2021-01-16_gen_dark.html">infinite matrices in <em>Mathematica</em>, part 1</a></h1>
-<center>
-<a href="2021-01-16_gen_light.html"><em>2021-01-16</em></a>
-</center>
-<p><a href="2021-01-16_gen_dark.html">introduction, motivation …</a></p>
-<h1 id="hi"><a href="./2021-01-15_gen_dark.html">hi</a></h1>
-<center>
-<a href="2021-01-15_gen_light.html"><em>2021-01-15</em></a>
-</center>
-<p><a href="2021-01-15_gen_dark.html">first post, what this blog is about …</a></p>
 <br/>
 <a id = "LNK" 
    href = "feed.rss"><img src = "Feed-icon.svg" height = 14em></a>
