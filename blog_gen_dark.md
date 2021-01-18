@@ -86,11 +86,11 @@ newiM[
 				trimElements[nofRows , nofColumns][colFunction[col]]] (*6*)
 		};
 ```
-Parts 1-4 od this definition are in direct correspondence to elements 1-4 of the 
-`iM` definition. Furthermore, `newiM` also returns a list. What's the purpouse of this function then? 
+Parts 1-4 of this definition are in direct correspondence to elements 1-4 of the 
+`iM` definition. Furthermore, `newiM` also returns a list. What's the purpose of this function then? 
 Well, take a look at parts 5 and 6. We modify the anonymous functions that return
 non zero elements in rows and columns by surrounding them with `trimElements`. This is strictly 
-for convenience - it is sometimes more covenient to define the two functions to return "illegal"
+for convenience - it is sometimes more convenient to define the two functions to return "illegal"
 elements like
 `{-1 , -1 , 10}` and have `trimElements` remove them automatically. These types of elements
 are also the reason behind skipping `?Positive` in the definition of `eL`.  
@@ -116,7 +116,7 @@ trimElements[\[Infinity] , \[Infinity]][elements : {eL ...}] :=
 ```
 These are simple definitions that make use of the built in `DeleteCases` function
 to remove "illegal" matrix elements. In all four of them we assume that
-the the indexing starts with 1. Depending on whether the number of rows is
+the indexing starts with 1. Depending on whether the number of rows is
 infinite (`\[Infinity]`) or not elements whose indexes exceed the 
 maximum value allowed by `nofRows` and `nofCols` or are below 0 are deleted.
 
@@ -136,7 +136,7 @@ In 1 and 2 we specify that our matrix will have an infinite number of rows and c
 In parts 3 and 4 we specify two functions. The function in 1 returns the non zero elements
 in row `row` and the function in 2 returns the non zero elements in a column `column`.
 Notice that the functions in 3 and 4 have no regard for the "illegality" of the element
-indexes. We can aford this carelessness because the constructor will wrap these functions
+indexes. We can afford this carelessness because the constructor will wrap these functions
 with `trimElements`. Here is the result:
 ```Mathematica
 {
@@ -213,13 +213,13 @@ transposeiM[im : iM] :=
 ```
 The implementation is simple and just carefully swaps rows and columns. This operation is 
 obvious in 1 or 2 and
-more subtle in 4 and 5 where we have to additionally swap the indeces inside each matrix element.
+more subtle in 4 and 5 where we have to additionally swap the indexes inside each matrix element.
 
 To verify that this works let's try:
 ```Mathematica
 matrixFormiM[{1 , 5} , {1 , 5}][transposeiM[tMat]]
 ```
-The result is what we would probobly expect:
+The result is what we would probably expect:
 $$
 \left(
 \begin{array}{cccccccc}
@@ -235,7 +235,7 @@ $$
 \right)
 $$
 
-Next time we will tacke matrix addition, multiplication and mapping functions over a matrix.
+Next time we will tackle matrix addition, multiplication and mapping functions over a matrix.
 Additionally the code will be made available.
 
 *2020-01-18 EDIT: fixed some typos, added link to previous post*
