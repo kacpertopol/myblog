@@ -17,7 +17,7 @@ inv : " bloglight.html"
 The previous post from this series hided that a powerful implementation
 of infinite matrices can easily be obtained in the *Wolfram Language*. 
 Here we will begin 
-building this code starting the definition of the infinite matrix type:
+building this code starting with the definition of the infinite matrix type:
 ```Mathematica
 iM = {
 		(_Integer?Positive | \[Infinity]) (*1*) , 
@@ -67,7 +67,7 @@ The third element (marked 3) is just a blank pattern that can fit any single
 *Wolfram Language* expression. This final element should be a type of number,
 that is, it should be possible to add and multiply elements of it's type. Again,
 it would most likely be possible to define a stricter pattern definition but the
-benefits would probably outweigh the costs.
+benefits would probably not outweigh the costs.
 
 Now the constructor for `iM`. Here it is:
 ```Mathematica
@@ -117,7 +117,7 @@ These are simple definitions that make use of the built in `DeleteCases` functio
 to remove "illegal" matrix elements. In all four of them we assume that
 the the indexing starts with 1. Depending on whether the number of rows is
 infinite (`\[Infinity]`) or not elements whose indexes exceed the 
-maximum value or are below 0 allowed by `nofRows` and `nofCols` are deleted.
+maximum value allowed by `nofRows` and `nofCols` or are below 0 are deleted.
 
 Below is the definition of the $P$ matrix from the previous post 
 (part 1) that uses the constructor:
@@ -236,6 +236,8 @@ $$
 
 Next time we will tacke matrix addition, multiplication and mapping functions over a matrix.
 Additionally the code will be made available.
+
+*2020-01-18 EDIT: fixed some typos*
 
 
 

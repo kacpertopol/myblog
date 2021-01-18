@@ -128,7 +128,7 @@
 <a href="2021-01-17_gen_light.html"><em>2021-01-17</em></a>
 </center>
 <p><a href="2021-01-17_gen_light.html">representation, transposition …</a></p>
-<p>The previous post from this series hided that a powerful implementation of infinite matrices can easily be obtained in the <em>Wolfram Language</em>. Here we will begin building this code starting the definition of the infinite matrix type:</p>
+<p>The previous post from this series hided that a powerful implementation of infinite matrices can easily be obtained in the <em>Wolfram Language</em>. Here we will begin building this code starting with the definition of the infinite matrix type:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">iM</span> = {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>        (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">1</span>*) , </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>        (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">2</span>*) ,</span>
@@ -144,7 +144,7 @@
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>        _Integer (*<span class="dv">2</span>*), </span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>        _ (*<span class="dv">3</span>*)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>    };</span></code></pre></div>
-<p>The type consists from three elements. The first two (marked 1 and 2 above) are integers that determine the row and column numbers. Note that we do not specify that they are positive although indexing will start with 1 - the reason for this will be given soon. The third element (marked 3) is just a blank pattern that can fit any single <em>Wolfram Language</em> expression. This final element should be a type of number, that is, it should be possible to add and multiply elements of it’s type. Again, it would most likely be possible to define a stricter pattern definition but the benefits would probably outweigh the costs.</p>
+<p>The type consists from three elements. The first two (marked 1 and 2 above) are integers that determine the row and column numbers. Note that we do not specify that they are positive although indexing will start with 1 - the reason for this will be given soon. The third element (marked 3) is just a blank pattern that can fit any single <em>Wolfram Language</em> expression. This final element should be a type of number, that is, it should be possible to add and multiply elements of it’s type. Again, it would most likely be possible to define a stricter pattern definition but the benefits would probably not outweigh the costs.</p>
 <p>Now the constructor for <code>iM</code>. Here it is:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>newiM[</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    nofRows : (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">1</span>*), </span>
@@ -176,7 +176,7 @@
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>trimElements[\[<span class="fu">Infinity</span>] , \[<span class="fu">Infinity</span>]][elements : {eL ...}] := </span>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>  <span class="fu">DeleteCases</span>[elements , {<span class="dt">a_</span> , <span class="dt">b_</span> , _} /; <span class="fu">a</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &lt;= <span class="dv">0</span>];</span></code></pre></div>
-<p>These are simple definitions that make use of the built in <code>DeleteCases</code> function to remove “illegal” matrix elements. In all four of them we assume that the the indexing starts with 1. Depending on whether the number of rows is infinite (<code>\[Infinity]</code>) or not elements whose indexes exceed the maximum value or are below 0 allowed by <code>nofRows</code> and <code>nofCols</code> are deleted.</p>
+<p>These are simple definitions that make use of the built in <code>DeleteCases</code> function to remove “illegal” matrix elements. In all four of them we assume that the the indexing starts with 1. Depending on whether the number of rows is infinite (<code>\[Infinity]</code>) or not elements whose indexes exceed the maximum value allowed by <code>nofRows</code> and <code>nofCols</code> or are below 0 are deleted.</p>
 <p>Below is the definition of the <span class="math inline">\(P\)</span> matrix from the previous post (part 1) that uses the constructor:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>tMat = newiM[</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>        \[<span class="fu">Infinity</span>] (*<span class="dv">1</span>*), </span>
@@ -262,6 +262,7 @@
 \right)
 \]</span></p>
 <p>Next time we will tacke matrix addition, multiplication and mapping functions over a matrix. Additionally the code will be made available.</p>
+<p><em>2020-01-18 EDIT: fixed some typos</em></p>
 <h1 id="infinite-matrices-in-mathematica-part-1"><a href="./2021-01-16_gen_light.html">infinite matrices in <em>Mathematica</em>, part 1</a></h1>
 <center>
 <a href="2021-01-16_gen_light.html"><em>2021-01-16</em></a>
