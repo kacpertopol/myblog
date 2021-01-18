@@ -1,6 +1,6 @@
 ---
 title : my blog
-author : <center><a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a><center>
+author : <center><a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail</a><center>
 inv : " blogdark.html"
 ---
 
@@ -10,7 +10,7 @@ inv : " blogdark.html"
 [*2021-01-17*](2021-01-17_gen_light.html)
 </center>
 
-[representation, transposition ...](2021-01-17_gen_light.html)
+representation, transposition <a id = "NCE" href = "2021-01-17_gen_light.html">...</a>
 
 
 
@@ -246,7 +246,7 @@ Additionally the code will be made available.
 [*2021-01-16*](2021-01-16_gen_light.html)
 </center>
 
-[introduction, motivation ...](2021-01-16_gen_light.html)
+introduction, motivation <a id = "NCE" href = "2021-01-16_gen_light.html">...</a>
 
 
 
@@ -255,6 +255,6 @@ Additionally the code will be made available.
 [*2021-01-15*](2021-01-15_gen_light.html)
 </center>
 
-[first post, what this blog is about ...](2021-01-15_gen_light.html)
+first post, what this blog is about <a id = "NCE" href = "2021-01-15_gen_light.html">...</a>
 
 
