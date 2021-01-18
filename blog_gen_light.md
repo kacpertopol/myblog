@@ -14,7 +14,8 @@ inv : " blogdark.html"
 
 
 
-The <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html>previous post</a> from this series hided that a powerful implementation
+The <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html>previous post</a> 
+from this series hinted that a powerful implementation
 of infinite matrices can easily be obtained in the *Wolfram Language*. 
 Here we will begin 
 building this code starting with the definition of the infinite matrix type:
