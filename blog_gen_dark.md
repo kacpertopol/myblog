@@ -10,7 +10,7 @@ inv : " bloglight.html"
 [*2021-01-17*](2021-01-17_gen_light.html)
 </center>
 
-representation, transposition <a id = "NCE" href = "2021-01-17_gen_light.html">...</a>
+representation, transposition <a id = "NCE" href = "2021-01-17_gen_dark.html">...</a>
 
 
 
@@ -246,7 +246,7 @@ Additionally the code will be made available.
 [*2021-01-16*](2021-01-16_gen_light.html)
 </center>
 
-introduction, motivation <a id = "NCE" href = "2021-01-16_gen_light.html">...</a>
+introduction, motivation <a id = "NCE" href = "2021-01-16_gen_dark.html">...</a>
 
 
 
@@ -255,6 +255,6 @@ introduction, motivation <a id = "NCE" href = "2021-01-16_gen_light.html">...</a
 [*2021-01-15*](2021-01-15_gen_light.html)
 </center>
 
-first post, what this blog is about <a id = "NCE" href = "2021-01-15_gen_light.html">...</a>
+first post, what this blog is about <a id = "NCE" href = "2021-01-15_gen_dark.html">...</a>
 
 
