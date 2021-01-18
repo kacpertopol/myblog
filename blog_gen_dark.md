@@ -5,240 +5,147 @@ inv : " bloglight.html"
 ---
 
 
+# [infinite matrices in *Mathematica*, part 3](./2021-01-19_gen_dark.html)
+<center>
+[*2021-01-19*](2021-01-19_gen_light.html)
+</center>
+
+[mapping, addition, multiplication](2021-01-19_gen_dark.html) <a id = "NCE" href = "2021-01-19_gen_dark.html">...</a>
+
+
+
+The <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html> first post</a>
+in this series introduced the idea of implementing infinite matrices in the *Wolfram Language*. 
+<a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-17_gen_light.html>Next</a>
+we defined a type pattern to represent infinite matrices and implemented the transposition
+operation. This time we will write three more operations. The mapping function will 
+allow us to map arbitrary functions over the elements of the matrix. Finally we will
+define the matrix - matrix
+addition and matrix - matrix multiplication functions.
+
+First mapping. This is straightforward:
+```Mathematica
+mapiM[f_ (*1*)][im : iM (*2*)]  := 
+ Module[{nofRows , nofCols , rowFunction , colFunction},
+  {nofRows , nofCols , rowFunction , colFunction} = im (*3*);
+  {
+		nofCols , 
+		nofRows , 
+  		Function[row, 
+			{#[[1]] , #[[2]] , f[#[[3]]]} & /@ rowFunction[row]] (*4*),
+  		Function[col, 
+			{#[[1]] , #[[2]] , f[#[[3]]]} & /@ colFunction[col]] (*5*) 
+  	}
+  ]
+```
+There are two arguments. The first argument, marked 1 above, is the function that
+will be applied to each element of the matrix. The second argument, marked 2,
+is the matrix itself. In 3 the matrix components are unpacked to local variables.
+The mapping operation is performed inside each non zero component of the matrix 
+in 4 and 5 - `#[[3]]` is the value of the matrix element and in `f[#[[3]]]` 
+the user supplied function is applied to this element.
+
+To see how this works in action we can evaluate:
+```Mathematica
+matrixFormiM[{1 , 5} , {1 , 5}][mapiM[Function[el , -el]][tMat]]
+```
+where `tMat` is the $P$ matrix from 
+<a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html>part 1</a>
+and was defined in *Mathematica* in 
+<a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-17_gen_light.html>part 2</a>.
+The result:
+$$
+\left(
+\begin{array}{cccccccc}
+ p-1 & -p & 0 & 0 & 0 & \cdot  & \cdot  & \cdot  \\
+ 0 & p-1 & -p & 0 & 0 & \cdot  & \cdot  & \cdot  \\
+ 0 & 0 & p-1 & -p & 0 & \cdot  & \cdot  & \cdot  \\
+ 0 & 0 & 0 & p-1 & -p & \cdot  & \cdot  & \cdot  \\
+ 0 & 0 & 0 & 0 & p-1 & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+\end{array}
+\right)
+$$
+ 
+We have two more operations to go. First matrix - matrix addition. We will begin
+by defining a helper function `addsame`. It will take as argument
+a list containing
+all non zero elements in both of the matrices we want to add - for a given row (or column): 
+```Mathematica
+addsame[{a___ , {r_ , c_ , v1_} , b___ , {r_ , c_ , v2_} , d___}] := 
+ addsame[{a , b , d , {r , c , v1 + v2}}]; (*1*)
+addsame[l_] := l; (*2*)
+```
+The definition uses recursion and is divided into two parts.
+The function pattern marked 1 above is more specific and acts only when two matrix
+elements have the same row and column number. If this is the case then the 
+values of the matrix elements are added `v1 + v2`. The second definition,
+marked 2, is more
+general and will act only when no two elements have the same row and column numbers.
+
+This helper function is part of the implementation of `addiM` - a function adding two
+infinite matrices togather:
+```Mathematica
+addiM[im1 : iM , im2 : iM] (*1*):=
+  Module[
+   {nofRows1 , nofCols1 , rowFunction1 , colFunction1,
+    nofRows2 , nofCols2 , rowFunction2 , colFunction2 , newFunRow , 
+    newFunCol},
+   {nofRows1 , nofCols1 , rowFunction1 , colFunction1} = im1;
+   {nofRows2 , nofCols2 , rowFunction2 , colFunction2} = im2;
+   If[nofRows1 != nofRows2 , 
+    Throw["The number of rows does not match in addiM"]]; (*2*)
+   If[nofCols1 != nofCols2 , 
+    Throw["The number of columns does not match in addiM"]]; (*3*)
+   newFunRow = Function[row , 
+     addsame[Join[rowFunction1[row] , rowFunction2[row]]]
+     ]; (*4*)
+   newFunCol = Function[column , 
+     addsame[Join[colFunction1[column] , colFunction2[column]]]
+     ]; (*5*)
+   newiM[nofRows1 , nofCols2, newFunRow, newFunCol]
+   ];
+```
+The arguments, marked 1 above, are two infinite matrices.
+Next the elements of the matrices are unpacked into local variables
+and in 2 and 3 the sizes of the matrices are checked. Failure at this point
+will result in an exception being thrown.
+In 4 and 5 above - new row and column functions are created. `addsame` is being
+used in conjunction with `Join` 
+to concatenate the non zero elements in a given row (marked 4) or column (marked 5) of
+infinite matrices 
+`im1` and `im2`. To see all of this in action try evaluating:
+```Mathematica
+matrixFormiM[{1 , 5} , {1 , 5}][
+ addiM[mapiM[Function[el , -el]][tMat] , tMat]]
+```
+We can expect a null matrix ... and we get:
+$$
+\left(
+\begin{array}{cccccccc}
+ 0 & 0 & 0 & 0 & 0 & \cdot  & \cdot  & \cdot  \\
+ 0 & 0 & 0 & 0 & 0 & \cdot  & \cdot  & \cdot  \\
+ 0 & 0 & 0 & 0 & 0 & \cdot  & \cdot  & \cdot  \\
+ 0 & 0 & 0 & 0 & 0 & \cdot  & \cdot  & \cdot  \\
+ 0 & 0 & 0 & 0 & 0 & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+ \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
+\end{array}
+\right)
+$$
+... a null matrix.
+
+
+
 # [infinite matrices in *Mathematica*, part 2](./2021-01-17_gen_dark.html)
 <center>
 [*2021-01-17*](2021-01-17_gen_light.html)
 </center>
 
-[representation, transposition](2021-01-17_gen_dark.html) <a id = "NCE" href = "2021-01-17_gen_dark.html">...</a>
-
-
-
-The <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html>previous post</a> 
-from this series hinted that a powerful implementation
-of infinite matrices can easily be obtained in the *Wolfram Language*. 
-Here we will begin 
-building this code starting with the definition of the infinite matrix type:
-```Mathematica
-iM = {
-		(_Integer?Positive | \[Infinity]) (*1*) , 
-		(_Integer?Positive | \[Infinity]) (*2*) ,
-		_Function (*3*) , 
-		_Function (*4*)
-	};
-```
-We will call the type `iM` and represent infinite matrices by 
-using a list with four elements.
-
-The first two elements (marked 1 and 2 above) will determine the size
-of the matrix. The number of rows (marked 1) and columns (marked 2) can take
-one of two types of values: a positive integer (`_Integer?Positive`) means
-that the number of rows or columns is finite white infinity (`\[Infinity]`, 
-if entered in *Mathematica* using the key combination `ESC` + `inf` + `ESC` this
-will be displayed as the $\infty$ symbol) ... means an infinite number of rows or columns. 
-
-The final two elements in `iM` (marked 3 and 4) contain anonymous
-functions (`_Function`). The first function (marked 3) when called
-with an integer argument `r` returns a list of non zero elements
-for the `r`th row of the matrix. Analogously, the second function
-(marked 4) when called with an integer
-argument `c` returns a list of non zero elements of the `c`th
-row of the matrix. Actually I should probably replace "returns"
-with "should return" in this paragraph since the current definition
-of the `iM` pattern does not put any constraints on the argument or
-return types of the anonymous functions. The code we are producing here
-will be short therefore it is not obvious that 
-benefits of a stricter definition would result in a significantly better 
-implementation. Plus, I'm lazy.
-
-The next step is to define a type to represent the matrix elements. Here it is:
-```Mathematica
-eL = {
-		_Integer (*1*) , 
-		_Integer (*2*), 
-		_ (*3*)
-	};
-```
-The type consists from three elements. The first two (marked 1 and 2 above) are 
-integers
-that determine the row and column numbers. 
-Note that we do not specify that they are positive although
-indexing will start with 1 - the reason for this will be given soon. 
-The third element (marked 3) is just a blank pattern that can fit any single 
-*Wolfram Language* expression. This final element should be a type of number,
-that is, it should be possible to add and multiply elements of it's type. Again,
-it would most likely be possible to define a stricter pattern definition but the
-benefits would probably not outweigh the costs.
-
-Now the constructor for `iM`. Here it is:
-```Mathematica
-newiM[
-	nofRows : (_Integer?Positive | \[Infinity]) (*1*), 
-  	nofColumns : (_Integer?Positive | \[Infinity]) (*2*), 
-	rowFunction_Function (*3*), 
-  	colFunction_Function (*4*)
-	] := {
-			nofRows , 
-			nofColumns , 
-  			Function[row, 
-				trimElements[nofRows , nofColumns][rowFunction[row]]] (*5*), 
-  			Function[col, 
-				trimElements[nofRows , nofColumns][colFunction[col]]] (*6*)
-		};
-```
-Parts 1-4 of this definition are in direct correspondence to elements 1-4 of the 
-`iM` definition. Furthermore, `newiM` also returns a list. What's the purpose of this function then? 
-Well, take a look at parts 5 and 6. We modify the anonymous functions that return
-non zero elements in rows and columns by surrounding them with `trimElements`. This is strictly 
-for convenience - it is sometimes more convenient to define the two functions to return "illegal"
-elements like
-`{-1 , -1 , 10}` and have `trimElements` remove them automatically. These types of elements
-are also the reason behind skipping `?Positive` in the definition of `eL`.  
-
-The definition of `trimElements` has four parts that correspond to the four cases of 
-matrix size specification:
-```Mathematica
-trimElements[nofRows_ , nofCols_][elements : {eL ...}] := 
-  DeleteCases[
-   elements , {a_ , b_ , _} /; 
-    a <= 0 || b <= 0 || a > nofRows || b > nofCols];
-
-trimElements[\[Infinity] , nofCols_][elements : {eL ...}] := 
-  DeleteCases[
-   elements , {a_ , b_ , _} /; a <= 0 || b <= 0 || b > nofCols];
-
-trimElements[nofRows_ , \[Infinity]][elements : {eL ...}] := 
-  DeleteCases[
-   elements , {a_ , b_ , _} /; a <= 0 || b <= 0 || a > nofRows];
-
-trimElements[\[Infinity] , \[Infinity]][elements : {eL ...}] := 
-  DeleteCases[elements , {a_ , b_ , _} /; a <= 0 || b <= 0];
-```
-These are simple definitions that make use of the built in `DeleteCases` function
-to remove "illegal" matrix elements. In all four of them we assume that
-the indexing starts with 1. Depending on whether the number of rows is
-infinite (`\[Infinity]`) or not elements whose indexes exceed the 
-maximum value allowed by `nofRows` and `nofCols` or are below 0 are deleted.
-
-Below is the definition of the $P$ matrix from the previous post 
-(part 1) that uses the constructor:
-```Mathematica
-tMat = newiM[
-		\[Infinity] (*1*), 
-		\[Infinity] (*2*), 
-  		Function[row , 
-			{{row , row , 1 - p} , {row , row + 1 , p}}] (*3*),
-  		Function[column , 
-			{{column , column , 1 - p} , {column - 1 , column , p}}] (*4*)
-  ]
-```
-In 1 and 2 we specify that our matrix will have an infinite number of rows and columns.
-In parts 3 and 4 we specify two functions. The function in 1 returns the non zero elements
-in row `row` and the function in 2 returns the non zero elements in a column `column`.
-Notice that the functions in 3 and 4 have no regard for the "illegality" of the element
-indexes. We can afford this carelessness because the constructor will wrap these functions
-with `trimElements`. Here is the result:
-```Mathematica
-{
-	\[Infinity],	
-	\[Infinity],
-	Function[row$,
-		trimElements[\[Infinity],\[Infinity]][
-			Function[row,{{row,row,1-pp},{row,row+1,pp}}][row$]]],
-	Function[col$,
-		trimElements[\[Infinity],\[Infinity]][
-			Function[column,{{column,column,1-pp},{column-1,column,pp}}][col$]]]
-}
-```
-
-Now for something a little more exciting - let's draw our matrix. Here is the function: 
-```Mathematica
-matrixFormiM[
-   {r1_Integer , r2_Integer} /; r1 > 0 && r2 > 0 && r2 > r1 (*1*) , 
-	{c1_Integer , c2_Integer} /; c1 > 0 && c2 > 0 && c2 > c1 (*2*)
-   ][im : iM (*3*)] := 
-		Module[
-			{nofRows , nofCols , rowFunction , colFunction , 
-			fragment , elements},
-  			{nofRows , nofCols , rowFunction , colFunction} = im; (*4*)
-  			fragment = Table[0 , {r2 - r1 + 1} , {c2 - c1 + 1}] (*5*);
-  			Do[ (*6*)
-   				elements = rowFunction[r];
-   				If[#[[2]] <= c2 && #[[2]] >= c1 , 
-      				fragment[[r - r1 + 1 , #[[2]] - c1 + 1]] = #[[3]]] & /@ elements;
-   				, {r , r1 , r2}];
-  			MatrixForm[ (*7*)
-   				ArrayPad[ 
-    				fragment , {{Min[3 , r1 - 1] , 
-      				Min[3 , nofRows - r2]}, {Min[3 , c1 - 1] , 
-      				Min[3 , nofCols - c2]}} , "\[CenterDot]"]]
-  ]
-```
-Arguments marked 1 and 2 specify the range of rows and columns to be drawn. Argument 3 
-is the infinite matrix `im` with type `iM`. In 4 the elements of `im` are unpacked into local
-variables. The array `fragment` in 5 will contain the non zero elements in the row, column range specified by 
-`r1`, `r2`, `c1`, `c2`. The loop 5 inserts non zero elements into `fragment` and next in 7 this
-array is padded with the appropriate amount of dots and returned in matrix form.
-Running this function on `tMat`
-```Mathematica
-matrixFormiM[{1 , 5} , {1 , 5}][tMat]
-```
-will result in five rows and five columns being displayed, with traditional dotted padding:
-$$
-\left(
-\begin{array}{cccccccc}
- 1-p & p & 0 & 0 & 0 & \cdot  & \cdot  & \cdot  \\
- 0 & 1-p & p & 0 & 0 & \cdot  & \cdot  & \cdot  \\
- 0 & 0 & 1-p & p & 0 & \cdot  & \cdot  & \cdot  \\
- 0 & 0 & 0 & 1-p & p & \cdot  & \cdot  & \cdot  \\
- 0 & 0 & 0 & 0 & 1-p & \cdot  & \cdot  & \cdot  \\
- \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
- \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
- \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
-\end{array}
-\right)
-$$
-
-Let's do one more thing and define matrix transposition. Here it is:
-```Mathematica
-transposeiM[im : iM] := 
- Module[{nofRows , nofCols , rowFunction , colFunction},
-  {nofRows , nofCols , rowFunction , colFunction} = im;
-  {
-	nofCols (*1*), 
-	nofRows (*2*), 
-	Function[row, {#[[2]] , #[[1]] , #[[3]]} & /@ colFunction[row]] (*3*), 
-	Function[col, {#[[2]] , #[[1]] , #[[3]]} & /@ rowFunction[col]]} (*4*)
-  ]
-```
-The implementation is simple and just carefully swaps rows and columns. This operation is 
-obvious in 1 or 2 and
-more subtle in 4 and 5 where we have to additionally swap the indexes inside each matrix element.
-
-To verify that this works let's try:
-```Mathematica
-matrixFormiM[{1 , 5} , {1 , 5}][transposeiM[tMat]]
-```
-The result is what we would probably expect:
-$$
-\left(
-\begin{array}{cccccccc}
- 1-p & 0 & 0 & 0 & 0 & \cdot  & \cdot  & \cdot  \\
- p & 1-p & 0 & 0 & 0 & \cdot  & \cdot  & \cdot  \\
- 0 & p & 1-p & 0 & 0 & \cdot  & \cdot  & \cdot  \\
- 0 & 0 & p & 1-p & 0 & \cdot  & \cdot  & \cdot  \\
- 0 & 0 & 0 & p & 1-p & \cdot  & \cdot  & \cdot  \\
- \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
- \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
- \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  & \cdot  \\
-\end{array}
-\right)
-$$
-
-Next time we will tackle matrix addition, multiplication and mapping functions over a matrix.
-Additionally the code will be made available.
-
-*2020-01-18 EDIT: fixed some typos, added link to previous post*
+representation, transposition <a id = "NCE" href = "2021-01-17_gen_dark.html">...</a>
 
 
 

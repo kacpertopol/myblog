@@ -85,15 +85,15 @@
 	}	
 	li {
 		text-align : left;
-		min-width:200px;max-width:900px;margin:0 auto;
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
 	}
 	pre {
 		text-align : left;
-		min-width:200px;max-width:900px;margin:0 auto;
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
 	}
 	div.sourceCode {
 		text-align : left;
-		min-width:200px;max-width:900px;margin:0 auto;
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
 	}
 	#HME {
 		text-decoration : none;
@@ -128,146 +128,89 @@
 <a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a>
 <center></p>
 </header>
+<h1 id="infinite-matrices-in-mathematica-part-3"><a href="./2021-01-19_gen_light.html">infinite matrices in <em>Mathematica</em>, part 3</a></h1>
+<center>
+<a href="2021-01-19_gen_light.html"><em>2021-01-19</em></a>
+</center>
+<p><a href="2021-01-19_gen_light.html">mapping, addition, multiplication</a> <a id = "NCE" href = "2021-01-19_gen_light.html">…</a></p>
+<p>The <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html> first post</a> in this series introduced the idea of implementing infinite matrices in the <em>Wolfram Language</em>. <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-17_gen_light.html>Next</a> we defined a type pattern to represent infinite matrices and implemented the transposition operation. This time we will write three more operations. The mapping function will allow us to map arbitrary functions over the elements of the matrix. Finally we will define the matrix - matrix addition and matrix - matrix multiplication functions.</p>
+<p>First mapping. This is straightforward:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>mapiM[<span class="dt">f_</span> (*<span class="dv">1</span>*)][<span class="fu">im</span> : <span class="fu">iM</span> (*<span class="dv">2</span>*)]  := </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a> <span class="fu">Module</span>[{nofRows , nofCols , rowFunction , colFunction},</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  {nofRows , nofCols , rowFunction , colFunction} = <span class="fu">im</span> (*<span class="dv">3</span>*);</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>  {</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>        nofCols , </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>        nofRows , </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>        <span class="fu">Function</span>[<span class="fu">row</span>, </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>            {#[[<span class="dv">1</span>]] , #[[<span class="dv">2</span>]] , <span class="fu">f</span>[#[[<span class="dv">3</span>]]]} &amp; /@ rowFunction[<span class="fu">row</span>]] (*<span class="dv">4</span>*),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>        <span class="fu">Function</span>[col, </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>            {#[[<span class="dv">1</span>]] , #[[<span class="dv">2</span>]] , <span class="fu">f</span>[#[[<span class="dv">3</span>]]]} &amp; /@ colFunction[col]] (*<span class="dv">5</span>*) </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>    }</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a>  ]</span></code></pre></div>
+<p>There are two arguments. The first argument, marked 1 above, is the function that will be applied to each element of the matrix. The second argument, marked 2, is the matrix itself. In 3 the matrix components are unpacked to local variables. The mapping operation is performed inside each non zero component of the matrix in 4 and 5 - <code>#[[3]]</code> is the value of the matrix element and in <code>f[#[[3]]]</code> the user supplied function is applied to this element.</p>
+<p>To see how this works in action we can evaluate:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>matrixFormiM[{<span class="dv">1</span> , <span class="dv">5</span>} , {<span class="dv">1</span> , <span class="dv">5</span>}][mapiM[<span class="fu">Function</span>[el , -el]][tMat]]</span></code></pre></div>
+<p>where <code>tMat</code> is the <span class="math inline">\(P\)</span> matrix from <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html>part 1</a> and was defined in <em>Mathematica</em> in <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-17_gen_light.html>part 2</a>. The result: <span class="math display">\[
+\left(
+\begin{array}{cccccccc}
+ p-1 &amp; -p &amp; 0 &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ 0 &amp; p-1 &amp; -p &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ 0 &amp; 0 &amp; p-1 &amp; -p &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ 0 &amp; 0 &amp; 0 &amp; p-1 &amp; -p &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ 0 &amp; 0 &amp; 0 &amp; 0 &amp; p-1 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+\end{array}
+\right)
+\]</span></p>
+<p>We have two more operations to go. First matrix - matrix addition. We will begin by defining a helper function <code>addsame</code>. It will take as argument a list containing all non zero elements in both of the matrices we want to add - for a given row (or column):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>addsame[{<span class="dt">a___</span> , {<span class="dt">r_</span> , <span class="dt">c_</span> , <span class="dt">v1_</span>} , <span class="dt">b___</span> , {<span class="dt">r_</span> , <span class="dt">c_</span> , <span class="dt">v2_</span>} , <span class="dt">d___</span>}] := </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a> addsame[{<span class="fu">a</span> , <span class="fu">b</span> , <span class="fu">d</span> , {<span class="fu">r</span> , <span class="fu">c</span> , v1 + v2}}]; (*<span class="dv">1</span>*)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>addsame[<span class="dt">l_</span>] := <span class="fu">l</span>; (*<span class="dv">2</span>*)</span></code></pre></div>
+<p>The definition uses recursion and is divided into two parts. The function pattern marked 1 above is more specific and acts only when two matrix elements have the same row and column number. If this is the case then the values of the matrix elements are added <code>v1 + v2</code>. The second definition, marked 2, is more general and will act only when no two elements have the same row and column numbers.</p>
+<p>This helper function is part of the implementation of <code>addiM</code> - a function adding two infinite matrices togather:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>addiM[im1 : <span class="fu">iM</span> , im2 : <span class="fu">iM</span>] (*<span class="dv">1</span>*):=</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="fu">Module</span>[</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>   {nofRows1 , nofCols1 , rowFunction1 , colFunction1,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    nofRows2 , nofCols2 , rowFunction2 , colFunction2 , newFunRow , </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>    newFunCol},</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>   {nofRows1 , nofCols1 , rowFunction1 , colFunction1} = im1;</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>   {nofRows2 , nofCols2 , rowFunction2 , colFunction2} = im2;</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>   <span class="fu">If</span>[nofRows1 != nofRows2 , </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>    <span class="fu">Throw</span>[&quot;The <span class="fu">number</span> of rows does <span class="fu">not</span> match <span class="fu">in</span> addiM&quot;]]; (*<span class="dv">2</span>*)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>   <span class="fu">If</span>[nofCols1 != nofCols2 , </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    <span class="fu">Throw</span>[&quot;The <span class="fu">number</span> of columns does <span class="fu">not</span> match <span class="fu">in</span> addiM&quot;]]; (*<span class="dv">3</span>*)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>   newFunRow = <span class="fu">Function</span>[<span class="fu">row</span> , </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>     addsame[<span class="fu">Join</span>[rowFunction1[<span class="fu">row</span>] , rowFunction2[<span class="fu">row</span>]]]</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>     ]; (*<span class="dv">4</span>*)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>   newFunCol = <span class="fu">Function</span>[<span class="fu">column</span> , </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>     addsame[<span class="fu">Join</span>[colFunction1[<span class="fu">column</span>] , colFunction2[<span class="fu">column</span>]]]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>     ]; (*<span class="dv">5</span>*)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>   newiM[nofRows1 , nofCols2, newFunRow, newFunCol]</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>   ];</span></code></pre></div>
+<p>The arguments, marked 1 above, are two infinite matrices. Next the elements of the matrices are unpacked into local variables and in 2 and 3 the sizes of the matrices are checked. Failure at this point will result in an exception being thrown. In 4 and 5 above - new row and column functions are created. <code>addsame</code> is being used in conjunction with <code>Join</code> to concatenate the non zero elements in a given row (marked 4) or column (marked 5) of infinite matrices <code>im1</code> and <code>im2</code>. To see all of this in action try evaluating:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>matrixFormiM[{<span class="dv">1</span> , <span class="dv">5</span>} , {<span class="dv">1</span> , <span class="dv">5</span>}][</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a> addiM[mapiM[<span class="fu">Function</span>[el , -el]][tMat] , tMat]]</span></code></pre></div>
+<p>We can expect a null matrix … and we get: <span class="math display">\[
+\left(
+\begin{array}{cccccccc}
+ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+ \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
+\end{array}
+\right)
+\]</span> … a null matrix.</p>
 <h1 id="infinite-matrices-in-mathematica-part-2"><a href="./2021-01-17_gen_light.html">infinite matrices in <em>Mathematica</em>, part 2</a></h1>
 <center>
 <a href="2021-01-17_gen_light.html"><em>2021-01-17</em></a>
 </center>
 <p><a href="2021-01-17_gen_light.html">representation, transposition</a> <a id = "NCE" href = "2021-01-17_gen_light.html">…</a></p>
-<p>The <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html>previous post</a> from this series hinted that a powerful implementation of infinite matrices can easily be obtained in the <em>Wolfram Language</em>. Here we will begin building this code starting with the definition of the infinite matrix type:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">iM</span> = {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>        (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">1</span>*) , </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>        (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">2</span>*) ,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>        _Function (*<span class="dv">3</span>*) , </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>        _Function (*<span class="dv">4</span>*)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>    };</span></code></pre></div>
-<p>We will call the type <code>iM</code> and represent infinite matrices by using a list with four elements.</p>
-<p>The first two elements (marked 1 and 2 above) will determine the size of the matrix. The number of rows (marked 1) and columns (marked 2) can take one of two types of values: a positive integer (<code>_Integer?Positive</code>) means that the number of rows or columns is finite white infinity (<code>\[Infinity]</code>, if entered in <em>Mathematica</em> using the key combination <code>ESC</code> + <code>inf</code> + <code>ESC</code> this will be displayed as the <span class="math inline">\(\infty\)</span> symbol) … means an infinite number of rows or columns.</p>
-<p>The final two elements in <code>iM</code> (marked 3 and 4) contain anonymous functions (<code>_Function</code>). The first function (marked 3) when called with an integer argument <code>r</code> returns a list of non zero elements for the <code>r</code>th row of the matrix. Analogously, the second function (marked 4) when called with an integer argument <code>c</code> returns a list of non zero elements of the <code>c</code>th row of the matrix. Actually I should probably replace “returns” with “should return” in this paragraph since the current definition of the <code>iM</code> pattern does not put any constraints on the argument or return types of the anonymous functions. The code we are producing here will be short therefore it is not obvious that benefits of a stricter definition would result in a significantly better implementation. Plus, I’m lazy.</p>
-<p>The next step is to define a type to represent the matrix elements. Here it is:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>eL = {</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>        _Integer (*<span class="dv">1</span>*) , </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>        _Integer (*<span class="dv">2</span>*), </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>        _ (*<span class="dv">3</span>*)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>    };</span></code></pre></div>
-<p>The type consists from three elements. The first two (marked 1 and 2 above) are integers that determine the row and column numbers. Note that we do not specify that they are positive although indexing will start with 1 - the reason for this will be given soon. The third element (marked 3) is just a blank pattern that can fit any single <em>Wolfram Language</em> expression. This final element should be a type of number, that is, it should be possible to add and multiply elements of it’s type. Again, it would most likely be possible to define a stricter pattern definition but the benefits would probably not outweigh the costs.</p>
-<p>Now the constructor for <code>iM</code>. Here it is:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>newiM[</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    nofRows : (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">1</span>*), </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    nofColumns : (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">2</span>*), </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    <span class="dt">rowFunction_</span>Function (*<span class="dv">3</span>*), </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>    <span class="dt">colFunction_</span>Function (*<span class="dv">4</span>*)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    ] := {</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>            nofRows , </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>            nofColumns , </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>            <span class="fu">Function</span>[<span class="fu">row</span>, </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>                trimElements[nofRows , nofColumns][rowFunction[<span class="fu">row</span>]]] (*<span class="dv">5</span>*), </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>            <span class="fu">Function</span>[col, </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>                trimElements[nofRows , nofColumns][colFunction[col]]] (*<span class="dv">6</span>*)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>        };</span></code></pre></div>
-<p>Parts 1-4 of this definition are in direct correspondence to elements 1-4 of the <code>iM</code> definition. Furthermore, <code>newiM</code> also returns a list. What’s the purpose of this function then? Well, take a look at parts 5 and 6. We modify the anonymous functions that return non zero elements in rows and columns by surrounding them with <code>trimElements</code>. This is strictly for convenience - it is sometimes more convenient to define the two functions to return “illegal” elements like <code>{-1 , -1 , 10}</code> and have <code>trimElements</code> remove them automatically. These types of elements are also the reason behind skipping <code>?Positive</code> in the definition of <code>eL</code>.</p>
-<p>The definition of <code>trimElements</code> has four parts that correspond to the four cases of matrix size specification:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>trimElements[<span class="dt">nofRows_</span> , <span class="dt">nofCols_</span>][elements : {eL ...}] := </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="fu">DeleteCases</span>[</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>   elements , {<span class="dt">a_</span> , <span class="dt">b_</span> , _} /; </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="fu">a</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &lt;= <span class="dv">0</span> || <span class="fu">a</span> &gt; nofRows || <span class="fu">b</span> &gt; nofCols];</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>trimElements[\[<span class="fu">Infinity</span>] , <span class="dt">nofCols_</span>][elements : {eL ...}] := </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>  <span class="fu">DeleteCases</span>[</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>   elements , {<span class="dt">a_</span> , <span class="dt">b_</span> , _} /; <span class="fu">a</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &gt; nofCols];</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>trimElements[<span class="dt">nofRows_</span> , \[<span class="fu">Infinity</span>]][elements : {eL ...}] := </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>  <span class="fu">DeleteCases</span>[</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>   elements , {<span class="dt">a_</span> , <span class="dt">b_</span> , _} /; <span class="fu">a</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &lt;= <span class="dv">0</span> || <span class="fu">a</span> &gt; nofRows];</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>trimElements[\[<span class="fu">Infinity</span>] , \[<span class="fu">Infinity</span>]][elements : {eL ...}] := </span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>  <span class="fu">DeleteCases</span>[elements , {<span class="dt">a_</span> , <span class="dt">b_</span> , _} /; <span class="fu">a</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &lt;= <span class="dv">0</span>];</span></code></pre></div>
-<p>These are simple definitions that make use of the built in <code>DeleteCases</code> function to remove “illegal” matrix elements. In all four of them we assume that the indexing starts with 1. Depending on whether the number of rows is infinite (<code>\[Infinity]</code>) or not elements whose indexes exceed the maximum value allowed by <code>nofRows</code> and <code>nofCols</code> or are below 0 are deleted.</p>
-<p>Below is the definition of the <span class="math inline">\(P\)</span> matrix from the previous post (part 1) that uses the constructor:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>tMat = newiM[</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>        \[<span class="fu">Infinity</span>] (*<span class="dv">1</span>*), </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>        \[<span class="fu">Infinity</span>] (*<span class="dv">2</span>*), </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>        <span class="fu">Function</span>[<span class="fu">row</span> , </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>            {{<span class="fu">row</span> , <span class="fu">row</span> , <span class="dv">1</span> - <span class="fu">p</span>} , {<span class="fu">row</span> , <span class="fu">row</span> + <span class="dv">1</span> , <span class="fu">p</span>}}] (*<span class="dv">3</span>*),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>        <span class="fu">Function</span>[<span class="fu">column</span> , </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>            {{<span class="fu">column</span> , <span class="fu">column</span> , <span class="dv">1</span> - <span class="fu">p</span>} , {<span class="fu">column</span> - <span class="dv">1</span> , <span class="fu">column</span> , <span class="fu">p</span>}}] (*<span class="dv">4</span>*)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>  ]</span></code></pre></div>
-<p>In 1 and 2 we specify that our matrix will have an infinite number of rows and columns. In parts 3 and 4 we specify two functions. The function in 1 returns the non zero elements in row <code>row</code> and the function in 2 returns the non zero elements in a column <code>column</code>. Notice that the functions in 3 and 4 have no regard for the “illegality” of the element indexes. We can afford this carelessness because the constructor will wrap these functions with <code>trimElements</code>. Here is the result:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>{</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    \[<span class="fu">Infinity</span>],    </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    \[<span class="fu">Infinity</span>],</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    <span class="fu">Function</span>[row$,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>        trimElements[\[<span class="fu">Infinity</span>],\[<span class="fu">Infinity</span>]][</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>            <span class="fu">Function</span>[<span class="fu">row</span>,{{<span class="fu">row</span>,<span class="fu">row</span>,<span class="dv">1</span>-pp},{<span class="fu">row</span>,<span class="fu">row</span>+<span class="dv">1</span>,pp}}][row$]]],</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>    <span class="fu">Function</span>[col$,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>        trimElements[\[<span class="fu">Infinity</span>],\[<span class="fu">Infinity</span>]][</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>            <span class="fu">Function</span>[<span class="fu">column</span>,{{<span class="fu">column</span>,<span class="fu">column</span>,<span class="dv">1</span>-pp},{column<span class="dv">-1</span>,<span class="fu">column</span>,pp}}][col$]]]</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Now for something a little more exciting - let’s draw our matrix. Here is the function:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>matrixFormiM[</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>   {<span class="dt">r1_</span>Integer , <span class="dt">r2_</span>Integer} /; r1 &gt; <span class="dv">0</span> &amp;&amp; r2 &gt; <span class="dv">0</span> &amp;&amp; r2 &gt; r1 (*<span class="dv">1</span>*) , </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    {<span class="dt">c1_</span>Integer , <span class="dt">c2_</span>Integer} /; c1 &gt; <span class="dv">0</span> &amp;&amp; c2 &gt; <span class="dv">0</span> &amp;&amp; c2 &gt; c1 (*<span class="dv">2</span>*)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>   ][<span class="fu">im</span> : <span class="fu">iM</span> (*<span class="dv">3</span>*)] := </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>        <span class="fu">Module</span>[</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>            {nofRows , nofCols , rowFunction , colFunction , </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>            fragment , elements},</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>            {nofRows , nofCols , rowFunction , colFunction} = <span class="fu">im</span>; (*<span class="dv">4</span>*)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>            fragment = <span class="fu">Table</span>[<span class="dv">0</span> , {r2 - r1 + <span class="dv">1</span>} , {c2 - c1 + <span class="dv">1</span>}] (*<span class="dv">5</span>*);</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>            <span class="fu">Do</span>[ (*<span class="dv">6</span>*)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>                elements = rowFunction[<span class="fu">r</span>];</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>                <span class="fu">If</span>[#[[<span class="dv">2</span>]] &lt;= c2 &amp;&amp; #[[<span class="dv">2</span>]] &gt;= c1 , </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>                    fragment[[<span class="fu">r</span> - r1 + <span class="dv">1</span> , #[[<span class="dv">2</span>]] - c1 + <span class="dv">1</span>]] = #[[<span class="dv">3</span>]]] &amp; /@ elements;</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>                , {<span class="fu">r</span> , r1 , r2}];</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>            <span class="fu">MatrixForm</span>[ (*<span class="dv">7</span>*)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>                <span class="fu">ArrayPad</span>[ </span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a>                    fragment , {{<span class="fu">Min</span>[<span class="dv">3</span> , r1 - <span class="dv">1</span>] , </span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>                    <span class="fu">Min</span>[<span class="dv">3</span> , nofRows - r2]}, {<span class="fu">Min</span>[<span class="dv">3</span> , c1 - <span class="dv">1</span>] , </span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>                    <span class="fu">Min</span>[<span class="dv">3</span> , nofCols - c2]}} , &quot;\[<span class="fu">CenterDot</span>]&quot;]]</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>  ]</span></code></pre></div>
-<p>Arguments marked 1 and 2 specify the range of rows and columns to be drawn. Argument 3 is the infinite matrix <code>im</code> with type <code>iM</code>. In 4 the elements of <code>im</code> are unpacked into local variables. The array <code>fragment</code> in 5 will contain the non zero elements in the row, column range specified by <code>r1</code>, <code>r2</code>, <code>c1</code>, <code>c2</code>. The loop 5 inserts non zero elements into <code>fragment</code> and next in 7 this array is padded with the appropriate amount of dots and returned in matrix form. Running this function on <code>tMat</code></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>matrixFormiM[{<span class="dv">1</span> , <span class="dv">5</span>} , {<span class="dv">1</span> , <span class="dv">5</span>}][tMat]</span></code></pre></div>
-<p>will result in five rows and five columns being displayed, with traditional dotted padding: <span class="math display">\[
-\left(
-\begin{array}{cccccccc}
- 1-p &amp; p &amp; 0 &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- 0 &amp; 1-p &amp; p &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- 0 &amp; 0 &amp; 1-p &amp; p &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- 0 &amp; 0 &amp; 0 &amp; 1-p &amp; p &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1-p &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
-\end{array}
-\right)
-\]</span></p>
-<p>Let’s do one more thing and define matrix transposition. Here it is:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>transposeiM[<span class="fu">im</span> : <span class="fu">iM</span>] := </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a> <span class="fu">Module</span>[{nofRows , nofCols , rowFunction , colFunction},</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>  {nofRows , nofCols , rowFunction , colFunction} = <span class="fu">im</span>;</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>  {</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    nofCols (*<span class="dv">1</span>*), </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    nofRows (*<span class="dv">2</span>*), </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>    <span class="fu">Function</span>[<span class="fu">row</span>, {#[[<span class="dv">2</span>]] , #[[<span class="dv">1</span>]] , #[[<span class="dv">3</span>]]} &amp; /@ colFunction[<span class="fu">row</span>]] (*<span class="dv">3</span>*), </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>    <span class="fu">Function</span>[col, {#[[<span class="dv">2</span>]] , #[[<span class="dv">1</span>]] , #[[<span class="dv">3</span>]]} &amp; /@ rowFunction[col]]} (*<span class="dv">4</span>*)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>  ]</span></code></pre></div>
-<p>The implementation is simple and just carefully swaps rows and columns. This operation is obvious in 1 or 2 and more subtle in 4 and 5 where we have to additionally swap the indexes inside each matrix element.</p>
-<p>To verify that this works let’s try:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>matrixFormiM[{<span class="dv">1</span> , <span class="dv">5</span>} , {<span class="dv">1</span> , <span class="dv">5</span>}][transposeiM[tMat]]</span></code></pre></div>
-<p>The result is what we would probably expect: <span class="math display">\[
-\left(
-\begin{array}{cccccccc}
- 1-p &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- p &amp; 1-p &amp; 0 &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- 0 &amp; p &amp; 1-p &amp; 0 &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- 0 &amp; 0 &amp; p &amp; 1-p &amp; 0 &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- 0 &amp; 0 &amp; 0 &amp; p &amp; 1-p &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
- \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  &amp; \cdot  \\
-\end{array}
-\right)
-\]</span></p>
-<p>Next time we will tackle matrix addition, multiplication and mapping functions over a matrix. Additionally the code will be made available.</p>
-<p><em>2020-01-18 EDIT: fixed some typos, added link to previous post</em></p>
 <h1 id="infinite-matrices-in-mathematica-part-1"><a href="./2021-01-16_gen_light.html">infinite matrices in <em>Mathematica</em>, part 1</a></h1>
 <center>
 <a href="2021-01-16_gen_light.html"><em>2021-01-16</em></a>
