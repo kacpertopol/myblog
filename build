@@ -116,11 +116,11 @@ def makeMD():
        
         if(n == 1):
             #result += "\n[" + postAbstract + " ...](" + str(postDate) + "_gen_light.html" + ")\n\n\n"
-            result += "\n" + postAbstract + " <a id = \"NCE\" href = \"" + str(postDate) + "_gen_light.html" + "\">...</a>\n\n\n"
+            result += "\n[" + postAbstract + "](" + str(postDate) + "_gen_light.html" + ") <a id = \"NCE\" href = \"" + str(postDate) + "_gen_light.html" + "\">...</a>\n\n\n"
             #result += "\n" + postAbstract + " ...\n"
             result += "\n" + postContent + "\n\n\n"
         else:
-            result += "\n" + postAbstract + " <a id = \"NCE\" href = \"" + str(postDate) + "_gen_light.html" + "\">...</a>\n\n\n"
+            result += "\n[" + postAbstract + "](" + str(postDate) + "_gen_light.html" + ") <a id = \"NCE\" href = \"" + str(postDate) + "_gen_light.html" + "\">...</a>\n\n\n"
             #result += "\n[" + postAbstract + " ...](" + str(postDate) + "_gen_light.html" + ")\n\n\n"
         n += 1
      
@@ -143,7 +143,7 @@ def makeMD():
        
         if(n == 1):
             #result += "\n[" + postAbstract + " ...](" + str(postDate) + "_gen_dark.html" + ")\n\n\n"
-            result += "\n" + postAbstract + " <a id = \"NCE\" href = \"" + str(postDate) + "_gen_dark.html" + "\">...</a>\n\n\n"
+            result += "\n[" + postAbstract + "](" + str(postDate) + "_gen_dark.html" + ") <a id = \"NCE\" href = \"" + str(postDate) + "_gen_dark.html" + "\">...</a>\n\n\n"
             #result += "\n" + postAbstract + " ...\n"
             result += "\n" + postContent + "\n\n\n"
         else:

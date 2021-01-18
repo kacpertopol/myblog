@@ -10,7 +10,7 @@ inv : " bloglight.html"
 [*2021-01-17*](2021-01-17_gen_light.html)
 </center>
 
-representation, transposition <a id = "NCE" href = "2021-01-17_gen_dark.html">...</a>
+[representation, transposition](2021-01-17_gen_dark.html) <a id = "NCE" href = "2021-01-17_gen_dark.html">...</a>
 
 
 
