@@ -214,6 +214,51 @@
 \end{array}
 \right)
 \]</span> … a null matrix.</p>
+<p>Now for the final function in our infinite matrix implementation. Here is the code:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>muliM[im1:<span class="fu">iM</span> , im2:<span class="fu">iM</span>]:=</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="fu">Module</span>[</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>        {nofRows1 , nofCols1 , rowFunction1 , colFunction1,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>        nofRows2 , nofCols2 , rowFunction2 , colFunction2 , </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>        newFunRow , newFunCol},</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>        {nofRows1 , nofCols1 , rowFunction1 , colFunction1} = im1;</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>        {nofRows2 , nofCols2 , rowFunction2 , colFunction2} = im2;</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>        newFunRow (*<span class="dv">1</span>*) = <span class="fu">Function</span>[<span class="fu">row</span> , </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>            <span class="fu">Module</span>[</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>                {allElements , columns},</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>                allElements = <span class="fu">Flatten</span>[timesel[#,rowFunction2[#[[<span class="dv">2</span>]]]]&amp;/@rowFunction1[<span class="fu">row</span>] , <span class="dv">1</span>]; (*<span class="dv">3</span>*)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>                columns = <span class="fu">Union</span>[allElements[[;; , <span class="dv">2</span>]]];</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>                <span class="fu">Fold</span>[{#<span class="dv">1</span>[[<span class="dv">1</span>]] , #<span class="dv">1</span>[[<span class="dv">2</span>]] , #<span class="dv">1</span>[[<span class="dv">3</span>]] + #<span class="dv">2</span>[[<span class="dv">3</span>]]}&amp; , #]&amp;/@(<span class="fu">Cases</span>[allElements , {_ , # , _}]&amp;/@columns) (*<span class="dv">4</span>*)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>            ]</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>        ];</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>        newFunCol (*<span class="dv">2</span>*) = <span class="fu">Function</span>[<span class="fu">column</span> , </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>            <span class="fu">Module</span>[</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>                {allElements , rows},</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>                allElements = <span class="fu">Flatten</span>[lesemit[#,colFunction1[#[[<span class="dv">1</span>]]]]&amp;/@colFunction2[<span class="fu">column</span>] , <span class="dv">1</span>];</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>                rows = <span class="fu">Union</span>[allElements[[;; , <span class="dv">1</span>]]];</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>                <span class="fu">Fold</span>[{#<span class="dv">1</span>[[<span class="dv">1</span>]] , #<span class="dv">1</span>[[<span class="dv">2</span>]] , #<span class="dv">1</span>[[<span class="dv">3</span>]] + #<span class="dv">2</span>[[<span class="dv">3</span>]]}&amp; , #]&amp;/@(<span class="fu">Cases</span>[allElements , {# , _ , _}]&amp;/@rows)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>            ]</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>        ];</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a>        newiM[nofRows1 , nofCols2,newFunRow,newFunCol] (*<span class="dv">3</span>*)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a>    ];</span></code></pre></div>
+<p>The approach is similar to addition. In 1 and 2 above we create two new functions <code>newFunRow</code> and <code>newFunCol</code>. These two functions will be plugged into the constructor for the new matrix in 3.</p>
+<p>Let’s first have a look at <code>newFunRow</code> and start with the definition of matrix multiplication. If we multiply two matrices <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> to get a matrix <span class="math inline">\(C\)</span> then it’s elements are: <span class="math display">\[
+C_{r c} = \sum_{k} A_{r k} B_{k c}
+\]</span> So, for each r-th row of <span class="math inline">\(A\)</span> we will need all k-th rows of B. Using our notation for non zero matrix elements (nested lists, inner lists contain the row number, the element number and the value of the matrix element) then the result can be written as: <span class="math display">\[
+\text{row from A} = \{\{r , c_{1} , a_{r c_{1}}\} , \{r , c_{2} , a_{r c_{2}}\} , \ldots\}
+\]</span> If <span class="math inline">\(r =\)</span> <code>row</code> then this is calculated in <code>rowFunction1[row]</code> (marked 3 above). If <span class="math inline">\(k =\)</span> <code>#[[2]]</code> then all k-th rows are calculated in <code>rowFunction2[#[[2]]]</code> in 3 above. For <code>#[[2]]</code> $ = c_1$ and using our notation for non zero matrix elements, the <span class="math inline">\(c_1\)</span>-th row can be written as: <span class="math display">\[
+\text{row from B} = \{\{c_{1} , c&#39;_{1} , b_{c_{1} c&#39;_{1}}\} , \{c_{1} , c&#39;_{2} , b_{c_1 c&#39;_{2}}\} , \ldots\}
+\]</span> Next comes <code>timesel</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>timesel[</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>    {<span class="dt">r1_</span>Integer?<span class="fu">Positive</span> , <span class="dt">c1_</span>Integer?<span class="fu">Positive</span> , <span class="dt">v1_</span>} , </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    <span class="fu">row</span> : {{_Integer?<span class="fu">Positive</span> , _Integer?<span class="fu">Positive</span> , _} ...}] := </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>        {r1 , #[[<span class="dv">2</span>]] , v1 #[[<span class="dv">3</span>]]} &amp; /@ <span class="fu">row</span>;</span></code></pre></div>
+<p>All this function does is multiply appropriate elements in each row making sure that the row and column of the multiplied element is correct. Finally, the resulting list <code>allElements</code> is folded and the matrix elements summed up (see 4 in <code>muliM</code> above).</p>
+<p>This is a lot to take in but it is strightforward once you disect the expressions in these functions. The situation with <code>newFunCol</code> is analogous. The rows and columns are carefully swapped and instead of <code>timesel</code> there is:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>lesemit[</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    {<span class="dt">r1_</span>Integer?<span class="fu">Positive</span> , <span class="dt">c1_</span>Integer?<span class="fu">Positive</span> , <span class="dt">v1_</span>} , </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    <span class="fu">column</span> : {{_Integer?<span class="fu">Positive</span> , _Integer?<span class="fu">Positive</span> , _} ...}] := </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>        {#[[<span class="dv">1</span>]] , c1 , v1 #[[<span class="dv">3</span>]]} &amp; /@ <span class="fu">column</span>;</span></code></pre></div>
+<p>That’s it. <a href="2021-01-17/infiniteMatrix.nb">Here is the notebook</a>. I might turn this into a <em>Wolfram Language</em> package. When that time comes I’ll provide a link below in an EDIT, maybe with some more examples.</p>
 <h1 id="infinite-matrices-in-mathematica-part-2"><a href="./2021-01-17_gen_dark.html">infinite matrices in <em>Mathematica</em>, part 2</a></h1>
 <center>
 <a href="2021-01-17_gen_light.html"><em>2021-01-17</em></a>
