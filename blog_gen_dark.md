@@ -138,7 +138,7 @@ $$
 $$
 ... a null matrix.
 
-Now for the final function in our infinite matrix implementation. 
+Now for the final function in our infinite matrix implementation - matrix multiplication. 
 Here is the code:
 ```Mathematica
 muliM[im1:iM , im2:iM]:=
@@ -209,7 +209,7 @@ lesemit[
 		{#[[1]] , c1 , v1 #[[3]]} & /@ column;
 ```
 
-That's it. <a id = "NCE" , href = 2021-01-17/infiniteMatrix.nb>Here is the notebook</a>. I might turn this into a *Wolfram Language* package. When
+That's it. <a id = "NCE" href = 2021-01-17/infiniteMatrix.nb>Here is the notebook</a>. I might turn this into a *Wolfram Language* package. When
 that time comes I'll provide a link below in an EDIT, maybe with some more examples.
 
 
