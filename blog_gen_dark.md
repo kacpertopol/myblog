@@ -23,7 +23,8 @@ I was wondering if it would be possible to have a compression algorithm built in
 Ideally, to reduce compression time, the compression procedure would rely heavily on the fast methods of the `numpy` library.
 This post describes the resulting algorithm. This description is also part of an assignment where
 I ask students to implement the same algorithm without `numpy` and compare compression times.
-The script and sample image can be downloaded from [here](https://github.com/kacpertopol/rcnumpy).
+The script and sample image can be downloaded from 
+<a id = "NCE" href = https://github.com/kacpertopol/rcnumpy>here</a>.
 
 
 The script begins with two import statements in
