@@ -1,18 +1,5 @@
----
-title : my blog
-author : <center><a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a><center>
-inv : " bloglight.html"
----
-
-
-# [binary image compression with python and numpy](./2021-01-22_gen_dark.html)
-<center>
-[*2021-01-22*](2021-01-22_gen_light.html)
-</center>
-
-[numpy-thonic run length compression](2021-01-22_gen_dark.html) <a id = "NCE" href = "2021-01-22_gen_dark.html">...</a>
-
-
+---title--- binary image compression with python and numpy 
+---abstract--- numpy-thonic run length compression 
 
 I've been tinkering with my [cam_board](https://github.com/kacpertopol/cam_board) script.
 This little program can turn a web cam into a white / black board. I found it handy these rough, 
@@ -34,7 +21,7 @@ import numpy
 import matplotlib.pyplot as plt
 ```
 
-**Loading the binary image**
+## Loading the binary image
 
 In our example we will be working with a 720 by 1280
 image. The individual pixels in this image will contain
@@ -107,7 +94,7 @@ numpy.save("image_unpacked" , a)
 and the resulting file `image_unpacked.npy` contains 921728 bytes. This
 is almost eight times more then `image.npy`.
 
-**Compression method**
+## Compression method
 
 The idea behind the compression method is simple.
 More formally the algorithm that will be implemented
@@ -179,7 +166,7 @@ zeros = end - start + 1
 
 result in the variable `zeros` containing a list of lengths of `0 , 0 , 0 , ...` sequences in `a`.
 
-**Compressed data**
+## Compressed data
 
 All the data necessary to reconstruct the original image is concatenated in
 \[compress.py line: 175\] 
@@ -217,7 +204,7 @@ numpy.save("image_compressed" , data)
 
 Notice that the size of this file is only 20892 bytes.
 
-**Reconstructing the original image**
+## Reconstructing the original image
 
 Now it is time to to check if it is possible to reconstruct
 the original image from `image_compressed.npy`.
@@ -299,7 +286,7 @@ print("test against original : " ,
 
 using the `numpy.array_equal` function.
 
-**Drawing the images**
+## Drawing the images
 
 In
 \[compress.py line: 308\] 
@@ -332,45 +319,4 @@ plt.show()
 ```
 
 the arrays are plotted and shown.
-
-<center>
-![](./2021-01-22/Figure_1.png)
-</center>
-
-
-
-# [infinite matrices in *Mathematica*, part 3](./2021-01-19_gen_dark.html)
-<center>
-[*2021-01-19*](2021-01-19_gen_light.html)
-</center>
-
-mapping, addition, multiplication <a id = "NCE" href = "2021-01-19_gen_dark.html">...</a>
-
-
-
-# [infinite matrices in *Mathematica*, part 2](./2021-01-17_gen_dark.html)
-<center>
-[*2021-01-17*](2021-01-17_gen_light.html)
-</center>
-
-representation, transposition <a id = "NCE" href = "2021-01-17_gen_dark.html">...</a>
-
-
-
-# [infinite matrices in *Mathematica*, part 1](./2021-01-16_gen_dark.html)
-<center>
-[*2021-01-16*](2021-01-16_gen_light.html)
-</center>
-
-introduction, motivation <a id = "NCE" href = "2021-01-16_gen_dark.html">...</a>
-
-
-
-# [hi](./2021-01-15_gen_dark.html)
-<center>
-[*2021-01-15*](2021-01-15_gen_light.html)
-</center>
-
-first post, what this blog is about <a id = "NCE" href = "2021-01-15_gen_dark.html">...</a>
-
 

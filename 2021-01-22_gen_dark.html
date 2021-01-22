@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>my blog</title>
   <link rel="alternate" type="application/rss+xml"
    href="feed.rss" title="RSS feed for My Page">
+  <title>my blog</title>
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -87,8 +87,8 @@
 	}
 	p {
 		text-align : justify;
-		min-width:200px;max-width:900px;margin:0 auto;padding:15px
-	}	
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px;
+	}
 	li {
 		text-align : left;
 		min-width:200px;max-width:900px;margin:0 auto;padding:15px
@@ -100,6 +100,10 @@
 	div.sourceCode {
 		text-align : left;
 		min-width:200px;max-width:900px;margin:0 auto;padding:5px
+	}
+	body {
+		background-color : black;
+		color : white;
 	}
 	#HME {
 		text-decoration : none;
@@ -114,6 +118,10 @@
 		text-decoration-color : blue;
 		color : blue;
 	}
+	img {
+	-webkit-filter: invert(1);
+	filter: invert(1);	
+	}
 	a {
 		text-decoration : none;
 		color : inherit;
@@ -125,19 +133,21 @@
 </head>
 <body>
 <a id = "LNK" 
-	href = blogdark.html>🌘</a>
-<br/>
+	href = blogdark.html>🏠</a>
+<a id = "LNK" 
+	href = 2021-01-22_gen_light.html>☀️ </a>
+</br>
 <header id="title-block-header">
 <h1 class="title">my blog</h1>
 <p class="author"><center>
 <a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a>
 <center></p>
 </header>
-<h1 id="binary-image-compression-with-python-and-numpy"><a href="./2021-01-22_gen_light.html">binary image compression with python and numpy</a></h1>
+<h1 id="binary-image-compression-with-python-and-numpy">binary image compression with python and numpy</h1>
 <center>
-<a href="2021-01-22_gen_light.html"><em>2021-01-22</em></a>
+<em>2021-01-22</em>
 </center>
-<p><a href="2021-01-22_gen_light.html">numpy-thonic run length compression</a> <a id = "NCE" href = "2021-01-22_gen_light.html">…</a></p>
+<p>numpy-thonic run length compression …</p>
 <p>I’ve been tinkering with my <a href="https://github.com/kacpertopol/cam_board">cam_board</a> script. This little program can turn a web cam into a white / black board. I found it handy these rough, socially isolated, disease ridden times. The de-noising feature of the script is particularly useful when recording the “blackboard” for students because it greatly reduces the video file sizes. I was wondering if it would be possible to have a compression algorithm built into the script. Ideally, to reduce compression time, the compression procedure would rely heavily on the fast methods of the <code>numpy</code> library. This post describes the resulting algorithm. The description is also part of an assignment where I ask students to implement the same algorithm without <code>numpy</code> and compare compression times. The script and sample image can be downloaded from <a href="https://github.com/kacpertopol/rcnumpy">here</a>.</p>
 <p>The script begins with two import statements in [compress.py line: 9] :</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="im">import</span> numpy</span>
@@ -260,26 +270,6 @@
 <center>
 <img src="./2021-01-22/Figure_1.png" />
 </center>
-<h1 id="infinite-matrices-in-mathematica-part-3"><a href="./2021-01-19_gen_light.html">infinite matrices in <em>Mathematica</em>, part 3</a></h1>
-<center>
-<a href="2021-01-19_gen_light.html"><em>2021-01-19</em></a>
-</center>
-<p><a href="2021-01-19_gen_light.html">mapping, addition, multiplication</a> <a id = "NCE" href = "2021-01-19_gen_light.html">…</a></p>
-<h1 id="infinite-matrices-in-mathematica-part-2"><a href="./2021-01-17_gen_light.html">infinite matrices in <em>Mathematica</em>, part 2</a></h1>
-<center>
-<a href="2021-01-17_gen_light.html"><em>2021-01-17</em></a>
-</center>
-<p><a href="2021-01-17_gen_light.html">representation, transposition</a> <a id = "NCE" href = "2021-01-17_gen_light.html">…</a></p>
-<h1 id="infinite-matrices-in-mathematica-part-1"><a href="./2021-01-16_gen_light.html">infinite matrices in <em>Mathematica</em>, part 1</a></h1>
-<center>
-<a href="2021-01-16_gen_light.html"><em>2021-01-16</em></a>
-</center>
-<p><a href="2021-01-16_gen_light.html">introduction, motivation</a> <a id = "NCE" href = "2021-01-16_gen_light.html">…</a></p>
-<h1 id="hi"><a href="./2021-01-15_gen_light.html">hi</a></h1>
-<center>
-<a href="2021-01-15_gen_light.html"><em>2021-01-15</em></a>
-</center>
-<p><a href="2021-01-15_gen_light.html">first post, what this blog is about</a> <a id = "NCE" href = "2021-01-15_gen_light.html">…</a></p>
 <br/>
 <a id = "LNK" 
    href = "feed.rss"><img src = "Feed-icon.svg" height = 14em></a>

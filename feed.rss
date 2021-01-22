@@ -5,6 +5,12 @@
 <link>https://kacpertopol.github.io/blog/index.html</link>
 <description>Kacper Topolnicki's blog</description>
 <item>
+<title>binary image compression with python and numpy</title>
+<link>https://kacpertopol.github.io/blog/2021-01-22_gen_light.html</link>
+<description>numpy-thonic run length compression</description>
+<guid>https://kacpertopol.github.io/blog/2021-01-22_gen_light.html</guid>
+</item>
+<item>
 <title>infinite matrices in *Mathematica*, part 3</title>
 <link>https://kacpertopol.github.io/blog/2021-01-19_gen_light.html</link>
 <description>mapping, addition, multiplication</description>
