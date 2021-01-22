@@ -15,7 +15,7 @@ inv : " blogdark.html"
 
 
 I've been tinkering with my 
-<a id = "NCE" id = https://github.com/kacpertopol/cam_board>cam_board</a> script.
+<a id = "NCE" href = https://github.com/kacpertopol/cam_board>cam_board</a> script.
 This little program can turn a web cam into a white / black board. I found it handy in these rough, 
 socially isolated, disease ridden times. The de-noising feature of the script is particularly
 useful when recording the "blackboard" for students because it greatly reduces the video file sizes.
