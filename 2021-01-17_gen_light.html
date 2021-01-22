@@ -8,6 +8,136 @@
   <link rel="alternate" type="application/rss+xml"
    href="feed.rss" title="RSS feed for My Page">
   <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      word-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     span.underline{text-decoration: underline;}
@@ -17,6 +147,7 @@
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
     div.sourceCode { margin: 1em 0; }
     pre.sourceCode { margin: 0; }
@@ -119,7 +250,7 @@
 		color : inherit;
 	}
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -142,97 +273,97 @@
 </center>
 <p>representation, transposition …</p>
 <p>The <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html>previous post</a> from this series hinted that a powerful implementation of infinite matrices can easily be obtained in the <em>Wolfram Language</em>. Here we will begin building this code starting with the definition of the infinite matrix type:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">iM</span> = {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>        (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">1</span>*) , </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>        (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">2</span>*) ,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>        _Function (*<span class="dv">3</span>*) , </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>        _Function (*<span class="dv">4</span>*)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>    };</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">iM</span> <span class="ex">=</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>        (_Integer?<span class="fu">Positive</span> <span class="sc">|</span> <span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]</span>) <span class="co">(*1*)</span> <span class="op">,</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        (_Integer?<span class="fu">Positive</span> <span class="sc">|</span> <span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]</span>) <span class="co">(*2*)</span> <span class="op">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        _Function <span class="co">(*3*)</span> <span class="op">,</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        _Function <span class="co">(*4*)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>;</span></code></pre></div>
 <p>We will call the type <code>iM</code> and represent infinite matrices by using a list with four elements.</p>
 <p>The first two elements (marked 1 and 2 above) will determine the size of the matrix. The number of rows (marked 1) and columns (marked 2) can take one of two types of values: a positive integer (<code>_Integer?Positive</code>) means that the number of rows or columns is finite white infinity (<code>\[Infinity]</code>, if entered in <em>Mathematica</em> using the key combination <code>ESC</code> + <code>inf</code> + <code>ESC</code> this will be displayed as the <span class="math inline">\(\infty\)</span> symbol) … means an infinite number of rows or columns.</p>
 <p>The final two elements in <code>iM</code> (marked 3 and 4) contain anonymous functions (<code>_Function</code>). The first function (marked 3) when called with an integer argument <code>r</code> returns a list of non zero elements for the <code>r</code>th row of the matrix. Analogously, the second function (marked 4) when called with an integer argument <code>c</code> returns a list of non zero elements of the <code>c</code>th row of the matrix. Actually I should probably replace “returns” with “should return” in this paragraph since the current definition of the <code>iM</code> pattern does not put any constraints on the argument or return types of the anonymous functions. The code we are producing here will be short therefore it is not obvious that benefits of a stricter definition would result in a significantly better implementation. Plus, I’m lazy.</p>
 <p>The next step is to define a type to represent the matrix elements. Here it is:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>eL = {</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>        _Integer (*<span class="dv">1</span>*) , </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>        _Integer (*<span class="dv">2</span>*), </span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>        _ (*<span class="dv">3</span>*)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>    };</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>eL <span class="ex">=</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        _Integer <span class="co">(*1*)</span> <span class="op">,</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        _Integer <span class="co">(*2*)</span><span class="op">,</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        _ <span class="co">(*3*)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span>;</span></code></pre></div>
 <p>The type consists from three elements. The first two (marked 1 and 2 above) are integers that determine the row and column numbers. Note that we do not specify that they are positive although indexing will start with 1 - the reason for this will be given soon. The third element (marked 3) is just a blank pattern that can fit any single <em>Wolfram Language</em> expression. This final element should be a type of number, that is, it should be possible to add and multiply elements of it’s type. Again, it would most likely be possible to define a stricter pattern definition but the benefits would probably not outweigh the costs.</p>
 <p>Now the constructor for <code>iM</code>. Here it is:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>newiM[</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    nofRows : (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">1</span>*), </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    nofColumns : (_Integer?<span class="fu">Positive</span> | \[<span class="fu">Infinity</span>]) (*<span class="dv">2</span>*), </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    <span class="dt">rowFunction_</span>Function (*<span class="dv">3</span>*), </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>    <span class="dt">colFunction_</span>Function (*<span class="dv">4</span>*)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    ] := {</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>            nofRows , </span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>            nofColumns , </span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>            <span class="fu">Function</span>[<span class="fu">row</span>, </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>                trimElements[nofRows , nofColumns][rowFunction[<span class="fu">row</span>]]] (*<span class="dv">5</span>*), </span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>            <span class="fu">Function</span>[col, </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>                trimElements[nofRows , nofColumns][colFunction[col]]] (*<span class="dv">6</span>*)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>        };</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>newiM<span class="op">[</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    nofRows : (_Integer?<span class="fu">Positive</span> <span class="sc">|</span> <span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]</span>) <span class="co">(*1*)</span><span class="op">,</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    nofColumns : (_Integer?<span class="fu">Positive</span> <span class="sc">|</span> <span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]</span>) <span class="co">(*2*)</span><span class="op">,</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">rowFunction_</span>Function <span class="co">(*3*)</span><span class="op">,</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">colFunction_</span>Function <span class="co">(*4*)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">]</span> <span class="ex">:=</span> <span class="op">{</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            nofRows <span class="op">,</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>            nofColumns <span class="op">,</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">Function</span><span class="op">[</span><span class="fu">row</span><span class="op">,</span> </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                trimElements<span class="op">[</span>nofRows <span class="op">,</span> nofColumns<span class="op">][</span>rowFunction<span class="op">[</span><span class="fu">row</span><span class="op">]]]</span> <span class="co">(*5*)</span><span class="op">,</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="fu">Function</span><span class="op">[</span>col<span class="op">,</span> </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                trimElements<span class="op">[</span>nofRows <span class="op">,</span> nofColumns<span class="op">][</span>colFunction<span class="op">[</span>col<span class="op">]]]</span> <span class="co">(*6*)</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span>;</span></code></pre></div>
 <p>Parts 1-4 of this definition are in direct correspondence to elements 1-4 of the <code>iM</code> definition. Furthermore, <code>newiM</code> also returns a list. What’s the purpose of this function then? Well, take a look at parts 5 and 6. We modify the anonymous functions that return non zero elements in rows and columns by surrounding them with <code>trimElements</code>. This is strictly for convenience - it is sometimes more convenient to define the two functions to return “illegal” elements like <code>{-1 , -1 , 10}</code> and have <code>trimElements</code> remove them automatically. These types of elements are also the reason behind skipping <code>?Positive</code> in the definition of <code>eL</code>.</p>
 <p>The definition of <code>trimElements</code> has four parts that correspond to the four cases of matrix size specification:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>trimElements[<span class="dt">nofRows_</span> , <span class="dt">nofCols_</span>][elements : {eL ...}] := </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="fu">DeleteCases</span>[</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>   elements , {<span class="dt">a_</span> , <span class="dt">b_</span> , _} /; </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="fu">a</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &lt;= <span class="dv">0</span> || <span class="fu">a</span> &gt; nofRows || <span class="fu">b</span> &gt; nofCols];</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>trimElements[\[<span class="fu">Infinity</span>] , <span class="dt">nofCols_</span>][elements : {eL ...}] := </span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>  <span class="fu">DeleteCases</span>[</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>   elements , {<span class="dt">a_</span> , <span class="dt">b_</span> , _} /; <span class="fu">a</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &gt; nofCols];</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>trimElements[<span class="dt">nofRows_</span> , \[<span class="fu">Infinity</span>]][elements : {eL ...}] := </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>  <span class="fu">DeleteCases</span>[</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>   elements , {<span class="dt">a_</span> , <span class="dt">b_</span> , _} /; <span class="fu">a</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &lt;= <span class="dv">0</span> || <span class="fu">a</span> &gt; nofRows];</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>trimElements[\[<span class="fu">Infinity</span>] , \[<span class="fu">Infinity</span>]][elements : {eL ...}] := </span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>  <span class="fu">DeleteCases</span>[elements , {<span class="dt">a_</span> , <span class="dt">b_</span> , _} /; <span class="fu">a</span> &lt;= <span class="dv">0</span> || <span class="fu">b</span> &lt;= <span class="dv">0</span>];</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trimElements<span class="op">[</span><span class="at">nofRows_</span> <span class="op">,</span> <span class="at">nofCols_</span><span class="op">][</span>elements : <span class="op">{</span>eL ...<span class="op">}]</span> <span class="ex">:=</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DeleteCases</span><span class="op">[</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>   elements <span class="op">,</span> <span class="op">{</span><span class="at">a_</span> <span class="op">,</span> <span class="at">b_</span> <span class="op">,</span> _<span class="op">}</span> <span class="sc">/</span>; </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">a</span> &lt;<span class="ex">=</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">b</span> &lt;<span class="ex">=</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">a</span> &gt; nofRows <span class="sc">||</span> <span class="fu">b</span> &gt; nofCols<span class="op">]</span>;</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>trimElements<span class="op">[</span><span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]</span> <span class="op">,</span> <span class="at">nofCols_</span><span class="op">][</span>elements : <span class="op">{</span>eL ...<span class="op">}]</span> <span class="ex">:=</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DeleteCases</span><span class="op">[</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>   elements <span class="op">,</span> <span class="op">{</span><span class="at">a_</span> <span class="op">,</span> <span class="at">b_</span> <span class="op">,</span> _<span class="op">}</span> <span class="sc">/</span>; <span class="fu">a</span> &lt;<span class="ex">=</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">b</span> &lt;<span class="ex">=</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">b</span> &gt; nofCols<span class="op">]</span>;</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>trimElements<span class="op">[</span><span class="at">nofRows_</span> <span class="op">,</span> <span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]][</span>elements : <span class="op">{</span>eL ...<span class="op">}]</span> <span class="ex">:=</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DeleteCases</span><span class="op">[</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>   elements <span class="op">,</span> <span class="op">{</span><span class="at">a_</span> <span class="op">,</span> <span class="at">b_</span> <span class="op">,</span> _<span class="op">}</span> <span class="sc">/</span>; <span class="fu">a</span> &lt;<span class="ex">=</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">b</span> &lt;<span class="ex">=</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">a</span> &gt; nofRows<span class="op">]</span>;</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>trimElements<span class="op">[</span><span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]</span> <span class="op">,</span> <span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]][</span>elements : <span class="op">{</span>eL ...<span class="op">}]</span> <span class="ex">:=</span> </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DeleteCases</span><span class="op">[</span>elements <span class="op">,</span> <span class="op">{</span><span class="at">a_</span> <span class="op">,</span> <span class="at">b_</span> <span class="op">,</span> _<span class="op">}</span> <span class="sc">/</span>; <span class="fu">a</span> &lt;<span class="ex">=</span> <span class="dv">0</span> <span class="sc">||</span> <span class="fu">b</span> &lt;<span class="ex">=</span> <span class="dv">0</span><span class="op">]</span>;</span></code></pre></div>
 <p>These are simple definitions that make use of the built in <code>DeleteCases</code> function to remove “illegal” matrix elements. In all four of them we assume that the indexing starts with 1. Depending on whether the number of rows is infinite (<code>\[Infinity]</code>) or not elements whose indexes exceed the maximum value allowed by <code>nofRows</code> and <code>nofCols</code> or are below 0 are deleted.</p>
 <p>Below is the definition of the <span class="math inline">\(P\)</span> matrix from the previous post (part 1) that uses the constructor:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>tMat = newiM[</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>        \[<span class="fu">Infinity</span>] (*<span class="dv">1</span>*), </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>        \[<span class="fu">Infinity</span>] (*<span class="dv">2</span>*), </span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>        <span class="fu">Function</span>[<span class="fu">row</span> , </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>            {{<span class="fu">row</span> , <span class="fu">row</span> , <span class="dv">1</span> - <span class="fu">p</span>} , {<span class="fu">row</span> , <span class="fu">row</span> + <span class="dv">1</span> , <span class="fu">p</span>}}] (*<span class="dv">3</span>*),</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>        <span class="fu">Function</span>[<span class="fu">column</span> , </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>            {{<span class="fu">column</span> , <span class="fu">column</span> , <span class="dv">1</span> - <span class="fu">p</span>} , {<span class="fu">column</span> - <span class="dv">1</span> , <span class="fu">column</span> , <span class="fu">p</span>}}] (*<span class="dv">4</span>*)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>  ]</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tMat <span class="ex">=</span> newiM<span class="op">[</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>        <span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]</span> <span class="co">(*1*)</span><span class="op">,</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]</span> <span class="co">(*2*)</span><span class="op">,</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Function</span><span class="op">[</span><span class="fu">row</span> <span class="op">,</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            <span class="op">{{</span><span class="fu">row</span> <span class="op">,</span> <span class="fu">row</span> <span class="op">,</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">p</span><span class="op">}</span> <span class="op">,</span> <span class="op">{</span><span class="fu">row</span> <span class="op">,</span> <span class="fu">row</span> <span class="sc">+</span> <span class="dv">1</span> <span class="op">,</span> <span class="fu">p</span><span class="op">}}]</span> <span class="co">(*3*)</span><span class="op">,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Function</span><span class="op">[</span><span class="fu">column</span> <span class="op">,</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">{{</span><span class="fu">column</span> <span class="op">,</span> <span class="fu">column</span> <span class="op">,</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">p</span><span class="op">}</span> <span class="op">,</span> <span class="op">{</span><span class="fu">column</span> <span class="sc">-</span> <span class="dv">1</span> <span class="op">,</span> <span class="fu">column</span> <span class="op">,</span> <span class="fu">p</span><span class="op">}}]</span> <span class="co">(*4*)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">]</span></span></code></pre></div>
 <p>In 1 and 2 we specify that our matrix will have an infinite number of rows and columns. In parts 3 and 4 we specify two functions. The function in 1 returns the non zero elements in row <code>row</code> and the function in 2 returns the non zero elements in a column <code>column</code>. Notice that the functions in 3 and 4 have no regard for the “illegality” of the element indexes. We can afford this carelessness because the constructor will wrap these functions with <code>trimElements</code>. Here is the result:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>{</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    \[<span class="fu">Infinity</span>],    </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    \[<span class="fu">Infinity</span>],</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    <span class="fu">Function</span>[row$,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>        trimElements[\[<span class="fu">Infinity</span>],\[<span class="fu">Infinity</span>]][</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>            <span class="fu">Function</span>[<span class="fu">row</span>,{{<span class="fu">row</span>,<span class="fu">row</span>,<span class="dv">1</span>-pp},{<span class="fu">row</span>,<span class="fu">row</span>+<span class="dv">1</span>,pp}}][row$]]],</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>    <span class="fu">Function</span>[col$,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>        trimElements[\[<span class="fu">Infinity</span>],\[<span class="fu">Infinity</span>]][</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>            <span class="fu">Function</span>[<span class="fu">column</span>,{{<span class="fu">column</span>,<span class="fu">column</span>,<span class="dv">1</span>-pp},{column<span class="dv">-1</span>,<span class="fu">column</span>,pp}}][col$]]]</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">],</span>    </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">],</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Function</span><span class="op">[</span>row$<span class="op">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        trimElements<span class="op">[</span><span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">],</span><span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]][</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">Function</span><span class="op">[</span><span class="fu">row</span><span class="op">,{{</span><span class="fu">row</span><span class="op">,</span><span class="fu">row</span><span class="op">,</span><span class="dv">1</span><span class="sc">-</span>pp<span class="op">},{</span><span class="fu">row</span><span class="op">,</span><span class="fu">row</span><span class="sc">+</span><span class="dv">1</span><span class="op">,</span>pp<span class="op">}}][</span>row$<span class="op">]]],</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Function</span><span class="op">[</span>col$<span class="op">,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        trimElements<span class="op">[</span><span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">],</span><span class="sc">\</span><span class="op">[</span><span class="fu">Infinity</span><span class="op">]][</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">Function</span><span class="op">[</span><span class="fu">column</span><span class="op">,{{</span><span class="fu">column</span><span class="op">,</span><span class="fu">column</span><span class="op">,</span><span class="dv">1</span><span class="sc">-</span>pp<span class="op">},{</span><span class="fu">column</span><span class="dv">-1</span><span class="op">,</span><span class="fu">column</span><span class="op">,</span>pp<span class="op">}}][</span>col$<span class="op">]]]</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Now for something a little more exciting - let’s draw our matrix. Here is the function:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>matrixFormiM[</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>   {<span class="dt">r1_</span>Integer , <span class="dt">r2_</span>Integer} /; r1 &gt; <span class="dv">0</span> &amp;&amp; r2 &gt; <span class="dv">0</span> &amp;&amp; r2 &gt; r1 (*<span class="dv">1</span>*) , </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    {<span class="dt">c1_</span>Integer , <span class="dt">c2_</span>Integer} /; c1 &gt; <span class="dv">0</span> &amp;&amp; c2 &gt; <span class="dv">0</span> &amp;&amp; c2 &gt; c1 (*<span class="dv">2</span>*)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>   ][<span class="fu">im</span> : <span class="fu">iM</span> (*<span class="dv">3</span>*)] := </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>        <span class="fu">Module</span>[</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>            {nofRows , nofCols , rowFunction , colFunction , </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>            fragment , elements},</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>            {nofRows , nofCols , rowFunction , colFunction} = <span class="fu">im</span>; (*<span class="dv">4</span>*)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>            fragment = <span class="fu">Table</span>[<span class="dv">0</span> , {r2 - r1 + <span class="dv">1</span>} , {c2 - c1 + <span class="dv">1</span>}] (*<span class="dv">5</span>*);</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>            <span class="fu">Do</span>[ (*<span class="dv">6</span>*)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>                elements = rowFunction[<span class="fu">r</span>];</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>                <span class="fu">If</span>[#[[<span class="dv">2</span>]] &lt;= c2 &amp;&amp; #[[<span class="dv">2</span>]] &gt;= c1 , </span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>                    fragment[[<span class="fu">r</span> - r1 + <span class="dv">1</span> , #[[<span class="dv">2</span>]] - c1 + <span class="dv">1</span>]] = #[[<span class="dv">3</span>]]] &amp; /@ elements;</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>                , {<span class="fu">r</span> , r1 , r2}];</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>            <span class="fu">MatrixForm</span>[ (*<span class="dv">7</span>*)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>                <span class="fu">ArrayPad</span>[ </span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a>                    fragment , {{<span class="fu">Min</span>[<span class="dv">3</span> , r1 - <span class="dv">1</span>] , </span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>                    <span class="fu">Min</span>[<span class="dv">3</span> , nofRows - r2]}, {<span class="fu">Min</span>[<span class="dv">3</span> , c1 - <span class="dv">1</span>] , </span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>                    <span class="fu">Min</span>[<span class="dv">3</span> , nofCols - c2]}} , &quot;\[<span class="fu">CenterDot</span>]&quot;]]</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>  ]</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>matrixFormiM<span class="op">[</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>   <span class="op">{</span><span class="at">r1_</span>Integer <span class="op">,</span> <span class="at">r2_</span>Integer<span class="op">}</span> <span class="sc">/</span>; r1 &gt; <span class="dv">0</span> &amp;&amp; r2 &gt; <span class="dv">0</span> &amp;&amp; r2 &gt; r1 <span class="co">(*1*)</span> <span class="op">,</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span><span class="at">c1_</span>Integer <span class="op">,</span> <span class="at">c2_</span>Integer<span class="op">}</span> <span class="sc">/</span>; c1 &gt; <span class="dv">0</span> &amp;&amp; c2 &gt; <span class="dv">0</span> &amp;&amp; c2 &gt; c1 <span class="co">(*2*)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>   <span class="op">][</span><span class="fu">im</span> : <span class="fu">iM</span> <span class="co">(*3*)</span><span class="op">]</span> <span class="ex">:=</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Module</span><span class="op">[</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span>nofRows <span class="op">,</span> nofCols <span class="op">,</span> rowFunction <span class="op">,</span> colFunction <span class="op">,</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            fragment <span class="op">,</span> elements<span class="op">},</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span>nofRows <span class="op">,</span> nofCols <span class="op">,</span> rowFunction <span class="op">,</span> colFunction<span class="op">}</span> <span class="ex">=</span> <span class="fu">im</span>; <span class="co">(*4*)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            fragment <span class="ex">=</span> <span class="fu">Table</span><span class="op">[</span><span class="dv">0</span> <span class="op">,</span> <span class="op">{</span>r2 <span class="sc">-</span> r1 <span class="sc">+</span> <span class="dv">1</span><span class="op">}</span> <span class="op">,</span> <span class="op">{</span>c2 <span class="sc">-</span> c1 <span class="sc">+</span> <span class="dv">1</span><span class="op">}]</span> <span class="co">(*5*)</span>;</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            <span class="fu">Do</span><span class="op">[</span> <span class="co">(*6*)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                elements <span class="ex">=</span> rowFunction<span class="op">[</span><span class="fu">r</span><span class="op">]</span>;</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                <span class="fu">If</span><span class="op">[</span>#<span class="op">[[</span><span class="dv">2</span><span class="op">]]</span> &lt;<span class="ex">=</span> c2 &amp;&amp; #<span class="op">[[</span><span class="dv">2</span><span class="op">]]</span> &gt;<span class="ex">=</span> c1 <span class="op">,</span> </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                    fragment<span class="op">[[</span><span class="fu">r</span> <span class="sc">-</span> r1 <span class="sc">+</span> <span class="dv">1</span> <span class="op">,</span> #<span class="op">[[</span><span class="dv">2</span><span class="op">]]</span> <span class="sc">-</span> c1 <span class="sc">+</span> <span class="dv">1</span><span class="op">]]</span> <span class="ex">=</span> #<span class="op">[[</span><span class="dv">3</span><span class="op">]]]</span> &amp; <span class="sc">/</span>@ elements;</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                <span class="op">,</span> <span class="op">{</span><span class="fu">r</span> <span class="op">,</span> r1 <span class="op">,</span> r2<span class="op">}]</span>;</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">MatrixForm</span><span class="op">[</span> <span class="co">(*7*)</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                <span class="fu">ArrayPad</span><span class="op">[</span> </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                    fragment <span class="op">,</span> <span class="op">{{</span><span class="fu">Min</span><span class="op">[</span><span class="dv">3</span> <span class="op">,</span> r1 <span class="sc">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">,</span> </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">Min</span><span class="op">[</span><span class="dv">3</span> <span class="op">,</span> nofRows <span class="sc">-</span> r2<span class="op">]},</span> <span class="op">{</span><span class="fu">Min</span><span class="op">[</span><span class="dv">3</span> <span class="op">,</span> c1 <span class="sc">-</span> <span class="dv">1</span><span class="op">]</span> <span class="op">,</span> </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">Min</span><span class="op">[</span><span class="dv">3</span> <span class="op">,</span> nofCols <span class="sc">-</span> c2<span class="op">]}}</span> <span class="op">,</span> <span class="st">&quot;</span><span class="sc">\[</span><span class="st">CenterDot]&quot;</span><span class="op">]]</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">]</span></span></code></pre></div>
 <p>Arguments marked 1 and 2 specify the range of rows and columns to be drawn. Argument 3 is the infinite matrix <code>im</code> with type <code>iM</code>. In 4 the elements of <code>im</code> are unpacked into local variables. The array <code>fragment</code> in 5 will contain the non zero elements in the row, column range specified by <code>r1</code>, <code>r2</code>, <code>c1</code>, <code>c2</code>. The loop 5 inserts non zero elements into <code>fragment</code> and next in 7 this array is padded with the appropriate amount of dots and returned in matrix form. Running this function on <code>tMat</code></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>matrixFormiM[{<span class="dv">1</span> , <span class="dv">5</span>} , {<span class="dv">1</span> , <span class="dv">5</span>}][tMat]</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>matrixFormiM<span class="op">[{</span><span class="dv">1</span> <span class="op">,</span> <span class="dv">5</span><span class="op">}</span> <span class="op">,</span> <span class="op">{</span><span class="dv">1</span> <span class="op">,</span> <span class="dv">5</span><span class="op">}][</span>tMat<span class="op">]</span></span></code></pre></div>
 <p>will result in five rows and five columns being displayed, with traditional dotted padding: <span class="math display">\[
 \left(
 \begin{array}{cccccccc}
@@ -248,18 +379,18 @@
 \right)
 \]</span></p>
 <p>Let’s do one more thing and define matrix transposition. Here it is:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>transposeiM[<span class="fu">im</span> : <span class="fu">iM</span>] := </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a> <span class="fu">Module</span>[{nofRows , nofCols , rowFunction , colFunction},</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>  {nofRows , nofCols , rowFunction , colFunction} = <span class="fu">im</span>;</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>  {</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    nofCols (*<span class="dv">1</span>*), </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    nofRows (*<span class="dv">2</span>*), </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>    <span class="fu">Function</span>[<span class="fu">row</span>, {#[[<span class="dv">2</span>]] , #[[<span class="dv">1</span>]] , #[[<span class="dv">3</span>]]} &amp; /@ colFunction[<span class="fu">row</span>]] (*<span class="dv">3</span>*), </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>    <span class="fu">Function</span>[col, {#[[<span class="dv">2</span>]] , #[[<span class="dv">1</span>]] , #[[<span class="dv">3</span>]]} &amp; /@ rowFunction[col]]} (*<span class="dv">4</span>*)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>  ]</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>transposeiM<span class="op">[</span><span class="fu">im</span> : <span class="fu">iM</span><span class="op">]</span> <span class="ex">:=</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">Module</span><span class="op">[{</span>nofRows <span class="op">,</span> nofCols <span class="op">,</span> rowFunction <span class="op">,</span> colFunction<span class="op">},</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>nofRows <span class="op">,</span> nofCols <span class="op">,</span> rowFunction <span class="op">,</span> colFunction<span class="op">}</span> <span class="ex">=</span> <span class="fu">im</span>;</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    nofCols <span class="co">(*1*)</span><span class="op">,</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    nofRows <span class="co">(*2*)</span><span class="op">,</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Function</span><span class="op">[</span><span class="fu">row</span><span class="op">,</span> <span class="op">{</span>#<span class="op">[[</span><span class="dv">2</span><span class="op">]]</span> <span class="op">,</span> #<span class="op">[[</span><span class="dv">1</span><span class="op">]]</span> <span class="op">,</span> #<span class="op">[[</span><span class="dv">3</span><span class="op">]]}</span> &amp; <span class="sc">/</span>@ colFunction<span class="op">[</span><span class="fu">row</span><span class="op">]]</span> <span class="co">(*3*)</span><span class="op">,</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Function</span><span class="op">[</span>col<span class="op">,</span> <span class="op">{</span>#<span class="op">[[</span><span class="dv">2</span><span class="op">]]</span> <span class="op">,</span> #<span class="op">[[</span><span class="dv">1</span><span class="op">]]</span> <span class="op">,</span> #<span class="op">[[</span><span class="dv">3</span><span class="op">]]}</span> &amp; <span class="sc">/</span>@ rowFunction<span class="op">[</span>col<span class="op">]]}</span> <span class="co">(*4*)</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="op">]</span></span></code></pre></div>
 <p>The implementation is simple and just carefully swaps rows and columns. This operation is obvious in 1 or 2 and more subtle in 4 and 5 where we have to additionally swap the indexes inside each matrix element.</p>
 <p>To verify that this works let’s try:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>matrixFormiM[{<span class="dv">1</span> , <span class="dv">5</span>} , {<span class="dv">1</span> , <span class="dv">5</span>}][transposeiM[tMat]]</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>matrixFormiM<span class="op">[{</span><span class="dv">1</span> <span class="op">,</span> <span class="dv">5</span><span class="op">}</span> <span class="op">,</span> <span class="op">{</span><span class="dv">1</span> <span class="op">,</span> <span class="dv">5</span><span class="op">}][</span>transposeiM<span class="op">[</span>tMat<span class="op">]]</span></span></code></pre></div>
 <p>The result is what we would probably expect: <span class="math display">\[
 \left(
 \begin{array}{cccccccc}

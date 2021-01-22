@@ -56,7 +56,7 @@ The file is loaded and stored in variable `a` in
 a = numpy.load("image.npy")
 ```
 
-and next it is unpacked (we might cover packing and unpacking during the course) in
+and next it is unpacked in
 \[compress.py line: 70\] 
 :
 
@@ -338,6 +338,8 @@ the arrays are plotted and shown.
 <center>
 ![](./2021-01-22/Figure_1.png)
 </center>
+
+2021-01-22 EDIT: minor corrections
 
 
 

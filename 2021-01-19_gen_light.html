@@ -8,6 +8,136 @@
   <link rel="alternate" type="application/rss+xml"
    href="feed.rss" title="RSS feed for My Page">
   <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      word-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     span.underline{text-decoration: underline;}
@@ -17,6 +147,7 @@
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
     div.sourceCode { margin: 1em 0; }
     pre.sourceCode { margin: 0; }
@@ -119,7 +250,7 @@
 		color : inherit;
 	}
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -143,21 +274,21 @@
 <p>mapping, addition, multiplication …</p>
 <p>The <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html> first post</a> in this series introduced the idea of implementing infinite matrices in the <em>Wolfram Language</em>. <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-17_gen_light.html>Next</a> we defined a type pattern to represent infinite matrices and implemented the transposition operation. This time we will write three more operations. The mapping function will allow us to map arbitrary functions over the elements of the matrix. Finally we will define the matrix - matrix addition and matrix - matrix multiplication functions.</p>
 <p>First mapping. This is straightforward:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>mapiM[<span class="dt">f_</span> (*<span class="dv">1</span>*)][<span class="fu">im</span> : <span class="fu">iM</span> (*<span class="dv">2</span>*)]  := </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a> <span class="fu">Module</span>[{nofRows , nofCols , rowFunction , colFunction},</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>  {nofRows , nofCols , rowFunction , colFunction} = <span class="fu">im</span> (*<span class="dv">3</span>*);</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>  {</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>        nofCols , </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>        nofRows , </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>        <span class="fu">Function</span>[<span class="fu">row</span>, </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>            {#[[<span class="dv">1</span>]] , #[[<span class="dv">2</span>]] , <span class="fu">f</span>[#[[<span class="dv">3</span>]]]} &amp; /@ rowFunction[<span class="fu">row</span>]] (*<span class="dv">4</span>*),</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>        <span class="fu">Function</span>[col, </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>            {#[[<span class="dv">1</span>]] , #[[<span class="dv">2</span>]] , <span class="fu">f</span>[#[[<span class="dv">3</span>]]]} &amp; /@ colFunction[col]] (*<span class="dv">5</span>*) </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>    }</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a>  ]</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mapiM<span class="op">[</span><span class="at">f_</span> <span class="co">(*1*)</span><span class="op">][</span><span class="fu">im</span> : <span class="fu">iM</span> <span class="co">(*2*)</span><span class="op">]</span>  <span class="ex">:=</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">Module</span><span class="op">[{</span>nofRows <span class="op">,</span> nofCols <span class="op">,</span> rowFunction <span class="op">,</span> colFunction<span class="op">},</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span>nofRows <span class="op">,</span> nofCols <span class="op">,</span> rowFunction <span class="op">,</span> colFunction<span class="op">}</span> <span class="ex">=</span> <span class="fu">im</span> <span class="co">(*3*)</span>;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        nofCols <span class="op">,</span> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        nofRows <span class="op">,</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Function</span><span class="op">[</span><span class="fu">row</span><span class="op">,</span> </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span>#<span class="op">[[</span><span class="dv">1</span><span class="op">]]</span> <span class="op">,</span> #<span class="op">[[</span><span class="dv">2</span><span class="op">]]</span> <span class="op">,</span> <span class="fu">f</span><span class="op">[</span>#<span class="op">[[</span><span class="dv">3</span><span class="op">]]]}</span> &amp; <span class="sc">/</span>@ rowFunction<span class="op">[</span><span class="fu">row</span><span class="op">]]</span> <span class="co">(*4*)</span><span class="op">,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Function</span><span class="op">[</span>col<span class="op">,</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span>#<span class="op">[[</span><span class="dv">1</span><span class="op">]]</span> <span class="op">,</span> #<span class="op">[[</span><span class="dv">2</span><span class="op">]]</span> <span class="op">,</span> <span class="fu">f</span><span class="op">[</span>#<span class="op">[[</span><span class="dv">3</span><span class="op">]]]}</span> &amp; <span class="sc">/</span>@ colFunction<span class="op">[</span>col<span class="op">]]</span> <span class="co">(*5*)</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">]</span></span></code></pre></div>
 <p>There are two arguments. The first argument, marked 1 above, is the function that will be applied to each element of the matrix. The second argument, marked 2, is the matrix itself. In 3 the matrix components are unpacked to local variables. The mapping operation is performed inside each non zero component of the matrix in 4 and 5 - <code>#[[3]]</code> is the value of the matrix element and in <code>f[#[[3]]]</code> the user supplied function is applied to this element.</p>
 <p>To see how this works in action we can evaluate:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>matrixFormiM[{<span class="dv">1</span> , <span class="dv">5</span>} , {<span class="dv">1</span> , <span class="dv">5</span>}][mapiM[<span class="fu">Function</span>[el , -el]][tMat]]</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>matrixFormiM<span class="op">[{</span><span class="dv">1</span> <span class="op">,</span> <span class="dv">5</span><span class="op">}</span> <span class="op">,</span> <span class="op">{</span><span class="dv">1</span> <span class="op">,</span> <span class="dv">5</span><span class="op">}][</span>mapiM<span class="op">[</span><span class="fu">Function</span><span class="op">[</span>el <span class="op">,</span> <span class="sc">-</span>el<span class="op">]][</span>tMat<span class="op">]]</span></span></code></pre></div>
 <p>where <code>tMat</code> is the <span class="math inline">\(P\)</span> matrix from <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-16_gen_light.html>part 1</a> and was defined in <em>Mathematica</em> in <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-17_gen_light.html>part 2</a>. The result: <span class="math display">\[
 \left(
 \begin{array}{cccccccc}
@@ -173,33 +304,33 @@
 \right)
 \]</span></p>
 <p>We have two more operations to go. First matrix - matrix addition. We will begin by defining a helper function <code>addsame</code>. It will take as argument a list containing all non zero elements in both of the matrices we want to add - for a given row (or column):</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>addsame[{<span class="dt">a___</span> , {<span class="dt">r_</span> , <span class="dt">c_</span> , <span class="dt">v1_</span>} , <span class="dt">b___</span> , {<span class="dt">r_</span> , <span class="dt">c_</span> , <span class="dt">v2_</span>} , <span class="dt">d___</span>}] := </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a> addsame[{<span class="fu">a</span> , <span class="fu">b</span> , <span class="fu">d</span> , {<span class="fu">r</span> , <span class="fu">c</span> , v1 + v2}}]; (*<span class="dv">1</span>*)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>addsame[<span class="dt">l_</span>] := <span class="fu">l</span>; (*<span class="dv">2</span>*)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>addsame<span class="op">[{</span><span class="at">a___</span> <span class="op">,</span> <span class="op">{</span><span class="at">r_</span> <span class="op">,</span> <span class="at">c_</span> <span class="op">,</span> <span class="at">v1_</span><span class="op">}</span> <span class="op">,</span> <span class="at">b___</span> <span class="op">,</span> <span class="op">{</span><span class="at">r_</span> <span class="op">,</span> <span class="at">c_</span> <span class="op">,</span> <span class="at">v2_</span><span class="op">}</span> <span class="op">,</span> <span class="at">d___</span><span class="op">}]</span> <span class="ex">:=</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> addsame<span class="op">[{</span><span class="fu">a</span> <span class="op">,</span> <span class="fu">b</span> <span class="op">,</span> <span class="fu">d</span> <span class="op">,</span> <span class="op">{</span><span class="fu">r</span> <span class="op">,</span> <span class="fu">c</span> <span class="op">,</span> v1 <span class="sc">+</span> v2<span class="op">}}]</span>; <span class="co">(*1*)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>addsame<span class="op">[</span><span class="at">l_</span><span class="op">]</span> <span class="ex">:=</span> <span class="fu">l</span>; <span class="co">(*2*)</span></span></code></pre></div>
 <p>The definition uses recursion and is divided into two parts. The function pattern marked 1 above is more specific and acts only when two matrix elements have the same row and column number. If this is the case then the values of the matrix elements are added <code>v1 + v2</code>. The second definition, marked 2, is more general and will act only when no two elements have the same row and column numbers.</p>
 <p>This helper function is part of the implementation of <code>addiM</code> - a function adding two infinite matrices togather:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>addiM[im1 : <span class="fu">iM</span> , im2 : <span class="fu">iM</span>] (*<span class="dv">1</span>*):=</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="fu">Module</span>[</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>   {nofRows1 , nofCols1 , rowFunction1 , colFunction1,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    nofRows2 , nofCols2 , rowFunction2 , colFunction2 , newFunRow , </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>    newFunCol},</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>   {nofRows1 , nofCols1 , rowFunction1 , colFunction1} = im1;</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>   {nofRows2 , nofCols2 , rowFunction2 , colFunction2} = im2;</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>   <span class="fu">If</span>[nofRows1 != nofRows2 , </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>    <span class="fu">Throw</span>[&quot;The <span class="fu">number</span> of rows does <span class="fu">not</span> match <span class="fu">in</span> addiM&quot;]]; (*<span class="dv">2</span>*)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>   <span class="fu">If</span>[nofCols1 != nofCols2 , </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    <span class="fu">Throw</span>[&quot;The <span class="fu">number</span> of columns does <span class="fu">not</span> match <span class="fu">in</span> addiM&quot;]]; (*<span class="dv">3</span>*)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>   newFunRow = <span class="fu">Function</span>[<span class="fu">row</span> , </span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>     addsame[<span class="fu">Join</span>[rowFunction1[<span class="fu">row</span>] , rowFunction2[<span class="fu">row</span>]]]</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>     ]; (*<span class="dv">4</span>*)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>   newFunCol = <span class="fu">Function</span>[<span class="fu">column</span> , </span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>     addsame[<span class="fu">Join</span>[colFunction1[<span class="fu">column</span>] , colFunction2[<span class="fu">column</span>]]]</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>     ]; (*<span class="dv">5</span>*)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>   newiM[nofRows1 , nofCols2, newFunRow, newFunCol]</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>   ];</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>addiM<span class="op">[</span>im1 : <span class="fu">iM</span> <span class="op">,</span> im2 : <span class="fu">iM</span><span class="op">]</span> <span class="co">(*1*)</span><span class="ex">:=</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Module</span><span class="op">[</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">{</span>nofRows1 <span class="op">,</span> nofCols1 <span class="op">,</span> rowFunction1 <span class="op">,</span> colFunction1<span class="op">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    nofRows2 <span class="op">,</span> nofCols2 <span class="op">,</span> rowFunction2 <span class="op">,</span> colFunction2 <span class="op">,</span> newFunRow <span class="op">,</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    newFunCol<span class="op">},</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>   <span class="op">{</span>nofRows1 <span class="op">,</span> nofCols1 <span class="op">,</span> rowFunction1 <span class="op">,</span> colFunction1<span class="op">}</span> <span class="ex">=</span> im1;</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>   <span class="op">{</span>nofRows2 <span class="op">,</span> nofCols2 <span class="op">,</span> rowFunction2 <span class="op">,</span> colFunction2<span class="op">}</span> <span class="ex">=</span> im2;</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">If</span><span class="op">[</span>nofRows1 !<span class="ex">=</span> nofRows2 <span class="op">,</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Throw</span><span class="op">[</span><span class="st">&quot;The number of rows does not match in addiM&quot;</span><span class="op">]]</span>; <span class="co">(*2*)</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>   <span class="fu">If</span><span class="op">[</span>nofCols1 !<span class="ex">=</span> nofCols2 <span class="op">,</span> </span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Throw</span><span class="op">[</span><span class="st">&quot;The number of columns does not match in addiM&quot;</span><span class="op">]]</span>; <span class="co">(*3*)</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>   newFunRow <span class="ex">=</span> <span class="fu">Function</span><span class="op">[</span><span class="fu">row</span> <span class="op">,</span> </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>     addsame<span class="op">[</span><span class="fu">Join</span><span class="op">[</span>rowFunction1<span class="op">[</span><span class="fu">row</span><span class="op">]</span> <span class="op">,</span> rowFunction2<span class="op">[</span><span class="fu">row</span><span class="op">]]]</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>     <span class="op">]</span>; <span class="co">(*4*)</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>   newFunCol <span class="ex">=</span> <span class="fu">Function</span><span class="op">[</span><span class="fu">column</span> <span class="op">,</span> </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>     addsame<span class="op">[</span><span class="fu">Join</span><span class="op">[</span>colFunction1<span class="op">[</span><span class="fu">column</span><span class="op">]</span> <span class="op">,</span> colFunction2<span class="op">[</span><span class="fu">column</span><span class="op">]]]</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>     <span class="op">]</span>; <span class="co">(*5*)</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>   newiM<span class="op">[</span>nofRows1 <span class="op">,</span> nofCols2<span class="op">,</span> newFunRow<span class="op">,</span> newFunCol<span class="op">]</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>   <span class="op">]</span>;</span></code></pre></div>
 <p>The arguments, marked 1 above, are two infinite matrices. Next the elements of the matrices are unpacked into local variables and in 2 and 3 the sizes of the matrices are checked. Failure at this point will result in an exception being thrown. In 4 and 5 above - new row and column functions are created. <code>addsame</code> is being used in conjunction with <code>Join</code> to concatenate the non zero elements in a given row (marked 4) or column (marked 5) of infinite matrices <code>im1</code> and <code>im2</code>. To see all of this in action try evaluating:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>matrixFormiM[{<span class="dv">1</span> , <span class="dv">5</span>} , {<span class="dv">1</span> , <span class="dv">5</span>}][</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a> addiM[mapiM[<span class="fu">Function</span>[el , -el]][tMat] , tMat]]</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>matrixFormiM<span class="op">[{</span><span class="dv">1</span> <span class="op">,</span> <span class="dv">5</span><span class="op">}</span> <span class="op">,</span> <span class="op">{</span><span class="dv">1</span> <span class="op">,</span> <span class="dv">5</span><span class="op">}][</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> addiM<span class="op">[</span>mapiM<span class="op">[</span><span class="fu">Function</span><span class="op">[</span>el <span class="op">,</span> <span class="sc">-</span>el<span class="op">]][</span>tMat<span class="op">]</span> <span class="op">,</span> tMat<span class="op">]]</span></span></code></pre></div>
 <p>We can expect a null matrix … and we get: <span class="math display">\[
 \left(
 \begin{array}{cccccccc}
@@ -215,31 +346,31 @@
 \right)
 \]</span> … a null matrix.</p>
 <p>Now for the final function in our infinite matrix implementation - matrix multiplication. Here is the code:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>muliM[im1:<span class="fu">iM</span> , im2:<span class="fu">iM</span>]:=</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="fu">Module</span>[</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>        {nofRows1 , nofCols1 , rowFunction1 , colFunction1,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>        nofRows2 , nofCols2 , rowFunction2 , colFunction2 , </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>        newFunRow , newFunCol},</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>        {nofRows1 , nofCols1 , rowFunction1 , colFunction1} = im1;</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>        {nofRows2 , nofCols2 , rowFunction2 , colFunction2} = im2;</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>        newFunRow (*<span class="dv">1</span>*) = <span class="fu">Function</span>[<span class="fu">row</span> , </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>            <span class="fu">Module</span>[</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>                {allElements , columns},</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>                allElements = <span class="fu">Flatten</span>[timesel[#,rowFunction2[#[[<span class="dv">2</span>]]]]&amp;/@rowFunction1[<span class="fu">row</span>] , <span class="dv">1</span>]; (*<span class="dv">3</span>*)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>                columns = <span class="fu">Union</span>[allElements[[;; , <span class="dv">2</span>]]];</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>                <span class="fu">Fold</span>[{#<span class="dv">1</span>[[<span class="dv">1</span>]] , #<span class="dv">1</span>[[<span class="dv">2</span>]] , #<span class="dv">1</span>[[<span class="dv">3</span>]] + #<span class="dv">2</span>[[<span class="dv">3</span>]]}&amp; , #]&amp;/@(<span class="fu">Cases</span>[allElements , {_ , # , _}]&amp;/@columns) (*<span class="dv">4</span>*)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>            ]</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>        ];</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>        newFunCol (*<span class="dv">2</span>*) = <span class="fu">Function</span>[<span class="fu">column</span> , </span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>            <span class="fu">Module</span>[</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>                {allElements , rows},</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>                allElements = <span class="fu">Flatten</span>[lesemit[#,colFunction1[#[[<span class="dv">1</span>]]]]&amp;/@colFunction2[<span class="fu">column</span>] , <span class="dv">1</span>];</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>                rows = <span class="fu">Union</span>[allElements[[;; , <span class="dv">1</span>]]];</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>                <span class="fu">Fold</span>[{#<span class="dv">1</span>[[<span class="dv">1</span>]] , #<span class="dv">1</span>[[<span class="dv">2</span>]] , #<span class="dv">1</span>[[<span class="dv">3</span>]] + #<span class="dv">2</span>[[<span class="dv">3</span>]]}&amp; , #]&amp;/@(<span class="fu">Cases</span>[allElements , {# , _ , _}]&amp;/@rows)</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>            ]</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>        ];</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a>        newiM[nofRows1 , nofCols2,newFunRow,newFunCol] (*<span class="dv">3</span>*)</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a>    ];</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>muliM<span class="op">[</span>im1:<span class="fu">iM</span> <span class="op">,</span> im2:<span class="fu">iM</span><span class="op">]</span><span class="ex">:=</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Module</span><span class="op">[</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span>nofRows1 <span class="op">,</span> nofCols1 <span class="op">,</span> rowFunction1 <span class="op">,</span> colFunction1<span class="op">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        nofRows2 <span class="op">,</span> nofCols2 <span class="op">,</span> rowFunction2 <span class="op">,</span> colFunction2 <span class="op">,</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        newFunRow <span class="op">,</span> newFunCol<span class="op">},</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span>nofRows1 <span class="op">,</span> nofCols1 <span class="op">,</span> rowFunction1 <span class="op">,</span> colFunction1<span class="op">}</span> <span class="ex">=</span> im1;</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span>nofRows2 <span class="op">,</span> nofCols2 <span class="op">,</span> rowFunction2 <span class="op">,</span> colFunction2<span class="op">}</span> <span class="ex">=</span> im2;</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        newFunRow <span class="co">(*1*)</span> <span class="ex">=</span> <span class="fu">Function</span><span class="op">[</span><span class="fu">row</span> <span class="op">,</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">Module</span><span class="op">[</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span>allElements <span class="op">,</span> columns<span class="op">},</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                allElements <span class="ex">=</span> <span class="fu">Flatten</span><span class="op">[</span>timesel<span class="op">[</span>#<span class="op">,</span>rowFunction2<span class="op">[</span>#<span class="op">[[</span><span class="dv">2</span><span class="op">]]]]</span>&amp;<span class="sc">/</span>@rowFunction1<span class="op">[</span><span class="fu">row</span><span class="op">]</span> <span class="op">,</span> <span class="dv">1</span><span class="op">]</span>; <span class="co">(*3*)</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                columns <span class="ex">=</span> <span class="fu">Union</span><span class="op">[</span>allElements<span class="op">[[</span>;; <span class="op">,</span> <span class="dv">2</span><span class="op">]]]</span>;</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                <span class="fu">Fold</span><span class="op">[{</span>#<span class="dv">1</span><span class="op">[[</span><span class="dv">1</span><span class="op">]]</span> <span class="op">,</span> #<span class="dv">1</span><span class="op">[[</span><span class="dv">2</span><span class="op">]]</span> <span class="op">,</span> #<span class="dv">1</span><span class="op">[[</span><span class="dv">3</span><span class="op">]]</span> <span class="sc">+</span> #<span class="dv">2</span><span class="op">[[</span><span class="dv">3</span><span class="op">]]}</span>&amp; <span class="op">,</span> #<span class="op">]</span>&amp;<span class="sc">/</span>@(<span class="fu">Cases</span><span class="op">[</span>allElements <span class="op">,</span> <span class="op">{</span>_ <span class="op">,</span> # <span class="op">,</span> _<span class="op">}]</span>&amp;<span class="sc">/</span>@columns) <span class="co">(*4*)</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>            <span class="op">]</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">]</span>;</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        newFunCol <span class="co">(*2*)</span> <span class="ex">=</span> <span class="fu">Function</span><span class="op">[</span><span class="fu">column</span> <span class="op">,</span> </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">Module</span><span class="op">[</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span>allElements <span class="op">,</span> rows<span class="op">},</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>                allElements <span class="ex">=</span> <span class="fu">Flatten</span><span class="op">[</span>lesemit<span class="op">[</span>#<span class="op">,</span>colFunction1<span class="op">[</span>#<span class="op">[[</span><span class="dv">1</span><span class="op">]]]]</span>&amp;<span class="sc">/</span>@colFunction2<span class="op">[</span><span class="fu">column</span><span class="op">]</span> <span class="op">,</span> <span class="dv">1</span><span class="op">]</span>;</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>                rows <span class="ex">=</span> <span class="fu">Union</span><span class="op">[</span>allElements<span class="op">[[</span>;; <span class="op">,</span> <span class="dv">1</span><span class="op">]]]</span>;</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                <span class="fu">Fold</span><span class="op">[{</span>#<span class="dv">1</span><span class="op">[[</span><span class="dv">1</span><span class="op">]]</span> <span class="op">,</span> #<span class="dv">1</span><span class="op">[[</span><span class="dv">2</span><span class="op">]]</span> <span class="op">,</span> #<span class="dv">1</span><span class="op">[[</span><span class="dv">3</span><span class="op">]]</span> <span class="sc">+</span> #<span class="dv">2</span><span class="op">[[</span><span class="dv">3</span><span class="op">]]}</span>&amp; <span class="op">,</span> #<span class="op">]</span>&amp;<span class="sc">/</span>@(<span class="fu">Cases</span><span class="op">[</span>allElements <span class="op">,</span> <span class="op">{</span># <span class="op">,</span> _ <span class="op">,</span> _<span class="op">}]</span>&amp;<span class="sc">/</span>@rows)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>            <span class="op">]</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="op">]</span>;</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        newiM<span class="op">[</span>nofRows1 <span class="op">,</span> nofCols2<span class="op">,</span>newFunRow<span class="op">,</span>newFunCol<span class="op">]</span> <span class="co">(*3*)</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="op">]</span>;</span></code></pre></div>
 <p>The approach is similar to addition. In 1 and 2 above we create two new functions <code>newFunRow</code> and <code>newFunCol</code>. These two functions will be plugged into the constructor for the new matrix in 3.</p>
 <p>Let’s first have a look at <code>newFunRow</code> and start with the definition of matrix multiplication. If we multiply two matrices <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> to get a matrix <span class="math inline">\(C\)</span> then it’s elements are: <span class="math display">\[
 C_{r c} = \sum_{k} A_{r k} B_{k c}
@@ -248,16 +379,16 @@ C_{r c} = \sum_{k} A_{r k} B_{k c}
 \]</span> If <span class="math inline">\(r =\)</span> <code>row</code> then this is calculated in <code>rowFunction1[row]</code> (marked 3 above). If <span class="math inline">\(k =\)</span> <code>#[[2]]</code> then all k-th rows are calculated in <code>rowFunction2[#[[2]]]</code> in 3 above. For <code>#[[2]]</code> $ = c_1$ and using our notation for non zero matrix elements, the <span class="math inline">\(c_1\)</span>-th row can be written as: <span class="math display">\[
 \text{row from B} = \{\{c_{1} , c&#39;_{1} , b_{c_{1} c&#39;_{1}}\} , \{c_{1} , c&#39;_{2} , b_{c_1 c&#39;_{2}}\} , \ldots\}
 \]</span> Next comes <code>timesel</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>timesel[</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>    {<span class="dt">r1_</span>Integer?<span class="fu">Positive</span> , <span class="dt">c1_</span>Integer?<span class="fu">Positive</span> , <span class="dt">v1_</span>} , </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    <span class="fu">row</span> : {{_Integer?<span class="fu">Positive</span> , _Integer?<span class="fu">Positive</span> , _} ...}] := </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>        {r1 , #[[<span class="dv">2</span>]] , v1 #[[<span class="dv">3</span>]]} &amp; /@ <span class="fu">row</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>timesel<span class="op">[</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span><span class="at">r1_</span>Integer?<span class="fu">Positive</span> <span class="op">,</span> <span class="at">c1_</span>Integer?<span class="fu">Positive</span> <span class="op">,</span> <span class="at">v1_</span><span class="op">}</span> <span class="op">,</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">row</span> : <span class="op">{{</span>_Integer?<span class="fu">Positive</span> <span class="op">,</span> _Integer?<span class="fu">Positive</span> <span class="op">,</span> _<span class="op">}</span> ...<span class="op">}]</span> <span class="ex">:=</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span>r1 <span class="op">,</span> #<span class="op">[[</span><span class="dv">2</span><span class="op">]]</span> <span class="op">,</span> v1 #<span class="op">[[</span><span class="dv">3</span><span class="op">]]}</span> &amp; <span class="sc">/</span>@ <span class="fu">row</span>;</span></code></pre></div>
 <p>All this function does is multiply appropriate elements in each row making sure that the row and column of the multiplied element is correct. Finally, the resulting list <code>allElements</code> is folded and the matrix elements summed up (see 4 in <code>muliM</code> above).</p>
 <p>This is a lot to take in but it is strightforward once the expressions in these functions are carefully disected. The situation with <code>newFunCol</code> is analogous. The rows and columns are carefully swapped and instead of <code>timesel</code> there is:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>lesemit[</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    {<span class="dt">r1_</span>Integer?<span class="fu">Positive</span> , <span class="dt">c1_</span>Integer?<span class="fu">Positive</span> , <span class="dt">v1_</span>} , </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    <span class="fu">column</span> : {{_Integer?<span class="fu">Positive</span> , _Integer?<span class="fu">Positive</span> , _} ...}] := </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>        {#[[<span class="dv">1</span>]] , c1 , v1 #[[<span class="dv">3</span>]]} &amp; /@ <span class="fu">column</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lesemit<span class="op">[</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span><span class="at">r1_</span>Integer?<span class="fu">Positive</span> <span class="op">,</span> <span class="at">c1_</span>Integer?<span class="fu">Positive</span> <span class="op">,</span> <span class="at">v1_</span><span class="op">}</span> <span class="op">,</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column</span> : <span class="op">{{</span>_Integer?<span class="fu">Positive</span> <span class="op">,</span> _Integer?<span class="fu">Positive</span> <span class="op">,</span> _<span class="op">}</span> ...<span class="op">}]</span> <span class="ex">:=</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span>#<span class="op">[[</span><span class="dv">1</span><span class="op">]]</span> <span class="op">,</span> c1 <span class="op">,</span> v1 #<span class="op">[[</span><span class="dv">3</span><span class="op">]]}</span> &amp; <span class="sc">/</span>@ <span class="fu">column</span>;</span></code></pre></div>
 <p>That’s it. <a id = "NCE" href = 2021-01-17/infiniteMatrix.nb>Here is the notebook</a>. I might turn this into a <em>Wolfram Language</em> package. When that time comes I’ll provide a link below in an EDIT, maybe with some more examples.</p>
 <br/>
 <a id = "LNK" 
