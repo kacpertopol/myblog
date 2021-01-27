@@ -299,7 +299,7 @@
 <p>Note that the image name is expected not to contain the extension, e.g.instead of <code>warped1.png</code> the command line expects <code>warped1</code>.</p>
 <p>The image is read using the <code>cv2.imread</code> function [denoise.py line: 67]</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>warped <span class="op">=</span> cv2.imread(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;.png&quot;</span>)</span></code></pre></div>
-<p>The <a id = "NCE" href = https://github.com/kacpertopol/denoise>denoise repository</a> contains four sample images: <code>warped1...4.png</code> that contain that were “warped” inside <code>cam_board</code> (web cam frames are morphed so that four special markers showing up on a printout are stretched to the four corners of the image). Here we will use <code>warped1.png</code> and <code>warped4.png</code>. Each image contains some text (a), some numbers (b), a simple graph (c) and two patches of color (d).</p>
+<p>The <a id = "NCE" href = https://github.com/kacpertopol/denoise>denoise repository</a> contains four sample images: <code>warped1...4.png</code> that were “warped” inside <code>cam_board</code> (web cam frames are morphed so that four special markers showing up on a printout are stretched to the four corners of the image). Here we will use <code>warped1.png</code> and <code>warped4.png</code>. Each image contains some text (a), some numbers (b), a simple graph (c) and two patches of color (d).</p>
 <center>
 <img src="./2021-01-27/warpedcol.png" />
 </center>
