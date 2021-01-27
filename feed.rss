@@ -5,6 +5,12 @@
 <link>https://kacpertopol.github.io/blog/index.html</link>
 <description>Kacper Topolnicki's blog</description>
 <item>
+<title>image denoising with python</title>
+<link>https://kacpertopol.github.io/blog/2021-01-27_gen_light.html</link>
+<description>remove text background with cv2 and numpy</description>
+<guid>https://kacpertopol.github.io/blog/2021-01-27_gen_light.html</guid>
+</item>
+<item>
 <title>binary image compression with python and numpy</title>
 <link>https://kacpertopol.github.io/blog/2021-01-22_gen_light.html</link>
 <description>numpy-thonic run length compression</description>

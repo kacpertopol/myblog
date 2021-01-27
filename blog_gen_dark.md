@@ -5,6 +5,15 @@ inv : " bloglight.html"
 ---
 
 
+# [image denoising with python](./2021-01-27_gen_dark.html)
+<center>
+[*2021-01-27*](2021-01-27_gen_light.html)
+</center>
+
+remove text background with cv2 and numpy <a id = "NCE" href = "2021-01-27_gen_dark.html">...</a>
+
+
+
 # [binary image compression with python and numpy](./2021-01-22_gen_dark.html)
 <center>
 [*2021-01-22*](2021-01-22_gen_light.html)
