@@ -1,0 +1,338 @@
+\RequirePackage{fix-cm}
+\documentclass[smallextended]{svjour3}
+
+\smartqed 
+
+\usepackage{listings}
+\usepackage{hyperref}
+
+\lstloadlanguages{Mathematica}
+
+\begin{document}
+
+\title{Monads and ``do" notation in the Wolfram Language}
+\author{Kacper Topolnicki}
+\institute{K. Topolnicki \at 
+							Jagiellonian University\\
+							30-348 Kraków\\ 
+							Poland\\
+							\email{kacper.topolnicki@uj.edu.pl}
+}
+
+\date{Received: date / Accepted: date}
+
+\maketitle
+
+\begin{abstract}
+This paper describes a categorical interpretation of the
+\emph{Wolfram Language}
+and suggests a simple implementation of monadic types and the ``do" notation. 
+The monadic style of programming combined with the many built 
+	in functions of the \emph{Mathematica} \cite{mathematica} system has potential to be a 
+powerful tool in writing \emph{Wolfram Language} code. Additionally,
+using pure functions and the ``do" notation can result in programs that
+are very predictable and easy to parallelize.
+\keywords{Mathematica \and Wolfram Language \and Monad}
+\end{abstract}
+
+\section{Introduction}
+
+The motivation for this work stems from a
+practical problem of 
+writing a \emph{Wolfram Language} (WL) application aimed to abstract away
+the notion of scalar valued functions for numerical computations.
+The goal was for the user to specify, in the WL, the number of arguments for 
+a function, which arguments are discrete indices and which arguments
+are floating point numbers. For floating point arguments the user additionally
+defines points
+and weights used for interpolations and integrations over these arguments and
+finally specifies which arguments can be used for purposes of code parallelization.
+Given this input, the job of the application is to create a \emph{FORTRAN 90}
+module and a directory with supplementary data. 
+The user can import this module and work with
+an abstraction of the scalar valued functions: store function values on 
+different cores and handle them using different \emph{MPI} and \emph{OPENMP}
+threads, interpolate function values and integrate over function arguments.
+
+The application requires further testing but it is feature complete. 
+This was possible, to a large extent, due to a choice to base
+the implementation around monadic types. 
+The monadic style of programming can also be appropriate for many other problems and
+in this paper a simple approach to include monads and the \emph{Haskell} style ``do" notation 
+in the WL is proposed. 
+This combined with the 
+powerful functions built into the \emph{Mathematica} \cite{mathematica}
+\cite{mathematica} system
+can lead to the production of very powerful code.
+
+This work was influenced by 
+an excellent book by Bartosz Milewski \cite{bmilew} containing
+an introduction to Category Theory. First in section \ref{categorical_interpretation}
+a categorical interpretation of the WL is introduced. Next, in section
+\ref{monadic_types}
+the implementation of monadic types and the ``do" notation is described. In section
+\ref{examples}
+examples and tips for practical implementations are shown. Finally
+section \ref{summary} contains a summary.
+The text contains snippets of WL code and pseudo-code. Some code fragments will use
+comments \verb|(*...*)| to hold additional information intended for interpretation by the reader.
+
+\section{Categorical interpretation of the \emph{Wolfram Language}}
+\label{categorical_interpretation}
+
+In order to think about the WL as a category a subset of the WL will be considered consisting
+of functions defined in the following manner:
+\begin{lstlisting}
+f[(*pattern a*)] := (*expression*)
+\end{lstlisting}
+where \emph{f} stands for the function name (other symbols can also be used), \emph{pattern a} is a WL language pattern expression that specifies the
+arguments accepted by the function \emph{f} and \emph{expression} is a WL
+expression that can be constructed from the named parts of \emph{pattern a}.
+This is not directly enforced by the WL, but ideally all possible results 
+of \emph{f} match a different pattern, \emph{pattern b}, so that:
+\begin{lstlisting}
+MatchQ[f[(*expression matching pattern a*)],(*pattern b*)]
+\end{lstlisting}
+is always true. Curryied functions can be used and this can be
+interpreted as replacing \verb|f| with \verb|f[x]|, \verb|f[x][y]|, \ldots
+in the pseudo code above and treating the replacement as a whole set of
+functions built from the different values of \verb|x|, \verb|y|, \ldots
+
+It is seems natural to treat this subset of the WL as a category with morphisms
+being functions (e.g. \verb|f|, \verb|f[x]|, \verb|f[x][y]|, \ldots) and objects
+being types defined by WL patterns (e.g. the set of all WL expressions that match \emph{pattern a} 
+defines type \emph{a} and the set of expressions that match \emph{pattern b}
+defines type \emph{b}). In this context a monad is a type function: it takes a
+pattern that defines one type and returns a new pattern that defines a different
+type. Some additional definitions are necessary and they discussed in the next section.
+
+\section{Introduction of monadic types and the ``do" notation}
+\label{monadic_types}
+
+A user can implement a monad \emph{m} in the WL by supplying three definitions.
+The first definition:
+\begin{lstlisting}
+pattern[m] = (*pattern m a*)
+\end{lstlisting}
+provides a pattern that matches a WL expression if it is an \emph{m} monad for any type argument
+\emph{a}. The second definition implements the monadic \emph{return} function:
+\begin{lstlisting}
+return[m][x_] := (*expression matching pattern[m]*)
+\end{lstlisting}
+if the type of \emph{x} is \emph{a} then this expression should be a
+\emph{m} monad for type argument \emph{a}. In particular the resulting
+WL expression should match \verb|pattern[m]|. The final definition is 
+an implementation of the monadic
+\emph{bind} operator for \emph{m}:
+\begin{lstlisting}
+bind[m][ma_ , aTOmb_] := (*implementation of bind*)
+\end{lstlisting}
+where \emph{ma} is an \emph{m} monad for type argument \emph{a} and
+\emph{aTOmb} is a function taking an element of type \emph{a} and returning an 
+\emph{m} monad for type argument \emph{b}. The user does not have
+to supply additional pattern constraints in \verb|bind|, however 
+it is up to the user to make sure that these definitions result in
+an object that satisfies the monad laws.
+
+Having these three definitions for monad \emph{m}, the implementation of the
+``do" notation in the WL is straightforward and consists of two parts. 
+The first is a recursive definition that reduces the \verb|do[m]| expression
+by applying the user defined \verb|bind[m]| operator:
+\begin{lstlisting}
+do[m_][x___ , y_ , r:Except[_LeftArrow]]:= 
+   If[MatchQ[y , LeftArrow[_ , _]] , 
+      do[m][x , 
+         chk[m][
+         bnd[m][snd[y] , 
+            Function[Evaluate[fst[y]] , r]]]
+         ],
+      do[m][x , 
+         chk[m][bnd[m][y , 
+            Function[Unique["nonExistantVariable"] , r]]]
+      ]
+   ];
+\end{lstlisting}
+Here \verb|bnd[m]| will be replaced by the appropriate user supplied
+\verb|bind[m]|
+function when the first argument matches \verb|pattern[m]| and the second
+argument is a function, \verb|fst|, \verb|snd| are helper functions that take the left and
+right expression from a \verb|LeftArrow| statement, and finally \verb|chk[m]|
+is a function that checks the result of \verb|bind[m]| against the user defined 
+\verb|pattern[m]|. Once \verb|do[m]| is reduced to a contain a single expression 
+the final expression is checked and returned:
+\begin{lstlisting}
+do[m_][mx_]:=chk[m][mx];
+\end{lstlisting}
+These definitions together with the supplementary functions are provided
+for the readers convenience at \cite{repos}. This repository contains a 
+short WL package \emph{wlmonad.wl} and a number of examples. 
+
+\section{Hanoi Tower example}
+\label{examples}
+
+This section takes a look  
+at the classic Hanoi Tower puzzle.
+The puzzle
+consists of three poles onto which stacks of disks with different sizes $1 , 2 , 3 , \ldots$
+can be placed. At the beginning of the puzzle all disks are stacked on the first pole
+with smaller disks being placed on top of larger ones. The aim of the puzzle is to 
+transport all disks from the first pole to the third pole in discrete steps. In each 
+step only one disk can be taken from the top of a stack and placed on a larger disk
+or on an empty pole.
+
+The puzzle is solved in the \emph{hanoi\_tower\_example.nb} notebook from \cite{repos}.
+The notebook starts a definition 
+of a pattern for the Hanoi Tower puzzle:
+\begin{lstlisting}
+towers = {_List , _List , _List};
+\end{lstlisting}
+The puzzle will be represented by a list containing three elements. Each 
+element is a list and corresponds to a single pole of the puzzle.
+Elements of this list will be numbers corresponding to disc sizes. 
+Another pattern is provided for expressions that will be used to record
+the moves that lead to the solution:
+\begin{lstlisting}
+move = {_ -> _ , {_List , _List , _List}};
+\end{lstlisting}
+Moves will be two element lists, the first element (e.g. \verb|1->2|)
+will record the number of the pole from which the disk was taken and the number
+of the pole onto which the disk was dropped (e.g. \verb|1| , \verb|2|). The
+second element will contain the current configuration of the puzzle.
+
+Next three definitions are provided for the \emph{hT} monad that will be used in
+a recursive solution to the puzzle. The first definition is a pattern that will match any
+WL expression that is an \emph{hT} monad for any type argument:
+\begin{lstlisting}
+pattern[hT] = hT[towers , {move ...}];
+\end{lstlisting}
+Next the return function is defined as (please note that an empty list also matches \verb|{move ...}|):
+\begin{lstlisting}
+return[hT][x_] := hT[x , {}];
+\end{lstlisting}
+Finaly the bind
+operator for \emph{hT} is given (please note that no additional pattern
+constraints are necessary for \verb|ma| and \verb|aTomb|):
+\begin{lstlisting}
+bind[hT][ma_ , aTomb_] := 
+   With[
+      {val = aTomb[grab[ma]]}, 
+      hT[grab[val] , join[rest[ma], rest[val]]]
+   ];
+\end{lstlisting}
+where \verb|grab| and \verb|rest| are helper functions:
+\begin{lstlisting}
+grab[ma : pattern[hT]] := ma[[1]];
+rest[ma : pattern[hT]] := ma[[2]];
+\end{lstlisting}
+and \verb|join| provides a lazy version of the \verb|Join| function:
+\begin{lstlisting}
+join[a : {move ...} , b : {move ...}] := Join[a , b];
+\end{lstlisting}
+Providing lazy functions that evaluate only when they are called with 
+appropriate arguments is important for recursion.
+
+Only one action is provided for this monad with two definitions. 
+The first one moves a single disk
+of puzzle \verb|tower| from pole number \verb|from| to pole number \verb|to|:
+\begin{lstlisting}
+moveDiscs[from_ , to_ , 1][tower : towers] :=
+   Module[{newtower},
+      newtower = ReplacePart[
+         ReplacePart[
+            tower , 
+            to -> Join[tower[[from]][[1 ;; 1]], tower[[to]]]
+         ] , 
+         from -> tower[[from , 2 ;;]]
+      ];
+      hT[newtower , {{from -> to , newtower}}]
+   ];
+\end{lstlisting}
+The second one moves \verb|n| disks from pole number \verb|from|
+to pole number \verb|to|. This time the definition uses the ``do" notation and recursion:
+\begin{lstlisting}
+moveDiscs[from_ , to_ , n_][tower : towers] :=
+   do[hT][
+      toOther <- moveDiscs[
+                  from , 
+                  other[from , to] , 
+                  n - 1][tower],
+      toGoal <- moveDiscs[
+                  from , 
+                  to , 
+                  1][toOther],
+      finalMove <- moveDiscs[
+                     other[from , to] , 
+                     to , 
+                     n - 1][toGoal],
+      return[hT][finalMove]
+   ];
+\end{lstlisting}
+where \verb|<-| is the \verb|LeftArrow| operator (\verb|<ESC><-<ESC>| in the WL) 
+and \verb|other[i , j]| returns a pole number
+that is different then \verb|i| and \verb|j|. The procedure
+of solving the puzzle can be read off directly from the code above.
+First $n-1$ disks are moved from pole number \verb|from| to a pole that is
+different from \verb|from| and \verb|to|. Next, one disk is moved from pole
+number \verb|from| to pole number \verb|to|. Finaly the $n-1$ disks are moved
+from the other pole to the \verb|to| pole.
+
+A solution to the puzzle with three disks on the first pole in the initial
+configuration
+can be obtained by evaluating:
+\begin{lstlisting}
+moveDiscs[1 , 3 , 3][makeTower[3]]
+\end{lstlisting}
+where \verb|makeTower[3]| prepares the initial configuration of the puzzle.
+The result is:
+\begin{lstlisting}
+hT[
+   {{},{},{1,2,3}},
+   {
+      {1->3,{{2,3},{},{1}}},
+      {1->2,{{3},{2},{1}}},
+      {3->2,{{3},{1,2},{}}},
+      {1->3,{{},{1,2},{3}}},
+      {2->1,{{1},{2},{3}}},
+      {2->3,{{1},{},{2,3}}},
+      {1->3,{{},{},{1,2,3}}}
+   }
+]
+\end{lstlisting}
+The first element of this expression is the final configuration of the solved
+puzzle. The second element is a list containing the moves used to obtain the
+solution. 
+
+The repository \cite{repos} more examples including a
+\emph{list} monad and a \emph{maybe} monad. The reader is encouraged to download
+and explore these notebooks.
+
+\section{Summary}
+\label{summary}
+
+The \emph{Mathematica} \cite{mathematica} system has a very powerful set of built in
+functions. The flexibility of the \emph{Wolfram Language} makes it possible to program
+in many different styles. Such freedom can, however, be overwhelming and 
+it is a good idea to conform to styles of programming that are tailored
+to particular problems. Combining the monadic style of programming with
+the powerful standard library of the \emph{Wolfram Language} can be very
+useful for problems that require a functional solution. There are many ways of
+implementing this style of programming in the \emph{Wolfram Language}, the
+author belives that the
+method presented in this paper is relatively simple and robust.
+
+\section*{Acknowledgmnets}
+
+The project was financed from the resources
+of the National Science Center, Poland, under Grants No.2016/22/M/ST2/00173 
+and No. 2016/21/D/ST2/01120.
+
+\begin{thebibliography}{9}
+
+\bibitem{mathematica} Wolfram Research, Inc., Mathematica, Version 12.1, Champaign, IL (2020).
+\bibitem{bmilew} ``Category Theory For Programmers", Bartosz Milewski, 2019
+		(\url{https://www.blurb.com/b/9621951-category-theory-for-programmers-new-edition-hardco}) 
+\bibitem{repos} \url{https://gitlab.com/kacpertopolnicki/wlmonad} 
+
+\end{thebibliography}
+
+\end{document}

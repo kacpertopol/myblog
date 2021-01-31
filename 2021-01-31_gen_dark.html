@@ -213,7 +213,9 @@
 </head>
 <body>
 <a id = "LNK" 
-	href = bloglight.html>☀️ </a>
+	href = blogdark.html>🏠</a>
+<a id = "LNK" 
+	href = 2021-01-31_gen_light.html>☀️ </a>
 </br>
 <header id="title-block-header">
 <h1 class="title">my blog</h1>
@@ -221,41 +223,21 @@
 <a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a>
 <center></p>
 </header>
-<h1 id="monads-and-do-notation-in-the-wolfram-language-part-1"><a href="./2021-01-31_gen_dark.html">monads and “do” notation in the <em>Wolfram Language</em>, part 1</a></h1>
+<h1 id="monads-and-do-notation-in-the-wolfram-language-part-1">monads and “do” notation in the <em>Wolfram Language</em>, part 1</h1>
 <center>
-<a href="2021-01-31_gen_light.html"><em>2021-01-31</em></a>
+<em>2021-01-31</em>
 </center>
-<p>motivation, categorical interpretation of the <em>Wolfram Language</em> <a id = "NCE" href = "2021-01-31_gen_dark.html">…</a></p>
-<h1 id="image-denoising-with-python"><a href="./2021-01-27_gen_dark.html">image denoising with python</a></h1>
-<center>
-<a href="2021-01-27_gen_light.html"><em>2021-01-27</em></a>
-</center>
-<p>remove text background with cv2 and numpy <a id = "NCE" href = "2021-01-27_gen_dark.html">…</a></p>
-<h1 id="binary-image-compression-with-python-and-numpy"><a href="./2021-01-22_gen_dark.html">binary image compression with python and numpy</a></h1>
-<center>
-<a href="2021-01-22_gen_light.html"><em>2021-01-22</em></a>
-</center>
-<p>numpy-thonic run length compression <a id = "NCE" href = "2021-01-22_gen_dark.html">…</a></p>
-<h1 id="infinite-matrices-in-mathematica-part-3"><a href="./2021-01-19_gen_dark.html">infinite matrices in <em>Mathematica</em>, part 3</a></h1>
-<center>
-<a href="2021-01-19_gen_light.html"><em>2021-01-19</em></a>
-</center>
-<p>mapping, addition, multiplication <a id = "NCE" href = "2021-01-19_gen_dark.html">…</a></p>
-<h1 id="infinite-matrices-in-mathematica-part-2"><a href="./2021-01-17_gen_dark.html">infinite matrices in <em>Mathematica</em>, part 2</a></h1>
-<center>
-<a href="2021-01-17_gen_light.html"><em>2021-01-17</em></a>
-</center>
-<p>representation, transposition <a id = "NCE" href = "2021-01-17_gen_dark.html">…</a></p>
-<h1 id="infinite-matrices-in-mathematica-part-1"><a href="./2021-01-16_gen_dark.html">infinite matrices in <em>Mathematica</em>, part 1</a></h1>
-<center>
-<a href="2021-01-16_gen_light.html"><em>2021-01-16</em></a>
-</center>
-<p>introduction, motivation <a id = "NCE" href = "2021-01-16_gen_dark.html">…</a></p>
-<h1 id="hi"><a href="./2021-01-15_gen_dark.html">hi</a></h1>
-<center>
-<a href="2021-01-15_gen_light.html"><em>2021-01-15</em></a>
-</center>
-<p>first post, what this blog is about <a id = "NCE" href = "2021-01-15_gen_dark.html">…</a></p>
+<p>motivation, categorical interpretation of the <em>Wolfram Language</em> …</p>
+<p>This is the first part of a series of post that introduce “do” notation to the <em>Wolfram Language</em>. There are many ways of doing this, I will be using an approach described in my <a id = "NCE" href = https://arxiv.org/abs/2005.09478>article</a> on <em>arXiv</em>. These posts will be slightly edited versions of that paper.</p>
+<p>The motivation for this work stems from a practical problem of writing a <em>Wolfram Language</em> (WL) application aimed to abstract away the notion of scalar valued functions for numerical computations. The goal was for the user to specify, in the WL, the number of arguments for a function, which arguments are discrete indices and which arguments are floating point numbers. For floating point arguments the user additionally defines points and weights used for interpolations and integrations over these arguments and finally specifies which arguments can be used for purposes of code parallelization. Given this input, the job of the application is to create a <em>FORTRAN 90</em> module and a directory with supplementary data. The user can import this module and work with an abstraction of the scalar valued functions: store function values on different cores and handle them using different <em>MPI</em> and <em>OPENMP</em> threads, interpolate function values and integrate over function arguments.</p>
+<p>The implementation works, more or less :-) Basing the implementation around monadic types was really helpful. The monadic style of programming can also be appropriate for many other problems. Here a simple approach to include monads and the <em>Haskell</em> style "do" notation in the WL is proposed. This combined with the powerful functions built into the <em>Mathematica</em> system can lead to the production of very powerful code.</p>
+<p>This work was influenced by an excellent <a id = "NCE" href = https://www.blurb.com/b/9621951-category-theory-for-programmers-new-edition-hardco>book</a> by Bartosz Milewski containing an introduction to Category Theory. First, in this post, a categorical interpretation of the WL is introduced. In the next post the implementation of monadic types and the “do” notation will be described. Further posts will contain examples and tips for practical implementations. The text contains snippets of WL code and pseudo-code. Some code fragments will use comments <code>(*...*)</code> to hold additional information intended for interpretation by the reader.</p>
+<p>In order to think about the WL as a category a subset of the WL will be considered consisting of functions defined in the following manner:</p>
+<pre><code>f[(*pattern a*)] := (*expression*)</code></pre>
+<p>where <em>f</em> stands for the function name (other symbols can also be used), <em>pattern a</em> is a WL language pattern expression that specifies the arguments accepted by the function <em>f</em> and <em>expression</em> is a WL expression that can be constructed from the named parts of <em>pattern a</em>. This is not directly enforced by the WL, but ideally all possible results of <em>f</em> match a different pattern, <em>pattern b</em>, so that:</p>
+<pre><code>MatchQ[f[(*expression matching pattern a*)],(*pattern b*)]</code></pre>
+<p>is always true. Curried functions can be used and this can be interpreted as replacing <code>f</code> with <code>f[x]</code>, <code>f[x][y]</code>, … in the pseudo code above and treating the replacement as a whole set of functions built from the different values of <code>x</code>, <code>y</code>, …</p>
+<p>It is seems natural to treat this subset of the WL as a category with morphisms being functions (e.g. <code>f</code>, <code>f[x]</code>, <code>f[x][y]</code>, …) and objects being types defined by WL patterns (e.g. the set of all WL expressions that match <em>pattern a</em> defines type <em>a</em> and the set of expressions that match <em>pattern b</em> defines type <em>b</em>). In this context a monad is a type function: it takes a pattern that defines one type and returns a new pattern that defines a different type. Some additional definitions are necessary and they discussed next time.</p>
 <br/>
 <a id = "LNK" 
    href = "feed.rss"><img src = "Feed-icon.svg" height = 14em></a>

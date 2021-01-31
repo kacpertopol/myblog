@@ -5,6 +5,15 @@ inv : " bloglight.html"
 ---
 
 
+# [monads and "do" notation in the *Wolfram Language*, part 1](./2021-01-31_gen_dark.html)
+<center>
+[*2021-01-31*](2021-01-31_gen_light.html)
+</center>
+
+motivation, categorical interpretation of the *Wolfram Language* <a id = "NCE" href = "2021-01-31_gen_dark.html">...</a>
+
+
+
 # [image denoising with python](./2021-01-27_gen_dark.html)
 <center>
 [*2021-01-27*](2021-01-27_gen_light.html)
