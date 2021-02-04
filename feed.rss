@@ -5,6 +5,12 @@
 <link>https://kacpertopol.github.io/blog/index.html</link>
 <description>Kacper Topolnicki's blog</description>
 <item>
+<title>monads and "do" notation in the *Wolfram Language*, part 2</title>
+<link>https://kacpertopol.github.io/blog/2021-02-04_gen_light.html</link>
+<description>introduction of monadic typed and the "do" notation</description>
+<guid>https://kacpertopol.github.io/blog/2021-02-04_gen_light.html</guid>
+</item>
+<item>
 <title>monads and "do" notation in the *Wolfram Language*, part 1</title>
 <link>https://kacpertopol.github.io/blog/2021-01-31_gen_light.html</link>
 <description>motivation, categorical interpretation of the *Wolfram Language*</description>

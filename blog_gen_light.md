@@ -5,6 +5,15 @@ inv : " blogdark.html"
 ---
 
 
+# [monads and "do" notation in the *Wolfram Language*, part 2](./2021-02-04_gen_light.html)
+<center>
+[*2021-02-04*](2021-02-04_gen_light.html)
+</center>
+
+[introduction of monadic typed and the "do" notation](2021-02-04_gen_light.html) <a id = "NCE" href = "2021-02-04_gen_light.html">...</a>
+
+
+
 # [monads and "do" notation in the *Wolfram Language*, part 1](./2021-01-31_gen_light.html)
 <center>
 [*2021-01-31*](2021-01-31_gen_light.html)
