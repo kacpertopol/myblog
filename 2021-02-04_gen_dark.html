@@ -290,8 +290,8 @@
 <center>
 <em>2021-02-04</em>
 </center>
-<p>introduction of monadic typed and the “do” notation …</p>
-<p>This is the second post in of a series on monads in the <em>Wolfram Language</em>. In the <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-31_gen_light.html>first</a> post a categorical interpretation of the <em>Wolfram Language</em> was introduced. Now it is time for monads.</p>
+<p>introduction of monadic types …</p>
+<p>This is the second post in of a series on the “do” notation in the <em>Wolfram Language</em>. In the <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-31_gen_light.html>first</a> post a categorical interpretation of the <em>Wolfram Language</em> was introduced. Now it is time for monads.</p>
 <p>A user can implement a monad <em>m</em> in the WL by supplying three definitions. The first definition:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pattern</span><span class="op">[</span><span class="fu">m</span><span class="op">]</span> <span class="ex">=</span> <span class="co">(*pattern m a*)</span></span></code></pre></div>
 <p>provides a pattern that matches a WL expression if it is an <em>m</em> monad for any type argument <em>a</em>. The second definition implements the monadic <em>return</em> function:</p>
@@ -314,7 +314,7 @@
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>       <span class="op">]</span>;</span></code></pre></div>
 <p>Here <code>bnd[m]</code> will be replaced by the appropriate user supplied <code>bind[m]</code> function when the first argument matches <code>pattern[m]</code> and the second argument is a function, <code>fst</code>, <code>snd</code> are helper functions that take the left and right expression from a <code>LeftArrow</code> statement, and finally <code>chk[m]</code> is a function that checks the result of <code>bind[m]</code> against the user defined <code>pattern[m]</code>. Once <code>do[m]</code> is reduced to a contain a single expression the final expression is checked and returned:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">do</span><span class="op">[</span><span class="at">m_</span><span class="op">][</span><span class="at">mx_</span><span class="op">]</span><span class="ex">:=</span>chk<span class="op">[</span><span class="fu">m</span><span class="op">][</span>mx<span class="op">]</span>;</span></code></pre></div>
-<p>These definitions together with the supplementary functions are provided for the readers convenience <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-31_gen_light.html>here</a>. The repository contains a short WL package <em>wlmonad.wl</em> and a number of examples. Next time we will look at the Hanoi Tower example.</p>
+<p>These definitions together with the supplementary functions are provided for the readers convenience <a id = "NCE" href = https://gitlab.com/kacpertopolnicki/wlmonad>here</a>. The repository contains a short WL package <em>wlmonad.wl</em> and a number of examples. Next time we will look at the Hanoi Tower example.</p>
 <br/>
 <a id = "LNK" 
    href = "feed.rss"><img src = "Feed-icon.svg" height = 14em></a>

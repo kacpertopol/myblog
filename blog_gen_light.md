@@ -10,7 +10,7 @@ inv : " blogdark.html"
 [*2021-02-04*](2021-02-04_gen_light.html)
 </center>
 
-[introduction of monadic typed and the "do" notation](2021-02-04_gen_light.html) <a id = "NCE" href = "2021-02-04_gen_light.html">...</a>
+[introduction of monadic types](2021-02-04_gen_light.html) <a id = "NCE" href = "2021-02-04_gen_light.html">...</a>
 
 
 
