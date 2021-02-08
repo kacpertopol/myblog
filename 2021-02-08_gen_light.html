@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>my blog</title>
+  <link rel="alternate" type="application/rss+xml"
+   href="feed.rss" title="RSS feed for My Page">
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      word-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+	body {
+		margin : 0;
+		max-width : none; 
+	}
+	h1 {
+		text-align : center;
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
+	}	
+	h2 {
+		text-align : center;
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
+	}	
+	h3 {
+		text-align : center;
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
+	}
+	p {
+		text-align : justify;
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
+	}	
+	li {
+		text-align : left;
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
+	}
+	pre {
+		text-align : left;
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
+	}
+	div.sourceCode {
+		text-align : left;
+		min-width:200px;max-width:900px;margin:0 auto;padding:15px
+	}
+	#HME {
+		text-decoration : none;
+		float : left;
+	}
+	#LNK {
+		text-decoration : none;
+		float : right;
+	}
+	#NCE {
+		text-decoration-line : underline;
+		text-decoration-color : blue;
+		color : blue;
+	}
+	img {
+		width:70%;max-width:900px;padding:5px
+	}
+	a {
+		text-decoration : none;
+		color : black;
+	}
+	a:visited {
+		text-decoration : none;
+		color : black;
+	}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<a id = "LNK" 
+	href = bloglight.html>🏠</a>
+<a id = "LNK" 
+	href = 2021-02-08_gen_dark.html>🌘</a>
+<br/>
+<header id="title-block-header">
+<h1 class="title">my blog</h1>
+<p class="author"><center>
+<a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a>
+<center></p>
+</header>
+<h1 id="monads-and-do-notation-in-the-wolfram-language-part-3">monads and “do” notation in the <em>Wolfram Language</em>, part 3</h1>
+<center>
+<em>2021-02-08</em>
+</center>
+<p><em>Hanoi Tower</em> example …</p>
+<p>The first <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-31_gen_light.html>post</a> in this series introduced a categorical look at the <em>Wolfram Language</em>. The second <a id = "NCE" href =https://kacpertopol.github.io/myblog/2021-02-04_gen_light.html>post</a> introduced monadic types and the <em>do</em>. Now it is time for an example application.</p>
+<p>This section takes a look at the classic Hanoi Tower puzzle. The puzzle consists of three poles onto which stacks of disks with different sizes <span class="math inline">\(1 , 2 , 3 , \ldots\)</span> can be placed. At the beginning of the puzzle all disks are stacked on the first pole with smaller disks being placed on top of larger ones. The aim of the puzzle is to transport all disks from the first pole to the third pole in discrete steps. In each step only one disk can be taken from the top of a stack and placed on a larger disk or on an empty pole.</p>
+<p>The puzzle is solved in the <em>hanoi_tower_example.nb</em> notebook from <a id = "NCE" href = https://gitlab.com/kacpertopolnicki/wlmonad>here</a>. The notebook starts a definition of a pattern for the Hanoi Tower puzzle:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    towers <span class="ex">=</span> <span class="op">{</span>_List <span class="op">,</span> _List <span class="op">,</span> _List<span class="op">}</span>;</span></code></pre></div>
+<p>The puzzle will be represented by a list containing three elements. Each element is a list and corresponds to a single pole of the puzzle. Elements of this list will be numbers corresponding to disc sizes. Another pattern is provided for expressions that will be used to record the moves that lead to the solution:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    move <span class="ex">=</span> <span class="op">{</span>_ <span class="ot">-&gt;</span> _ <span class="op">,</span> <span class="op">{</span>_List <span class="op">,</span> _List <span class="op">,</span> _List<span class="op">}}</span>;</span></code></pre></div>
+<p>Moves will be two element lists, the first element (e.g. <code>1-&gt;2</code>) will record the number of the pole from which the disk was taken and the number of the pole onto which the disk was dropped (e.g. <code>1</code> , <code>2</code>). The second element will contain the current configuration of the puzzle.</p>
+<p>Next three definitions are provided for the <em>hT</em> monad that will be used in a recursive solution to the puzzle. The first definition is a pattern that will match any WL expression that is an <em>hT</em> monad for any type argument:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pattern</span><span class="op">[</span>hT<span class="op">]</span> <span class="ex">=</span> hT<span class="op">[</span>towers <span class="op">,</span> <span class="op">{</span>move ...<span class="op">}]</span>;</span></code></pre></div>
+<p>Next the return function is defined as (please note that an empty list also matches <code>{move ...}</code>):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span><span class="op">[</span>hT<span class="op">][</span><span class="at">x_</span><span class="op">]</span> <span class="ex">:=</span> hT<span class="op">[</span><span class="fu">x</span> <span class="op">,</span> <span class="op">{}]</span>;</span></code></pre></div>
+<p>Finaly the bind operator for <em>hT</em> is given (please note that no additional pattern constraints are necessary for <code>ma</code> and <code>aTomb</code>):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    bind<span class="op">[</span>hT<span class="op">][</span><span class="at">ma_</span> <span class="op">,</span> <span class="at">aTomb_</span><span class="op">]</span> <span class="ex">:=</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">With</span><span class="op">[</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>          <span class="op">{</span>val <span class="ex">=</span> aTomb<span class="op">[</span>grab<span class="op">[</span>ma<span class="op">]]},</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>          hT<span class="op">[</span>grab<span class="op">[</span>val<span class="op">]</span> <span class="op">,</span> <span class="fu">join</span><span class="op">[</span><span class="fu">rest</span><span class="op">[</span>ma<span class="op">],</span> <span class="fu">rest</span><span class="op">[</span>val<span class="op">]]]</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>       <span class="op">]</span>;</span></code></pre></div>
+<p>where <code>grab</code> and <code>rest</code> are helper functions:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>    grab<span class="op">[</span>ma : <span class="fu">pattern</span><span class="op">[</span>hT<span class="op">]]</span> <span class="ex">:=</span> ma<span class="op">[[</span><span class="dv">1</span><span class="op">]]</span>;</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rest</span><span class="op">[</span>ma : <span class="fu">pattern</span><span class="op">[</span>hT<span class="op">]]</span> <span class="ex">:=</span> ma<span class="op">[[</span><span class="dv">2</span><span class="op">]]</span>;</span></code></pre></div>
+<p>and <code>join</code> provides a lazy version of the <code>Join</code> function:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">join</span><span class="op">[</span><span class="fu">a</span> : <span class="op">{</span>move ...<span class="op">}</span> <span class="op">,</span> <span class="fu">b</span> : <span class="op">{</span>move ...<span class="op">}]</span> <span class="ex">:=</span> <span class="fu">Join</span><span class="op">[</span><span class="fu">a</span> <span class="op">,</span> <span class="fu">b</span><span class="op">]</span>;</span></code></pre></div>
+<p>Providing lazy functions that evaluate only when they are called with appropriate arguments is important for recursion.</p>
+<p>Only one action is provided for this monad with two definitions. The first one moves a single disk of puzzle <code>tower</code> from pole number <code>from</code> to pole number <code>to</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    moveDiscs<span class="op">[</span><span class="at">from_</span> <span class="op">,</span> <span class="at">to_</span> <span class="op">,</span> <span class="dv">1</span><span class="op">][</span>tower : towers<span class="op">]</span> <span class="ex">:=</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">Module</span><span class="op">[{</span>newtower<span class="op">},</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>          newtower <span class="ex">=</span> <span class="fu">ReplacePart</span><span class="op">[</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>             <span class="fu">ReplacePart</span><span class="op">[</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                tower <span class="op">,</span> </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                to <span class="ot">-&gt;</span> <span class="fu">Join</span><span class="op">[</span>tower<span class="op">[[</span>from<span class="op">]][[</span><span class="dv">1</span> ;; <span class="dv">1</span><span class="op">]],</span> tower<span class="op">[[</span>to<span class="op">]]]</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>             <span class="op">]</span> <span class="op">,</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>             from <span class="ot">-&gt;</span> tower<span class="op">[[</span>from <span class="op">,</span> <span class="dv">2</span> ;;<span class="op">]]</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>          <span class="op">]</span>;</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>          hT<span class="op">[</span>newtower <span class="op">,</span> <span class="op">{{</span>from <span class="ot">-&gt;</span> to <span class="op">,</span> newtower<span class="op">}}]</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>       <span class="op">]</span>;</span></code></pre></div>
+<p>The second one moves <code>n</code> disks from pole number <code>from</code> to pole number <code>to</code>. This time the definition uses the "do" notation and recursion:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    moveDiscs<span class="op">[</span><span class="at">from_</span> <span class="op">,</span> <span class="at">to_</span> <span class="op">,</span> <span class="at">n_</span><span class="op">][</span>tower : towers<span class="op">]</span> <span class="ex">:=</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">do</span><span class="op">[</span>hT<span class="op">][</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>          toOther &lt;<span class="sc">-</span> moveDiscs<span class="op">[</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                      from <span class="op">,</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                      other<span class="op">[</span>from <span class="op">,</span> to<span class="op">]</span> <span class="op">,</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">n</span> <span class="sc">-</span> <span class="dv">1</span><span class="op">][</span>tower<span class="op">],</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>          toGoal &lt;<span class="sc">-</span> moveDiscs<span class="op">[</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                      from <span class="op">,</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                      to <span class="op">,</span> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                      <span class="dv">1</span><span class="op">][</span>toOther<span class="op">],</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>          finalMove &lt;<span class="sc">-</span> moveDiscs<span class="op">[</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                         other<span class="op">[</span>from <span class="op">,</span> to<span class="op">]</span> <span class="op">,</span> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>                         to <span class="op">,</span> </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">n</span> <span class="sc">-</span> <span class="dv">1</span><span class="op">][</span>toGoal<span class="op">],</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>          <span class="fu">return</span><span class="op">[</span>hT<span class="op">][</span>finalMove<span class="op">]</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>       <span class="op">]</span>;</span></code></pre></div>
+<p>where <code>&lt;-</code> is the <code>LeftArrow</code> operator (<code>&lt;ESC&gt;&lt;-&lt;ESC&gt;</code> in the WL) and <code>other[i , j]</code> returns a pole number that is different then <code>i</code> and <code>j</code>. The procedure of solving the puzzle can be read off directly from the code above. First <span class="math inline">\(n-1\)</span> disks are moved from pole number <code>from</code> to a pole that is different from <code>from</code> and <code>to</code>. Next, one disk is moved from pole number <code>from</code> to pole number <code>to</code>. Finaly the <span class="math inline">\(n-1\)</span> disks are moved from the other pole to the <code>to</code> pole.</p>
+<p>A solution to the puzzle with three disks on the first pole in the initial configuration can be obtained by evaluating:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>    moveDiscs<span class="op">[</span><span class="dv">1</span> <span class="op">,</span> <span class="dv">3</span> <span class="op">,</span> <span class="dv">3</span><span class="op">][</span>makeTower<span class="op">[</span><span class="dv">3</span><span class="op">]]</span></span></code></pre></div>
+<p>where <code>makeTower[3]</code> prepares the initial configuration of the puzzle. The result is:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>    hT<span class="op">[</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>       <span class="op">{{},{},{</span><span class="dv">1</span><span class="op">,</span><span class="dv">2</span><span class="op">,</span><span class="dv">3</span><span class="op">}},</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>       <span class="op">{</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>          <span class="op">{</span><span class="dv">1</span><span class="ot">-&gt;</span><span class="dv">3</span><span class="op">,{{</span><span class="dv">2</span><span class="op">,</span><span class="dv">3</span><span class="op">},{},{</span><span class="dv">1</span><span class="op">}}},</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>          <span class="op">{</span><span class="dv">1</span><span class="ot">-&gt;</span><span class="dv">2</span><span class="op">,{{</span><span class="dv">3</span><span class="op">},{</span><span class="dv">2</span><span class="op">},{</span><span class="dv">1</span><span class="op">}}},</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>          <span class="op">{</span><span class="dv">3</span><span class="ot">-&gt;</span><span class="dv">2</span><span class="op">,{{</span><span class="dv">3</span><span class="op">},{</span><span class="dv">1</span><span class="op">,</span><span class="dv">2</span><span class="op">},{}}},</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>          <span class="op">{</span><span class="dv">1</span><span class="ot">-&gt;</span><span class="dv">3</span><span class="op">,{{},{</span><span class="dv">1</span><span class="op">,</span><span class="dv">2</span><span class="op">},{</span><span class="dv">3</span><span class="op">}}},</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>          <span class="op">{</span><span class="dv">2</span><span class="ot">-&gt;</span><span class="dv">1</span><span class="op">,{{</span><span class="dv">1</span><span class="op">},{</span><span class="dv">2</span><span class="op">},{</span><span class="dv">3</span><span class="op">}}},</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>          <span class="op">{</span><span class="dv">2</span><span class="ot">-&gt;</span><span class="dv">3</span><span class="op">,{{</span><span class="dv">1</span><span class="op">},{},{</span><span class="dv">2</span><span class="op">,</span><span class="dv">3</span><span class="op">}}},</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>          <span class="op">{</span><span class="dv">1</span><span class="ot">-&gt;</span><span class="dv">3</span><span class="op">,{{},{},{</span><span class="dv">1</span><span class="op">,</span><span class="dv">2</span><span class="op">,</span><span class="dv">3</span><span class="op">}}}</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>       <span class="op">}</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">]</span></span></code></pre></div>
+<p>The first element of this expression is the final configuration of the solved puzzle. The second element is a list containing the moves used to obtain the solution.</p>
+<p>The <a id = "NCE" href = https://gitlab.com/kacpertopolnicki/wlmonad>repository</a> contains more examples including a <em>list</em> monad and a <em>maybe</em> monad. The reader is encouraged to download and explore these notebooks.</p>
+<p>The <em>Mathematica</em> system has a very powerful set of built in functions. The flexibility of the <em>Wolfram Language</em> makes it possible to program in many different styles. Such freedom can, however, be overwhelming and it is a good idea to conform to styles of programming that are tailored to particular problems. Combining the monadic style of programming with the powerful standard library of the <em>Wolfram Language</em> can be very useful for problems that require a functional solution. There are many ways of implementing this style of programming in the <em>Wolfram Language</em>, the author belives that the method presented in this paper is relatively simple and robust.</p>
+<br/>
+<a id = "LNK" 
+   href = "feed.rss"><img src = "Feed-icon.svg" height = 14em></a>
+</body>
+</html>

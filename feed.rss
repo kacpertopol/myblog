@@ -5,6 +5,12 @@
 <link>https://kacpertopol.github.io/blog/index.html</link>
 <description>Kacper Topolnicki's blog</description>
 <item>
+<title>monads and "do" notation in the *Wolfram Language*, part 3</title>
+<link>https://kacpertopol.github.io/blog/2021-02-08_gen_light.html</link>
+<description>*Hanoi Tower* example</description>
+<guid>https://kacpertopol.github.io/blog/2021-02-08_gen_light.html</guid>
+</item>
+<item>
 <title>monads and "do" notation in the *Wolfram Language*, part 2</title>
 <link>https://kacpertopol.github.io/blog/2021-02-04_gen_light.html</link>
 <description>introduction of monadic types</description>
