@@ -4,14 +4,12 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content=" kacper topolnickikacpertopol@gmail.com " />
   <link rel="alternate" type="application/rss+xml"
    href="feed.rss" title="RSS feed for My Page">
   <title>my blog</title>
   <style>
     html {
-      line-height: 1.5;
-      font-family: Georgia, serif;
-      font-size: 20px;
       color: #1a1a1a;
       background-color: #fdfdfd;
     }
@@ -23,17 +21,23 @@
       padding-top: 50px;
       padding-bottom: 50px;
       hyphens: auto;
-      word-wrap: break-word;
+      overflow-wrap: break-word;
       text-rendering: optimizeLegibility;
       font-kerning: normal;
     }
     @media (max-width: 600px) {
       body {
         font-size: 0.9em;
-        padding: 1em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
       }
     }
     @media print {
+      html {
+        background-color: white;
+      }
       body {
         background-color: transparent;
         color: black;
@@ -57,6 +61,10 @@
       color: #1a1a1a;
     }
     img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
       max-width: 100%;
     }
     h1, h2, h3, h4, h5, h6 {
@@ -83,9 +91,10 @@
       color: #606060;
     }
     code {
-      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
+      hyphens: manual;
     }
     pre {
       margin: 1em 0;
@@ -94,6 +103,7 @@
     pre code {
       padding: 0;
       overflow: visible;
+      overflow-wrap: normal;
     }
     .sourceCode {
      background-color: transparent;
@@ -135,15 +145,31 @@
     #TOC li {
       list-style: none;
     }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
     #TOC a:not(:hover) {
       text-decoration: none;
     }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -182,7 +208,7 @@
     code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
     code span.at { color: #7d9029; } /* Attribute */
     code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
+    code span.bu { color: #008000; } /* BuiltIn */
     code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
     code span.ch { color: #4070a0; } /* Char */
     code span.cn { color: #880000; } /* Constant */
@@ -195,7 +221,7 @@
     code span.ex { } /* Extension */
     code span.fl { color: #40a070; } /* Float */
     code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
     code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
     code span.kw { color: #007020; font-weight: bold; } /* Keyword */
     code span.op { color: #666666; } /* Operator */
@@ -270,7 +296,9 @@
 		color : white;
 	}
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -283,8 +311,9 @@
 </br>
 <header id="title-block-header">
 <h1 class="title">my blog</h1>
-<p class="author"><center>
-<a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a>
+<p class="author"><center><br />
+<a href="mailto:kacpertopol@gmail.com">kacper
+topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a><br />
 <center></p>
 </header>
 <h1 id="image-denoising-with-python">image denoising with python</h1>
@@ -292,50 +321,106 @@
 <em>2021-01-27</em>
 </center>
 <p>remove text background with cv2 and numpy …</p>
-<p>I’m a big fan of the <a id = "NCE" href = https://www.camscanner.com/>CamScanner</a> app and have been using this program on my phone ever since a friend introduced it to me many years ago. You take a snapshot of a piece of paper and <em>CamScanner</em> will produce a pdf with crisp, very readable, text and the background removed. I wanted to add this functionality to my <a id = "NCE" href = https://github.com/kacpertopol/cam_board> cam_board</a> script (the name is homage to <em>CamScanner</em>) and after a lot of experimentation I believe I finally have a simple solution. Below is a description of the resulting procedure. It is an abridged version of the algorithm inside <code>cam_board</code>. The line numbers correspond to the <code>denoise.py</code> file available <a id = "NCE" href = https://github.com/kacpertopol/denoise>here</a>.</p>
+<p>I’m a big fan of the
+<a id = "NCE" href = https://www.camscanner.com/>CamScanner</a> app and
+have been using this program on my phone ever since a friend introduced
+it to me many years ago. You take a snapshot of a piece of paper and
+<em>CamScanner</em> will produce a pdf with crisp, very readable, text
+and the background removed. I wanted to add this functionality to my
+<a id = "NCE" href = https://github.com/kacpertopol/cam_board>
+cam_board</a> script (the name is homage to <em>CamScanner</em>) and
+after a lot of experimentation I believe I finally have a simple
+solution. Below is a description of the resulting procedure. It is an
+abridged version of the algorithm inside <code>cam_board</code>. The
+line numbers correspond to the <code>denoise.py</code> file available
+<a id = "NCE" href = https://github.com/kacpertopol/denoise>here</a>.</p>
 <p>First some imports [denoise.py line: 27]</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> argparse</span>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> argparse</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cv2</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy</span></code></pre></div>
-<p>The <code>argparse</code> library will be used to parse the command line arguments. This might be overkill since there will be only one argument - the name of the image (without the extension) that will undergo the denoising procedure. The <code>cv2</code> library in conjunction with the <code>numpy</code> library will be used to perform image manipulations.</p>
-<p>Next the single command line argument is parsed and it will be available in <code>args.input</code> [denoise.py line: 42]</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>parser <span class="op">=</span> argparse.ArgumentParser(description <span class="op">=</span> <span class="st">&quot;Denoise image.&quot;</span>)</span>
+<p>The <code>argparse</code> library will be used to parse the command
+line arguments. This might be overkill since there will be only one
+argument - the name of the image (without the extension) that will
+undergo the denoising procedure. The <code>cv2</code> library in
+conjunction with the <code>numpy</code> library will be used to perform
+image manipulations.</p>
+<p>Next the single command line argument is parsed and it will be
+available in <code>args.input</code> [denoise.py line: 42]</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>parser <span class="op">=</span> argparse.ArgumentParser(description <span class="op">=</span> <span class="st">&quot;Denoise image.&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>parser.add_argument(<span class="st">&quot;input&quot;</span> , <span class="bu">help</span> <span class="op">=</span> <span class="st">&quot;Input image name (without extension)&quot;</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>args <span class="op">=</span> parser.parse_args() </span></code></pre></div>
-<p>Note that the image name is expected not to contain the extension, e.g.instead of <code>warped1.png</code> the command line expects <code>warped1</code>.</p>
-<p>The image is read using the <code>cv2.imread</code> function [denoise.py line: 67]</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>warped <span class="op">=</span> cv2.imread(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;.png&quot;</span>)</span></code></pre></div>
-<p>The <a id = "NCE" href = https://github.com/kacpertopol/denoise>denoise repository</a> contains four sample images: <code>warped1...4.png</code> that were “warped” inside <code>cam_board</code> (web cam frames are morphed so that four special markers showing up on a printout are stretched to the four corners of the image). Here we will use <code>warped1.png</code> and <code>warped4.png</code>. Each image contains some text (a), some numbers (b), a simple graph (c) and two patches of color (d).</p>
+<p>Note that the image name is expected not to contain the extension,
+e.g.instead of <code>warped1.png</code> the command line expects
+<code>warped1</code>.</p>
+<p>The image is read using the <code>cv2.imread</code> function
+[denoise.py line: 67]</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>warped <span class="op">=</span> cv2.imread(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;.png&quot;</span>)</span></code></pre></div>
+<p>The
+<a id = "NCE" href = https://github.com/kacpertopol/denoise>denoise
+repository</a> contains four sample images: <code>warped1...4.png</code>
+that were “warped” inside <code>cam_board</code> (web cam frames are
+morphed so that four special markers showing up on a printout are
+stretched to the four corners of the image). Here we will use
+<code>warped1.png</code> and <code>warped4.png</code>. Each image
+contains some text (a), some numbers (b), a simple graph (c) and two
+patches of color (d).</p>
 <center>
 <img src="./2021-01-27/warpedcol.png" />
 </center>
-<p>Notice that the the image on the top has the light shining on it differently then the image on the bottom.</p>
-<p>In the next step the image is turned into grayscale (<code>cv2.COLOR_BGR2GRAY</code>) [denoise.py line: 88]</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>gray <span class="op">=</span> cv2.cvtColor(warped , cv2.COLOR_BGR2GRAY) </span></code></pre></div>
-<p>Dark areas of the image will be treated as the “signal” and pixels in these areas should have hight color values. This is achieved through color inversion [denoise.py line: 91]</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>gray <span class="op">=</span> <span class="dv">255</span> <span class="op">-</span> gray</span></code></pre></div>
-<p>This intermediate result is written to a file [denoise.py line: 96]</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cv2.imwrite(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;_gray.png&quot;</span> , gray)</span></code></pre></div>
+<p>Notice that the the image on the top has the light shining on it
+differently then the image on the bottom.</p>
+<p>In the next step the image is turned into grayscale
+(<code>cv2.COLOR_BGR2GRAY</code>) [denoise.py line: 88]</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>gray <span class="op">=</span> cv2.cvtColor(warped , cv2.COLOR_BGR2GRAY) </span></code></pre></div>
+<p>Dark areas of the image will be treated as the “signal” and pixels in
+these areas should have hight color values. This is achieved through
+color inversion [denoise.py line: 91]</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>gray <span class="op">=</span> <span class="dv">255</span> <span class="op">-</span> gray</span></code></pre></div>
+<p>This intermediate result is written to a file [denoise.py line:
+96]</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cv2.imwrite(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;_gray.png&quot;</span> , gray)</span></code></pre></div>
 <p>and here is the result:</p>
 <center>
 <img src="./2021-01-27/warpedgraycol.png" />
 </center>
-<p>Now it is time to take care of the background. But first, the <code>gray</code> image will be turned into a floating point array [denoise.py line: 124]</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gray <span class="op">=</span> gray.astype(<span class="st">&quot;float32&quot;</span>)</span></code></pre></div>
-<p>This is usefull since we are about to apply many floating operations to this array of pixels.</p>
-<p>A square image filtering kernel is created [denoise.py line: 128] :</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>blur_kernel <span class="op">=</span> numpy.ones((<span class="dv">300</span> , <span class="dv">300</span>) , dtype <span class="op">=</span> numpy.float32) </span>
+<p>Now it is time to take care of the background. But first, the
+<code>gray</code> image will be turned into a floating point array
+[denoise.py line: 124]</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gray <span class="op">=</span> gray.astype(<span class="st">&quot;float32&quot;</span>)</span></code></pre></div>
+<p>This is usefull since we are about to apply many floating operations
+to this array of pixels.</p>
+<p>A square image filtering kernel is created [denoise.py line: 128]
+:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>blur_kernel <span class="op">=</span> numpy.ones((<span class="dv">300</span> , <span class="dv">300</span>) , dtype <span class="op">=</span> numpy.float32) </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>blur_kernel <span class="op">=</span> blur_kernel <span class="op">/</span> numpy.<span class="bu">sum</span>(blur_kernel.flatten())</span></code></pre></div>
-<p>Notice that in the second line it is divided by the number of elements (albeit not in the most efficient way :-), I’ll have to fix this in <code>cam_board</code>) and applied to the <code>gray</code> image [denoise.py line: 133]</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>blured_gray <span class="op">=</span> cv2.filter2D(gray , <span class="op">-</span><span class="dv">1</span> , blur_kernel)</span></code></pre></div>
-<p>At this point <code>blur_kernel</code> contains a moving average. The value of each pixel in this array is an average of <span class="math inline">\(300 \times 300\)</span> surrounding pixels. This intermediate result is written to a file [denoise.py line: 137]</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cv2.imwrite(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;_blured_1.png&quot;</span> , blured_gray)</span></code></pre></div>
+<p>Notice that in the second line it is divided by the number of
+elements (albeit not in the most efficient way :-), I’ll have to fix
+this in <code>cam_board</code>) and applied to the <code>gray</code>
+image [denoise.py line: 133]</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>blured_gray <span class="op">=</span> cv2.filter2D(gray , <span class="op">-</span><span class="dv">1</span> , blur_kernel)</span></code></pre></div>
+<p>At this point <code>blur_kernel</code> contains a moving average. The
+value of each pixel in this array is an average of <span
+class="math inline">\(300 \times 300\)</span> surrounding pixels. This
+intermediate result is written to a file [denoise.py line: 137]</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cv2.imwrite(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;_blured_1.png&quot;</span> , blured_gray)</span></code></pre></div>
 <p>and here is the result:</p>
 <center>
 <img src="./2021-01-27/warpedblured1col.png" />
 </center>
-<p>My experimets show that it is beneficial to erase a three pixel wide boarder around the image [denoise.py line: 153]</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gray[<span class="dv">0</span>:<span class="dv">3</span> , :] <span class="op">=</span> <span class="fl">0.0</span></span>
+<p>My experimets show that it is beneficial to erase a three pixel wide
+boarder around the image [denoise.py line: 153]</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gray[<span class="dv">0</span>:<span class="dv">3</span> , :] <span class="op">=</span> <span class="fl">0.0</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>gray[gray.shape[<span class="dv">0</span>] <span class="op">-</span> <span class="dv">3</span> : gray.shape[<span class="dv">0</span>] , :] <span class="op">=</span> <span class="fl">0.0</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>gray[: , <span class="dv">0</span>:<span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.0</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>gray[: , gray.shape[<span class="dv">1</span>] <span class="op">-</span> <span class="dv">3</span> : gray.shape[<span class="dv">1</span>]] <span class="op">=</span> <span class="fl">0.0</span></span>
@@ -343,37 +428,65 @@
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>blured_gray <span class="op">=</span> cv2.filter2D(gray , <span class="op">-</span><span class="dv">1</span> , blur_kernel)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>cv2.imwrite(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;_blured_2.png&quot;</span> , blured_gray)</span></code></pre></div>
-<p>This helps get rid of any artifacts that might be on the edges of the image but has a sideffect in the form of ghosting on the border of the blured images:</p>
+<p>This helps get rid of any artifacts that might be on the edges of the
+image but has a sideffect in the form of ghosting on the border of the
+blured images:</p>
 <center>
 <img src="./2021-01-27/warpedblured2col.png" />
 </center>
-<p>Next, the <code>gray</code> image is shifted relative to the estimated background <code>blured_gray</code>. This helps with evening out the different lighting conditions in different parsts of the image [denoise.py line: 180]</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>gray_2 <span class="op">=</span> (gray <span class="op">-</span> blured_gray)</span>
+<p>Next, the <code>gray</code> image is shifted relative to the
+estimated background <code>blured_gray</code>. This helps with evening
+out the different lighting conditions in different parsts of the image
+[denoise.py line: 180]</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>gray_2 <span class="op">=</span> (gray <span class="op">-</span> blured_gray)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>gray_2 <span class="op">=</span> <span class="fl">255.0</span> <span class="op">*</span> (gray_2 <span class="op">-</span> numpy.amin(gray_2)) <span class="op">/</span> (numpy.amax(gray_2) <span class="op">-</span> numpy.amin(gray_2))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>cv2.imwrite(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;_gray_2.png&quot;</span> , gray_2)</span></code></pre></div>
 <p>and the result is</p>
 <center>
 <img src="./2021-01-27/warpedgray2col.png" />
 </center>
-<p>Additionally, the standard deviation of <code>gray-blured_gray</code> image is calculated: [denoise.py line: 186]</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>stdv <span class="op">=</span> numpy.sqrt(numpy.mean(((gray <span class="op">-</span> blured_gray) <span class="op">*</span> (gray <span class="op">-</span> blured_gray)).flatten()))</span></code></pre></div>
-<p>and this value will be used as a metric to classify an image pixel as the “signal” or as the “noise”.</p>
-<p>Pixels that are classified as “signal” will retain their shade of color but will have modified brightness depending on the “signal” strength. There is an infinite number of ways to do this but my experiments convinced me that it is best to first transform the image to the <a id = "NCE" href = https://en.wikipedia.org/wiki/HSL_and_HSV>HLS</a> color space [denoise.py line: 201]</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>hls <span class="op">=</span> cv2.cvtColor(warped , cv2.COLOR_BGR2HLS)</span></code></pre></div>
-<p>Next in order to adjust brightness and leave the original shade of color only the L channel is changed [denoise.py line: 205]</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>h_res <span class="op">=</span> hls[: , : , <span class="dv">0</span>]</span>
+<p>Additionally, the standard deviation of <code>gray-blured_gray</code>
+image is calculated: [denoise.py line: 186]</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>stdv <span class="op">=</span> numpy.sqrt(numpy.mean(((gray <span class="op">-</span> blured_gray) <span class="op">*</span> (gray <span class="op">-</span> blured_gray)).flatten()))</span></code></pre></div>
+<p>and this value will be used as a metric to classify an image pixel as
+the “signal” or as the “noise”.</p>
+<p>Pixels that are classified as “signal” will retain their shade of
+color but will have modified brightness depending on the “signal”
+strength. There is an infinite number of ways to do this but my
+experiments convinced me that it is best to first transform the image to
+the
+<a id = "NCE" href = https://en.wikipedia.org/wiki/HSL_and_HSV>HLS</a>
+color space [denoise.py line: 201]</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>hls <span class="op">=</span> cv2.cvtColor(warped , cv2.COLOR_BGR2HLS)</span></code></pre></div>
+<p>Next in order to adjust brightness and leave the original shade of
+color only the L channel is changed [denoise.py line: 205]</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>h_res <span class="op">=</span> hls[: , : , <span class="dv">0</span>]</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>l_res <span class="op">=</span> numpy.full(gray.shape , <span class="fl">255.0</span> , dtype <span class="op">=</span> numpy.float32)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>l_res <span class="op">=</span> numpy.where((gray <span class="op">-</span> blured_gray) <span class="op">&gt;</span> stdv , hls[: , : , <span class="dv">1</span>] , l_res)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>s_res <span class="op">=</span> hls[: , : , <span class="dv">2</span>]</span></code></pre></div>
-<p>Finally, the resulting image is reconstructed (<code>cv2.merge</code>) and converted to blue-green-red (<code>cv2.COLOR_HLS2BGR</code>) colorspace [denoise.py line: 226]</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>warped <span class="op">=</span> cv2.cvtColor(cv2.merge((h_res.astype(<span class="st">&quot;uint8&quot;</span>) , l_res.astype(<span class="st">&quot;uint8&quot;</span>) , s_res.astype(<span class="st">&quot;uint8&quot;</span>))) , cv2.COLOR_HLS2BGR)</span></code></pre></div>
+<p>Finally, the resulting image is reconstructed
+(<code>cv2.merge</code>) and converted to blue-green-red
+(<code>cv2.COLOR_HLS2BGR</code>) colorspace [denoise.py line: 226]</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>warped <span class="op">=</span> cv2.cvtColor(cv2.merge((h_res.astype(<span class="st">&quot;uint8&quot;</span>) , l_res.astype(<span class="st">&quot;uint8&quot;</span>) , s_res.astype(<span class="st">&quot;uint8&quot;</span>))) , cv2.COLOR_HLS2BGR)</span></code></pre></div>
 <p>The result is written to a file [denoise.py line: 230]</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cv2.imwrite(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;_warped.png&quot;</span> , warped)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cv2.imwrite(args.<span class="bu">input</span> <span class="op">+</span> <span class="st">&quot;_warped.png&quot;</span> , warped)</span></code></pre></div>
 <p>and here it is</p>
 <center>
 <img src="./2021-01-27/warpedwarpedcol.png" />
 </center>
-<p>Personally, I think this looks alright. The letters (a), numbers (b), graph (c) are crisp and sharp. The color patches (d) on the look more vibrant then the ones on the top, probably due to better lighting conditions. There are some problems with this approach however. If the bluring kernel size (currently set to 300 by 300) is smaller then larger color patches will appear vibrant on the edges and faded in the middle.</p>
+<p>Personally, I think this looks alright. The letters (a), numbers (b),
+graph (c) are crisp and sharp. The color patches (d) on the look more
+vibrant then the ones on the top, probably due to better lighting
+conditions. There are some problems with this approach however. If the
+bluring kernel size (currently set to 300 by 300) is smaller then larger
+color patches will appear vibrant on the edges and faded in the
+middle.</p>
 <br/>
 <a id = "LNK" 
    href = "feed.rss"><img src = "Feed-icon.svg" height = 14em></a>

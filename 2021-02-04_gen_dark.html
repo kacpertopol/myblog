@@ -4,14 +4,12 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content=" kacper topolnickikacpertopol@gmail.com " />
   <link rel="alternate" type="application/rss+xml"
    href="feed.rss" title="RSS feed for My Page">
   <title>my blog</title>
   <style>
     html {
-      line-height: 1.5;
-      font-family: Georgia, serif;
-      font-size: 20px;
       color: #1a1a1a;
       background-color: #fdfdfd;
     }
@@ -23,17 +21,23 @@
       padding-top: 50px;
       padding-bottom: 50px;
       hyphens: auto;
-      word-wrap: break-word;
+      overflow-wrap: break-word;
       text-rendering: optimizeLegibility;
       font-kerning: normal;
     }
     @media (max-width: 600px) {
       body {
         font-size: 0.9em;
-        padding: 1em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
       }
     }
     @media print {
+      html {
+        background-color: white;
+      }
       body {
         background-color: transparent;
         color: black;
@@ -57,6 +61,10 @@
       color: #1a1a1a;
     }
     img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
       max-width: 100%;
     }
     h1, h2, h3, h4, h5, h6 {
@@ -83,9 +91,10 @@
       color: #606060;
     }
     code {
-      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
+      hyphens: manual;
     }
     pre {
       margin: 1em 0;
@@ -94,6 +103,7 @@
     pre code {
       padding: 0;
       overflow: visible;
+      overflow-wrap: normal;
     }
     .sourceCode {
      background-color: transparent;
@@ -135,15 +145,31 @@
     #TOC li {
       list-style: none;
     }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
     #TOC a:not(:hover) {
       text-decoration: none;
     }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -182,7 +208,7 @@
     code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
     code span.at { color: #7d9029; } /* Attribute */
     code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
+    code span.bu { color: #008000; } /* BuiltIn */
     code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
     code span.ch { color: #4070a0; } /* Char */
     code span.cn { color: #880000; } /* Constant */
@@ -195,7 +221,7 @@
     code span.ex { } /* Extension */
     code span.fl { color: #40a070; } /* Float */
     code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
     code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
     code span.kw { color: #007020; font-weight: bold; } /* Keyword */
     code span.op { color: #666666; } /* Operator */
@@ -282,25 +308,51 @@
 </br>
 <header id="title-block-header">
 <h1 class="title">my blog</h1>
-<p class="author"><center>
-<a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a>
+<p class="author"><center><br />
+<a href="mailto:kacpertopol@gmail.com">kacper
+topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a><br />
 <center></p>
 </header>
-<h1 id="monads-and-do-notation-in-the-wolfram-language-part-2">monads and “do” notation in the <em>Wolfram Language</em>, part 2</h1>
+<h1 id="monads-and-do-notation-in-the-wolfram-language-part-2">monads
+and “do” notation in the <em>Wolfram Language</em>, part 2</h1>
 <center>
 <em>2021-02-04</em>
 </center>
 <p>introduction of monadic types …</p>
-<p>This is the second post in of a series on the “do” notation in the <em>Wolfram Language</em>. In the <a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-31_gen_light.html>first</a> post a categorical interpretation of the <em>Wolfram Language</em> was introduced. Now it is time for monads.</p>
-<p>A user can implement a monad <em>m</em> in the WL by supplying three definitions. The first definition:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pattern</span><span class="op">[</span><span class="fu">m</span><span class="op">]</span> <span class="ex">=</span> <span class="co">(*pattern m a*)</span></span></code></pre></div>
-<p>provides a pattern that matches a WL expression if it is an <em>m</em> monad for any type argument <em>a</em>. The second definition implements the monadic <em>return</em> function:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span><span class="op">[</span><span class="fu">m</span><span class="op">][</span><span class="at">x_</span><span class="op">]</span> <span class="ex">:=</span> <span class="co">(*expression matching pattern[m]*)</span></span></code></pre></div>
-<p>if the type of <em>x</em> is <em>a</em> then this expression should be a <em>m</em> monad for type argument <em>a</em>. In particular the resulting WL expression should match <code>pattern[m]</code>. The final definition is an implementation of the monadic <em>bind</em> operator for <em>m</em>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    bind<span class="op">[</span><span class="fu">m</span><span class="op">][</span><span class="at">ma_</span> <span class="op">,</span> <span class="at">aTOmb_</span><span class="op">]</span> <span class="ex">:=</span> <span class="co">(*implementation of bind*)</span></span></code></pre></div>
-<p>where <em>ma</em> is an <em>m</em> monad for type argument <em>a</em> and <em>aTOmb</em> is a function taking an element of type <em>a</em> and returning an <em>m</em> monad for type argument <em>b</em>. The user does not have to supply additional pattern constraints in <code>bind</code>, however it is up to the user to make sure that these definitions result in an object that satisfies the monad laws.</p>
-<p>Having these three definitions for monad <em>m</em>, the implementation of the "do" notation in the WL is straightforward and consists of two parts. The first is a recursive definition that reduces the <code>do[m]</code> expression by applying the user defined <code>bind[m]</code> operator:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">do</span><span class="op">[</span><span class="at">m_</span><span class="op">][</span><span class="at">x___</span> <span class="op">,</span> <span class="at">y_</span> <span class="op">,</span> <span class="fu">r</span>:<span class="fu">Except</span><span class="op">[</span>_LeftArrow<span class="op">]]</span><span class="ex">:=</span> </span>
+<p>This is the second post in of a series on the “do” notation in the
+<em>Wolfram Language</em>. In the
+<a id = "NCE" href = https://kacpertopol.github.io/myblog/2021-01-31_gen_light.html>first</a>
+post a categorical interpretation of the <em>Wolfram Language</em> was
+introduced. Now it is time for monads.</p>
+<p>A user can implement a monad <em>m</em> in the WL by supplying three
+definitions. The first definition:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pattern</span><span class="op">[</span><span class="fu">m</span><span class="op">]</span> <span class="ex">=</span> <span class="co">(*pattern m a*)</span></span></code></pre></div>
+<p>provides a pattern that matches a WL expression if it is an
+<em>m</em> monad for any type argument <em>a</em>. The second definition
+implements the monadic <em>return</em> function:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span><span class="op">[</span><span class="fu">m</span><span class="op">][</span><span class="at">x_</span><span class="op">]</span> <span class="ex">:=</span> <span class="co">(*expression matching pattern[m]*)</span></span></code></pre></div>
+<p>if the type of <em>x</em> is <em>a</em> then this expression should
+be a <em>m</em> monad for type argument <em>a</em>. In particular the
+resulting WL expression should match <code>pattern[m]</code>. The final
+definition is an implementation of the monadic <em>bind</em> operator
+for <em>m</em>:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    bind<span class="op">[</span><span class="fu">m</span><span class="op">][</span><span class="at">ma_</span> <span class="op">,</span> <span class="at">aTOmb_</span><span class="op">]</span> <span class="ex">:=</span> <span class="co">(*implementation of bind*)</span></span></code></pre></div>
+<p>where <em>ma</em> is an <em>m</em> monad for type argument <em>a</em>
+and <em>aTOmb</em> is a function taking an element of type <em>a</em>
+and returning an <em>m</em> monad for type argument <em>b</em>. The user
+does not have to supply additional pattern constraints in
+<code>bind</code>, however it is up to the user to make sure that these
+definitions result in an object that satisfies the monad laws.</p>
+<p>Having these three definitions for monad <em>m</em>, the
+implementation of the “do" notation in the WL is straightforward and
+consists of two parts. The first is a recursive definition that reduces
+the <code>do[m]</code> expression by applying the user defined
+<code>bind[m]</code> operator:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">do</span><span class="op">[</span><span class="at">m_</span><span class="op">][</span><span class="at">x___</span> <span class="op">,</span> <span class="at">y_</span> <span class="op">,</span> <span class="fu">r</span>:<span class="fu">Except</span><span class="op">[</span>_LeftArrow<span class="op">]]</span><span class="ex">:=</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">If</span><span class="op">[</span><span class="fu">MatchQ</span><span class="op">[</span><span class="fu">y</span> <span class="op">,</span> <span class="fu">LeftArrow</span><span class="op">[</span>_ <span class="op">,</span> _<span class="op">]]</span> <span class="op">,</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">do</span><span class="op">[</span><span class="fu">m</span><span class="op">][</span><span class="fu">x</span> <span class="op">,</span> </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>             chk<span class="op">[</span><span class="fu">m</span><span class="op">][</span></span>
@@ -312,9 +364,23 @@
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                <span class="fu">Function</span><span class="op">[</span><span class="fu">Unique</span><span class="op">[</span><span class="st">&quot;nonExistantVariable&quot;</span><span class="op">]</span> <span class="op">,</span> <span class="fu">r</span><span class="op">]]]</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>          <span class="op">]</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>       <span class="op">]</span>;</span></code></pre></div>
-<p>Here <code>bnd[m]</code> will be replaced by the appropriate user supplied <code>bind[m]</code> function when the first argument matches <code>pattern[m]</code> and the second argument is a function, <code>fst</code>, <code>snd</code> are helper functions that take the left and right expression from a <code>LeftArrow</code> statement, and finally <code>chk[m]</code> is a function that checks the result of <code>bind[m]</code> against the user defined <code>pattern[m]</code>. Once <code>do[m]</code> is reduced to a contain a single expression the final expression is checked and returned:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">do</span><span class="op">[</span><span class="at">m_</span><span class="op">][</span><span class="at">mx_</span><span class="op">]</span><span class="ex">:=</span>chk<span class="op">[</span><span class="fu">m</span><span class="op">][</span>mx<span class="op">]</span>;</span></code></pre></div>
-<p>These definitions together with the supplementary functions are provided for the readers convenience <a id = "NCE" href = https://gitlab.com/kacpertopolnicki/wlmonad>here</a>. The repository contains a short WL package <em>wlmonad.wl</em> and a number of examples. Next time we will look at the Hanoi Tower example.</p>
+<p>Here <code>bnd[m]</code> will be replaced by the appropriate user
+supplied <code>bind[m]</code> function when the first argument matches
+<code>pattern[m]</code> and the second argument is a function,
+<code>fst</code>, <code>snd</code> are helper functions that take the
+left and right expression from a <code>LeftArrow</code> statement, and
+finally <code>chk[m]</code> is a function that checks the result of
+<code>bind[m]</code> against the user defined <code>pattern[m]</code>.
+Once <code>do[m]</code> is reduced to a contain a single expression the
+final expression is checked and returned:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode mathematica"><code class="sourceCode mathematica"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">do</span><span class="op">[</span><span class="at">m_</span><span class="op">][</span><span class="at">mx_</span><span class="op">]</span><span class="ex">:=</span>chk<span class="op">[</span><span class="fu">m</span><span class="op">][</span>mx<span class="op">]</span>;</span></code></pre></div>
+<p>These definitions together with the supplementary functions are
+provided for the readers convenience
+<a id = "NCE" href = https://gitlab.com/kacpertopolnicki/wlmonad>here</a>.
+The repository contains a short WL package <em>wlmonad.wl</em> and a
+number of examples. Next time we will look at the Hanoi Tower
+example.</p>
 <br/>
 <a id = "LNK" 
    href = "feed.rss"><img src = "Feed-icon.svg" height = 14em></a>

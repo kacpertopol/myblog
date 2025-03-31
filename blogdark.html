@@ -4,14 +4,12 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content=" kacper topolnickikacpertopol@gmail.com " />
   <link rel="alternate" type="application/rss+xml"
    href="feed.rss" title="RSS feed for My Page">
   <title>my blog</title>
   <style>
     html {
-      line-height: 1.5;
-      font-family: Georgia, serif;
-      font-size: 20px;
       color: #1a1a1a;
       background-color: #fdfdfd;
     }
@@ -23,17 +21,23 @@
       padding-top: 50px;
       padding-bottom: 50px;
       hyphens: auto;
-      word-wrap: break-word;
+      overflow-wrap: break-word;
       text-rendering: optimizeLegibility;
       font-kerning: normal;
     }
     @media (max-width: 600px) {
       body {
         font-size: 0.9em;
-        padding: 1em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
       }
     }
     @media print {
+      html {
+        background-color: white;
+      }
       body {
         background-color: transparent;
         color: black;
@@ -57,6 +61,10 @@
       color: #1a1a1a;
     }
     img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
       max-width: 100%;
     }
     h1, h2, h3, h4, h5, h6 {
@@ -83,9 +91,10 @@
       color: #606060;
     }
     code {
-      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
+      hyphens: manual;
     }
     pre {
       margin: 1em 0;
@@ -94,6 +103,7 @@
     pre code {
       padding: 0;
       overflow: visible;
+      overflow-wrap: normal;
     }
     .sourceCode {
      background-color: transparent;
@@ -135,15 +145,29 @@
     #TOC li {
       list-style: none;
     }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
     #TOC a:not(:hover) {
       text-decoration: none;
     }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
 	body {
 		margin : 0;
 		max-width : none; 
@@ -217,55 +241,80 @@
 </br>
 <header id="title-block-header">
 <h1 class="title">my blog</h1>
-<p class="author"><center>
-<a href="mailto:kacpertopol@gmail.com">kacper topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a>
+<p class="author"><center><br />
+<a href="mailto:kacpertopol@gmail.com">kacper
+topolnicki</a></br><a href="mailto:kacpertopol@gmail.com">kacpertopol@gmail.com</a><br />
 <center></p>
 </header>
-<h1 id="monads-and-do-notation-in-the-wolfram-language-part-3"><a href="./2021-02-08_gen_dark.html">monads and “do” notation in the <em>Wolfram Language</em>, part 3</a></h1>
+<h1 id="monads-and-do-notation-in-the-wolfram-language-part-3"><a
+href="./2021-02-08_gen_dark.html">monads and “do” notation in the
+<em>Wolfram Language</em>, part 3</a></h1>
 <center>
 <a href="2021-02-08_gen_light.html"><em>2021-02-08</em></a>
 </center>
-<p><em>Hanoi Tower</em> example <a id = "NCE" href = "2021-02-08_gen_dark.html">…</a></p>
-<h1 id="monads-and-do-notation-in-the-wolfram-language-part-2"><a href="./2021-02-04_gen_dark.html">monads and “do” notation in the <em>Wolfram Language</em>, part 2</a></h1>
+<p><em>Hanoi Tower</em> example
+<a id = "NCE" href = "2021-02-08_gen_dark.html">…</a></p>
+<h1 id="monads-and-do-notation-in-the-wolfram-language-part-2"><a
+href="./2021-02-04_gen_dark.html">monads and “do” notation in the
+<em>Wolfram Language</em>, part 2</a></h1>
 <center>
 <a href="2021-02-04_gen_light.html"><em>2021-02-04</em></a>
 </center>
-<p>introduction of monadic types <a id = "NCE" href = "2021-02-04_gen_dark.html">…</a></p>
-<h1 id="monads-and-do-notation-in-the-wolfram-language-part-1"><a href="./2021-01-31_gen_dark.html">monads and “do” notation in the <em>Wolfram Language</em>, part 1</a></h1>
+<p>introduction of monadic types
+<a id = "NCE" href = "2021-02-04_gen_dark.html">…</a></p>
+<h1 id="monads-and-do-notation-in-the-wolfram-language-part-1"><a
+href="./2021-01-31_gen_dark.html">monads and “do” notation in the
+<em>Wolfram Language</em>, part 1</a></h1>
 <center>
 <a href="2021-01-31_gen_light.html"><em>2021-01-31</em></a>
 </center>
-<p>motivation, categorical interpretation of the <em>Wolfram Language</em> <a id = "NCE" href = "2021-01-31_gen_dark.html">…</a></p>
-<h1 id="image-denoising-with-python"><a href="./2021-01-27_gen_dark.html">image denoising with python</a></h1>
+<p>motivation, categorical interpretation of the <em>Wolfram
+Language</em> <a id = "NCE" href = "2021-01-31_gen_dark.html">…</a></p>
+<h1 id="image-denoising-with-python"><a
+href="./2021-01-27_gen_dark.html">image denoising with python</a></h1>
 <center>
 <a href="2021-01-27_gen_light.html"><em>2021-01-27</em></a>
 </center>
-<p>remove text background with cv2 and numpy <a id = "NCE" href = "2021-01-27_gen_dark.html">…</a></p>
-<h1 id="binary-image-compression-with-python-and-numpy"><a href="./2021-01-22_gen_dark.html">binary image compression with python and numpy</a></h1>
+<p>remove text background with cv2 and numpy
+<a id = "NCE" href = "2021-01-27_gen_dark.html">…</a></p>
+<h1 id="binary-image-compression-with-python-and-numpy"><a
+href="./2021-01-22_gen_dark.html">binary image compression with python
+and numpy</a></h1>
 <center>
 <a href="2021-01-22_gen_light.html"><em>2021-01-22</em></a>
 </center>
-<p>numpy-thonic run length compression <a id = "NCE" href = "2021-01-22_gen_dark.html">…</a></p>
-<h1 id="infinite-matrices-in-mathematica-part-3"><a href="./2021-01-19_gen_dark.html">infinite matrices in <em>Mathematica</em>, part 3</a></h1>
+<p>numpy-thonic run length compression
+<a id = "NCE" href = "2021-01-22_gen_dark.html">…</a></p>
+<h1 id="infinite-matrices-in-mathematica-part-3"><a
+href="./2021-01-19_gen_dark.html">infinite matrices in
+<em>Mathematica</em>, part 3</a></h1>
 <center>
 <a href="2021-01-19_gen_light.html"><em>2021-01-19</em></a>
 </center>
-<p>mapping, addition, multiplication <a id = "NCE" href = "2021-01-19_gen_dark.html">…</a></p>
-<h1 id="infinite-matrices-in-mathematica-part-2"><a href="./2021-01-17_gen_dark.html">infinite matrices in <em>Mathematica</em>, part 2</a></h1>
+<p>mapping, addition, multiplication
+<a id = "NCE" href = "2021-01-19_gen_dark.html">…</a></p>
+<h1 id="infinite-matrices-in-mathematica-part-2"><a
+href="./2021-01-17_gen_dark.html">infinite matrices in
+<em>Mathematica</em>, part 2</a></h1>
 <center>
 <a href="2021-01-17_gen_light.html"><em>2021-01-17</em></a>
 </center>
-<p>representation, transposition <a id = "NCE" href = "2021-01-17_gen_dark.html">…</a></p>
-<h1 id="infinite-matrices-in-mathematica-part-1"><a href="./2021-01-16_gen_dark.html">infinite matrices in <em>Mathematica</em>, part 1</a></h1>
+<p>representation, transposition
+<a id = "NCE" href = "2021-01-17_gen_dark.html">…</a></p>
+<h1 id="infinite-matrices-in-mathematica-part-1"><a
+href="./2021-01-16_gen_dark.html">infinite matrices in
+<em>Mathematica</em>, part 1</a></h1>
 <center>
 <a href="2021-01-16_gen_light.html"><em>2021-01-16</em></a>
 </center>
-<p>introduction, motivation <a id = "NCE" href = "2021-01-16_gen_dark.html">…</a></p>
+<p>introduction, motivation
+<a id = "NCE" href = "2021-01-16_gen_dark.html">…</a></p>
 <h1 id="hi"><a href="./2021-01-15_gen_dark.html">hi</a></h1>
 <center>
 <a href="2021-01-15_gen_light.html"><em>2021-01-15</em></a>
 </center>
-<p>first post, what this blog is about <a id = "NCE" href = "2021-01-15_gen_dark.html">…</a></p>
+<p>first post, what this blog is about
+<a id = "NCE" href = "2021-01-15_gen_dark.html">…</a></p>
 <br/>
 <a id = "LNK" 
    href = "feed.rss"><img src = "Feed-icon.svg" height = 14em></a>
